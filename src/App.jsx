@@ -95,6 +95,13 @@ function App() {
   const [showComments, setShowComments] = useState(false)
   const [showMentions, setShowMentions] = useState(false)
 
+  // Fonction pour normaliser les URLs (enlever accents)
+  const normalizeUrl = (str) => {
+    return str.toLowerCase()
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '')
+  }
+
   useEffect(() => {
     const handleHashChange = () => {
       const hash = window.location.hash.substring(1)
@@ -120,7 +127,7 @@ function App() {
           }
         } else {
           // Navigation par catégorie
-          const category = categories.find(cat => cat.title.toLowerCase() === hash.toLowerCase())
+          const category = categories.find(cat => normalizeUrl(cat.title) === hash.toLowerCase())
           if (category) {
             setSelectedCategory(category)
           }
@@ -226,7 +233,7 @@ function App() {
               <button
                 key={category.id}
                 onClick={() => {
-                  window.location.hash = category.title.toLowerCase()
+                  window.location.hash = normalizeUrl(category.title)
                   setSelectedCategory(category)
                 }}
                 className="terminal-card group text-left"
@@ -817,7 +824,7 @@ function App() {
             setNeolensPost={setNeolensPost}
             onBack={() => {
               setSelectedReseau(null)
-              window.location.hash = 'réseaux'
+              window.location.hash = 'reseaux'
             }}
             isDragging={isDragging}
             setIsDragging={setIsDragging}
@@ -840,7 +847,7 @@ function App() {
             setHolofansPost={setHolofansPost}
             onBack={() => {
               setSelectedReseau(null)
-              window.location.hash = 'réseaux'
+              window.location.hash = 'reseaux'
             }}
             isDragging={isDragging}
             setIsDragging={setIsDragging}
@@ -861,7 +868,7 @@ function App() {
             setPingPost={setPingPost}
             onBack={() => {
               setSelectedReseau(null)
-              window.location.hash = 'réseaux'
+              window.location.hash = 'reseaux'
             }}
             isDragging={isDragging}
             setIsDragging={setIsDragging}
