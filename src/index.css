@@ -1,0 +1,64 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-black text-white;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  }
+}
+
+@layer components {
+  .terminal-card {
+    @apply bg-zinc-900/50 border border-zinc-800 p-6 transition-all duration-300;
+  }
+  
+  .terminal-card:hover {
+    @apply bg-zinc-900 border-zinc-700 transform translate-y-[-2px];
+    box-shadow: 0 8px 30px rgba(255, 255, 255, 0.05);
+  }
+
+  .filter-section {
+    @apply bg-zinc-900/30 border border-zinc-800/50 backdrop-blur-sm;
+  }
+
+  .filter-checkbox {
+    @apply appearance-none w-4 h-4 border border-zinc-700 bg-zinc-900 cursor-pointer transition-all duration-200;
+    @apply checked:bg-white checked:border-white relative;
+  }
+
+  .filter-checkbox:checked::after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 8px;
+    height: 8px;
+    background: black;
+  }
+
+  .filter-checkbox:hover {
+    @apply border-zinc-500;
+  }
+
+  .establishment-card {
+    @apply bg-zinc-900/40 border border-zinc-800/60 p-6 transition-all duration-300;
+    @apply hover:bg-zinc-900/60 hover:border-zinc-700;
+  }
+
+  .btn-primary {
+    @apply px-4 py-2 bg-white text-black font-medium text-sm transition-all duration-200;
+    @apply hover:bg-gray-200;
+  }
+
+  .btn-secondary {
+    @apply px-4 py-2 border border-zinc-700 text-white font-medium text-sm transition-all duration-200;
+    @apply hover:bg-zinc-800 hover:border-zinc-600;
+  }
+
+  .tag {
+    @apply px-3 py-1 bg-zinc-800/80 text-gray-300 text-xs font-medium border border-zinc-700/50;
+  }
+}

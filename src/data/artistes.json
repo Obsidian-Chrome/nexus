@@ -1,0 +1,29 @@
+[
+  {
+    "id": 1,
+    "name": "MAGENTA",
+    "logo": "media/artistes/Magenta.png",
+    "styleMusical": "Rock / Grunge / Punk",
+    "url": "https://www.magenta-band.fr/",
+    "youtube": "https://www.youtube.com/@Magenta-Band",
+    "discord": "https://discord.gg/KMvttGHf3p"
+  },
+  {
+    "id": 2,
+    "name": "Funk Machine",
+    "logo": "media/artistes/FunkMachine.png",
+    "styleMusical": "Funk / Future Funk",
+    "url": "https://obsidian-chrome.github.io/funkmachine/index",
+    "youtube": "https://www.youtube.com/@Funk_Machine",
+    "discord": null
+  },
+  {
+    "id": 3,
+    "name": "Funk and the Machines",
+    "logo": "media/artistes/FaTM.png",
+    "styleMusical": "Funk / Future Funk",
+    "url": "https://obsidian-chrome.github.io/funkmachine/fatm/index.html",
+    "youtube": "https://www.youtube.com/@Funk_Machine",
+    "discord": null
+  }
+]
