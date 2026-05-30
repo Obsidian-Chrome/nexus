@@ -1,8 +1,11 @@
 import { useState, useEffect } from 'react'
-import { ExternalLink, Globe, Users, Music, Briefcase, BookOpen, ArrowLeft, Search, Clock, MapPin, Home, Download } from 'lucide-react'
+import { ExternalLink, Globe, Users, Music, Briefcase, BookOpen, ArrowLeft, Search, Clock, MapPin, Home, Download, Upload, Heart, MessageCircle, Send, Bookmark } from 'lucide-react'
 import annuaireData from './data/annuaire.json'
 import artistesData from './data/artistes.json'
 import reseauxData from './data/reseaux.json'
+import NeolensGenerator from './components/NeolensGenerator'
+import HolofansGenerator from './components/HolofansGenerator'
+import PingGenerator from './components/PingGenerator'
 
 function App() {
   const [typedText, setTypedText] = useState('')
@@ -15,24 +18,123 @@ function App() {
   const [searchArtiste, setSearchArtiste] = useState('')
   const [sortAnnuaire, setSortAnnuaire] = useState('asc')
   const [sortArtistes, setSortArtistes] = useState('asc')
+  const [selectedReseau, setSelectedReseau] = useState(null)
+  const [neolensPost, setNeolensPost] = useState({
+    images: [
+      { url: '', position: { x: 0, y: 0 }, zoom: 1 },
+      { url: '', position: { x: 0, y: 0 }, zoom: 1 },
+      { url: '', position: { x: 0, y: 0 }, zoom: 1 }
+    ],
+    currentImageIndex: 0,
+    avatar: '',
+    avatarPosition: { x: 0, y: 0 },
+    avatarZoom: 1,
+    username: 'Utilisateur',
+    mentions: '',
+    caption: '',
+    hashtags: '',
+    likes: '42',
+    comments: [
+      { username: '', text: '', likes: '' },
+      { username: '', text: '', likes: '' },
+      { username: '', text: '', likes: '' }
+    ]
+  })
+  const [holofansPost, setHolofansPost] = useState({
+    images: [
+      { url: '', position: { x: 0, y: 0 }, zoom: 1 },
+      { url: '', position: { x: 0, y: 0 }, zoom: 1 },
+      { url: '', position: { x: 0, y: 0 }, zoom: 1 }
+    ],
+    currentImageIndex: 0,
+    avatar: '',
+    avatarPosition: { x: 0, y: 0 },
+    avatarZoom: 1,
+    username: 'Utilisateur',
+    mentions: '',
+    caption: '',
+    likes: '42',
+    isLocked: false,
+    comments: [
+      { username: '', text: '', likes: '' },
+      { username: '', text: '', likes: '' },
+      { username: '', text: '', likes: '' }
+    ]
+  })
+  const getParisTimestamp = () => {
+    const now = new Date()
+    const parisTime = new Date(now.toLocaleString('en-US', { timeZone: 'Europe/Paris' }))
+    const hours = parisTime.getHours().toString().padStart(2, '0')
+    const minutes = parisTime.getMinutes().toString().padStart(2, '0')
+    const day = parisTime.getDate()
+    const months = ['janv.', 'févr.', 'mars', 'avr.', 'mai', 'juin', 'juil.', 'août', 'sept.', 'oct.', 'nov.', 'déc.']
+    const month = months[parisTime.getMonth()]
+    const year = parisTime.getFullYear()
+    return `${hours}:${minutes} · ${day} ${month} ${year}`
+  }
+
+  const [pingPost, setPingPost] = useState({
+    image: '',
+    imagePosition: { x: 0, y: 0 },
+    imageZoom: 1,
+    avatar: '',
+    avatarPosition: { x: 0, y: 0 },
+    avatarZoom: 1,
+    username: 'Utilisateur',
+    handle: 'utilisateur',
+    text: '',
+    timestamp: getParisTimestamp(),
+    replies: '0',
+    repings: '0',
+    likes: '0'
+  })
+  const [isDragging, setIsDragging] = useState(false)
+  const [dragStart, setDragStart] = useState({ x: 0, y: 0 })
+  const [isDraggingAvatar, setIsDraggingAvatar] = useState(false)
+  const [dragStartAvatar, setDragStartAvatar] = useState({ x: 0, y: 0 })
+  const [showComments, setShowComments] = useState(false)
+  const [showMentions, setShowMentions] = useState(false)
 
   useEffect(() => {
     const handleHashChange = () => {
       const hash = window.location.hash.substring(1)
       if (hash) {
-        const category = categories.find(cat => cat.title.toLowerCase() === hash.toLowerCase())
-        if (category) {
-          setSelectedCategory(category)
+        // Vérifier si c'est un générateur spécifique
+        if (hash === 'neolens') {
+          const neolens = reseauxData.find(r => r.name === 'Neolens')
+          if (neolens) {
+            setSelectedCategory(categories.find(cat => cat.title === 'RÉSEAUX'))
+            setSelectedReseau(neolens)
+          }
+        } else if (hash === 'holofans') {
+          const holofans = reseauxData.find(r => r.name === 'Holofans')
+          if (holofans) {
+            setSelectedCategory(categories.find(cat => cat.title === 'RÉSEAUX'))
+            setSelectedReseau(holofans)
+          }
+        } else if (hash === 'ping') {
+          const ping = reseauxData.find(r => r.name === 'Ping')
+          if (ping) {
+            setSelectedCategory(categories.find(cat => cat.title === 'RÉSEAUX'))
+            setSelectedReseau(ping)
+          }
+        } else {
+          // Navigation par catégorie
+          const category = categories.find(cat => cat.title.toLowerCase() === hash.toLowerCase())
+          if (category) {
+            setSelectedCategory(category)
+          }
         }
       } else {
         setSelectedCategory(null)
+        setSelectedReseau(null)
       }
     }
 
     handleHashChange()
     window.addEventListener('hashchange', handleHashChange)
     return () => window.removeEventListener('hashchange', handleHashChange)
-  }, [])
+  }, [reseauxData])
 
   const datacenters = {
     Chaos: ['Cerberus', 'Louisoix', 'Moogle', 'Omega', 'Phantom', 'Ragnarok', 'Sagittarius', 'Spriggan'],
@@ -563,6 +665,63 @@ function App() {
           </div>
         )}
 
+        {selectedCategory && selectedCategory.title === 'RESSOURCES' && (
+          <div className="fixed inset-0 bg-black z-50 overflow-y-auto">
+            <div className="max-w-7xl mx-auto p-8">
+              <button
+                onClick={() => {
+                  window.location.hash = ''
+                  setSelectedCategory(null)
+                }}
+                className="flex items-center space-x-2 text-gray-400 hover:text-white transition-colors mb-8"
+              >
+                <ArrowLeft className="w-5 h-5" />
+                <span>Retour</span>
+              </button>
+
+              <header className="mb-12">
+                <h1 className="text-5xl font-bold text-white mb-6 tracking-tight">RESSOURCES</h1>
+              </header>
+
+              <div className="space-y-4 max-w-3xl">
+                <h2 className="text-2xl font-bold text-white mb-4">Liens importants</h2>
+                
+                <a
+                  href="https://discord.gg/KKJSb3rKjD"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="block bg-zinc-900/50 border border-zinc-800 p-4 hover:border-zinc-700 transition-colors"
+                >
+                  <div className="flex items-center gap-3">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" className="text-white flex-shrink-0">
+                      <path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515a.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0a12.64 12.64 0 0 0-.617-1.25a.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057a19.9 19.9 0 0 0 5.993 3.03a.078.078 0 0 0 .084-.028a14.09 14.09 0 0 0 1.226-1.994a.076.076 0 0 0-.041-.106a13.107 13.107 0 0 1-1.872-.892a.077.077 0 0 1-.008-.128a10.2 10.2 0 0 0 .372-.292a.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127a12.299 12.299 0 0 1-1.873.892a.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028a19.839 19.839 0 0 0 6.002-3.03a.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419c0-1.333.956-2.419 2.157-2.419c1.21 0 2.176 1.096 2.157 2.42c0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419c0-1.333.955-2.419 2.157-2.419c1.21 0 2.176 1.096 2.157 2.42c0 1.333-.946 2.418-2.157 2.418z"/>
+                    </svg>
+                    <div>
+                      <h3 className="text-white font-semibold">Discord du Nexus</h3>
+                      <p className="text-gray-400 text-sm">Rejoignez la communauté officielle</p>
+                    </div>
+                  </div>
+                </a>
+
+                <a
+                  href="https://heliosphere.app/mod/wnpyxb0ht96rfd85xzd3gqpgs0"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="block bg-zinc-900/50 border border-zinc-800 p-4 hover:border-zinc-700 transition-colors"
+                >
+                  <div className="flex items-center gap-3">
+                    <Download className="w-6 h-6 text-white flex-shrink-0" />
+                    <div>
+                      <h3 className="text-white font-semibold">Cyberpunk - Paysages magiques</h3>
+                      <p className="text-gray-400 text-sm">Mod modifiant les paysages magiques du jeu au profit de paysages du jeu Cyberpunk 2077</p>
+                    </div>
+                  </div>
+                </a>
+              </div>
+            </div>
+          </div>
+        )}
+
         {selectedCategory && selectedCategory.title === 'RÉSEAUX' && (
           <div className="fixed inset-0 bg-black z-50 overflow-y-auto">
             <div className="max-w-7xl mx-auto p-8">
@@ -587,7 +746,14 @@ function App() {
 
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {reseauxData.map(reseau => (
-                  <div key={reseau.id} className="bg-zinc-900/50 border border-zinc-800 p-6 hover:border-zinc-700 transition-colors">
+                  <button
+                    key={reseau.id}
+                    onClick={() => {
+                      setSelectedReseau(reseau)
+                      window.location.hash = reseau.name.toLowerCase()
+                    }}
+                    className="bg-zinc-900/50 border border-zinc-800 p-6 hover:border-zinc-700 transition-colors text-left w-full"
+                  >
                     <div className="flex flex-col items-center text-center gap-4">
                       <img src={reseau.logo} alt={reseau.name} className="h-16 max-w-32 object-contain" />
                       <div>
@@ -597,8 +763,9 @@ function App() {
                         )}
                       </div>
                       <p className="text-gray-400 text-sm">{reseau.description}</p>
+                      <p className="text-blue-400 text-xs mt-2">Créer un post →</p>
                     </div>
-                  </div>
+                  </button>
                 ))}
               </div>
 
@@ -611,7 +778,72 @@ function App() {
           </div>
         )}
 
-        {selectedCategory && selectedCategory.title !== 'ANNUAIRE' && selectedCategory.title !== 'ARTISTES' && selectedCategory.title !== 'RÉSEAUX' && (
+        {selectedReseau && selectedReseau.name === 'Neolens' && (
+          <NeolensGenerator
+            neolensPost={neolensPost}
+            setNeolensPost={setNeolensPost}
+            onBack={() => {
+              setSelectedReseau(null)
+              window.location.hash = 'réseaux'
+            }}
+            isDragging={isDragging}
+            setIsDragging={setIsDragging}
+            dragStart={dragStart}
+            setDragStart={setDragStart}
+            isDraggingAvatar={isDraggingAvatar}
+            setIsDraggingAvatar={setIsDraggingAvatar}
+            dragStartAvatar={dragStartAvatar}
+            setDragStartAvatar={setDragStartAvatar}
+            showComments={showComments}
+            setShowComments={setShowComments}
+            showMentions={showMentions}
+            setShowMentions={setShowMentions}
+          />
+        )}
+
+        {selectedReseau && selectedReseau.name === 'Holofans' && (
+          <HolofansGenerator
+            holofansPost={holofansPost}
+            setHolofansPost={setHolofansPost}
+            onBack={() => {
+              setSelectedReseau(null)
+              window.location.hash = 'réseaux'
+            }}
+            isDragging={isDragging}
+            setIsDragging={setIsDragging}
+            dragStart={dragStart}
+            setDragStart={setDragStart}
+            isDraggingAvatar={isDraggingAvatar}
+            setIsDraggingAvatar={setIsDraggingAvatar}
+            dragStartAvatar={dragStartAvatar}
+            setDragStartAvatar={setDragStartAvatar}
+            showComments={showComments}
+            setShowComments={setShowComments}
+          />
+        )}
+
+        {selectedReseau && selectedReseau.name === 'Ping' && (
+          <PingGenerator
+            pingPost={pingPost}
+            setPingPost={setPingPost}
+            onBack={() => {
+              setSelectedReseau(null)
+              window.location.hash = 'réseaux'
+            }}
+            isDragging={isDragging}
+            setIsDragging={setIsDragging}
+            dragStart={dragStart}
+            setDragStart={setDragStart}
+            isDraggingAvatar={isDraggingAvatar}
+            setIsDraggingAvatar={setIsDraggingAvatar}
+            dragStartAvatar={dragStartAvatar}
+            setDragStartAvatar={setDragStartAvatar}
+            showComments={showComments}
+            setShowComments={setShowComments}
+          />
+        )}
+
+        {selectedCategory && selectedCategory.title !== 'ANNUAIRE' && selectedCategory.title !== 'ARTISTES' && selectedCategory.title !== 'RÉSEAUX' && selectedCategory.title !== 'RESSOURCES' && (
           <div className="fixed inset-0 bg-black z-50 overflow-y-auto">
             <div className="max-w-7xl mx-auto p-8">
               <button

@@ -61,4 +61,79 @@
   .tag {
     @apply px-3 py-1 bg-zinc-800/80 text-gray-300 text-xs font-medium border border-zinc-700/50;
   }
+
+  /* Custom Scrollbar */
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(6, 182, 212, 0.5) rgba(24, 24, 27, 0.5);
+  }
+
+  *::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+
+  *::-webkit-scrollbar-track {
+    background: rgba(24, 24, 27, 0.5);
+  }
+
+  *::-webkit-scrollbar-thumb {
+    background: rgba(6, 182, 212, 0.5);
+    border-radius: 4px;
+  }
+
+  *::-webkit-scrollbar-thumb:hover {
+    background: rgba(6, 182, 212, 0.7);
+  }
+
+  /* Custom Range Slider */
+  input[type="range"] {
+    -webkit-appearance: none;
+    appearance: none;
+    cursor: pointer;
+    height: 8px;
+  }
+
+  input[type="range"]::-webkit-slider-track {
+    background: rgb(82, 82, 91);
+    height: 8px;
+    border-radius: 4px;
+    border: 1px solid rgb(113, 113, 122);
+  }
+
+  input[type="range"]::-moz-range-track {
+    background: rgb(82, 82, 91);
+    height: 8px;
+    border-radius: 4px;
+    border: 1px solid rgb(113, 113, 122);
+  }
+
+  input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 16px;
+    height: 16px;
+    background: linear-gradient(to bottom right, rgb(6, 182, 212), rgb(59, 130, 246));
+    border-radius: 50%;
+    border: 2px solid rgba(6, 182, 212, 0.5);
+    margin-top: -5px;
+  }
+
+  input[type="range"]::-moz-range-thumb {
+    width: 16px;
+    height: 16px;
+    background: linear-gradient(to bottom right, rgb(6, 182, 212), rgb(59, 130, 246));
+    border-radius: 50%;
+    border: 2px solid rgba(6, 182, 212, 0.5);
+  }
+
+  input[type="range"]::-webkit-slider-thumb:hover {
+    background: linear-gradient(to bottom right, rgb(8, 145, 178), rgb(37, 99, 235));
+    box-shadow: 0 0 10px rgba(6, 182, 212, 0.5);
+  }
+
+  input[type="range"]::-moz-range-thumb:hover {
+    background: linear-gradient(to bottom right, rgb(8, 145, 178), rgb(37, 99, 235));
+    box-shadow: 0 0 10px rgba(6, 182, 212, 0.5);
+  }
 }
