@@ -87,7 +87,7 @@
     "appartement": true,
     "annexe": true,
     "types": ["Lieu public", "Boutique"],
-    "horaires": "Sur rendez-vous",
+    "horaires": "09h00 - 17h00 (PNJ) / Sur rendez-vous (Straya)",
     "url": null,
     "discord": "https://discord.gg/f32rrfRfcA"
   },
