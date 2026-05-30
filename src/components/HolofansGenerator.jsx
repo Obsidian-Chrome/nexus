@@ -423,7 +423,7 @@ export default function HolofansGenerator({ holofansPost, setHolofansPost, onBac
                   </div>
                 ) : (
                   <div className="w-12 h-12 rounded-full flex-shrink-0" style={{display: 'flex', alignItems: 'center', justifyContent: 'center', backgroundColor: '#00AFF0'}}>
-                    <img src="/media/holofans_logo.png" alt="Holofans" className="w-full h-full object-contain" />
+                    <img src="media/holofans_logo.png" alt="Holofans" className="w-full h-full object-contain" />
                   </div>
                 )}
                 <div className="flex-1 min-w-0">
@@ -490,7 +490,7 @@ export default function HolofansGenerator({ holofansPost, setHolofansPost, onBac
                     {holofansPost.isLocked && (
                       <div className="absolute inset-0 flex items-center justify-center pointer-events-none" style={{backgroundColor: 'rgba(0, 0, 0, 0.3)'}}>
                         <div className="text-center">
-                          <img src="/media/lock_logo.png" alt="Locked" className="w-16 h-16 mx-auto mb-3 opacity-90" />
+                          <img src="media/lock_logo.png" alt="Locked" className="w-16 h-16 mx-auto mb-3 opacity-90" />
                           <p className="text-white font-semibold text-base">S'abonner pour débloquer</p>
                         </div>
                       </div>
@@ -521,7 +521,7 @@ export default function HolofansGenerator({ holofansPost, setHolofansPost, onBac
                 
                 {/* Branding */}
                 <div className="absolute bottom-3 right-3 flex items-center gap-1 opacity-40">
-                  <img src="/media/holofans_logo.png" alt="Holofans" className="h-10 w-10 object-contain" />
+                  <img src="media/holofans_logo.png" alt="Holofans" className="h-10 w-10 object-contain" />
                   <span className="text-white text-base font-semibold tracking-wide">HOLOFANS</span>
                 </div>
               </div>

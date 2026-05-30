@@ -392,7 +392,7 @@ export default function NeolensGenerator({ neolensPost, setNeolensPost, onBack, 
             <div id="neolens-template" className="bg-black border-2 border-cyan-500/30 shadow-lg shadow-cyan-500/20" style={{width: '400px'}}>
               {/* Branding Header */}
               <div className="p-3 flex items-center justify-center gap-2 bg-gradient-to-r from-cyan-950/30 to-blue-950/30">
-                <img src="/media/neolens_logo.png" alt="Neolens" className="h-8 w-8 object-contain" />
+                <img src="media/neolens_logo.png" alt="Neolens" className="h-8 w-8 object-contain" />
                 <span className="text-cyan-400/50 text-sm font-semibold tracking-wider">NEOLENS</span>
               </div>
               

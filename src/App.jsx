@@ -209,7 +209,7 @@ function App() {
         <header className="mb-16 text-center">
           <div className="flex flex-col items-center justify-center gap-6">
             <img 
-              src="/media/nexus_logo.png" 
+              src="media/nexus_logo.png" 
               alt="Nexus Logo" 
               className="w-32 h-32 object-contain"
             />

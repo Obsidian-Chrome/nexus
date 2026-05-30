@@ -3,7 +3,7 @@
     "id": 1,
     "name": "Neolens",
     "equivalent": "Instagram",
-    "logo": "/media/neolens_logo.png",
+    "logo": "media/neolens_logo.png",
     "description": "Plateforme de partage de photos et contenus visuels",
     "type": "social"
   },
@@ -11,7 +11,7 @@
     "id": 2,
     "name": "Holofans",
     "equivalent": "OnlyFans",
-    "logo": "/media/holofans_logo.png",
+    "logo": "media/holofans_logo.png",
     "description": "Plateforme de contenu premium par abonnement",
     "type": "premium"
   },
@@ -19,7 +19,7 @@
     "id": 3,
     "name": "Ping",
     "equivalent": "Twitter",
-    "logo": "/media/ping_logo.png",
+    "logo": "media/ping_logo.png",
     "description": "Plateforme de microblogging et partage d'actualités",
     "type": "social"
   }
