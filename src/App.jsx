@@ -711,9 +711,42 @@ function App() {
                 >
                   <div className="flex items-center gap-3">
                     <Download className="w-6 h-6 text-white flex-shrink-0" />
-                    <div>
+                    <div className="flex-1">
                       <h3 className="text-white font-semibold">Cyberpunk - Paysages magiques</h3>
-                      <p className="text-gray-400 text-sm">Mod modifiant les paysages magiques du jeu au profit de paysages du jeu Cyberpunk 2077</p>
+                      <p className="text-gray-400 text-sm mb-2">Mod modifiant les paysages magiques du jeu au profit de paysages du jeu Cyberpunk 2077</p>
+                      <span className="inline-block bg-zinc-800 text-gray-300 text-xs px-2 py-1 rounded">Meuble</span>
+                    </div>
+                  </div>
+                </a>
+
+                <a
+                  href="https://heliosphere.app/mod/va3w4snr550hfdpef5qtyqdpq8"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="block bg-zinc-900/50 border border-zinc-800 p-4 hover:border-zinc-700 transition-colors"
+                >
+                  <div className="flex items-center gap-3">
+                    <Download className="w-6 h-6 text-white flex-shrink-0" />
+                    <div className="flex-1">
+                      <h3 className="text-white font-semibold">25th Hour - Distributeur</h3>
+                      <p className="text-gray-400 text-sm mb-2">Distributeur pour la boisson énergisante au café 25th Hour</p>
+                      <span className="inline-block bg-zinc-800 text-gray-300 text-xs px-2 py-1 rounded">Meuble de jardin</span>
+                    </div>
+                  </div>
+                </a>
+
+                <a
+                  href="https://heliosphere.app/mod/wyea6wmr990gf66fdcsq1q9a70"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="block bg-zinc-900/50 border border-zinc-800 p-4 hover:border-zinc-700 transition-colors"
+                >
+                  <div className="flex items-center gap-3">
+                    <Download className="w-6 h-6 text-white flex-shrink-0" />
+                    <div className="flex-1">
+                      <h3 className="text-white font-semibold">25th Hour - Canette</h3>
+                      <p className="text-gray-400 text-sm mb-2">Canette de la boisson énergisante au café 25th Hour</p>
+                      <span className="inline-block bg-zinc-800 text-gray-300 text-xs px-2 py-1 rounded">Mascotte</span>
                     </div>
                   </div>
                 </a>
