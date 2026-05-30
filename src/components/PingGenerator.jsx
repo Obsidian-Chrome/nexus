@@ -298,8 +298,8 @@ export default function PingGenerator({ pingPost, setPingPost, onBack, isDraggin
                       </div>
                     </div>
                   ) : (
-                    <div className="w-12 h-12 rounded-full flex-shrink-0" style={{display: 'flex', alignItems: 'center', justifyContent: 'center', backgroundColor: '#1d9bf0'}}>
-                      <img src="media/ping_logo.png" alt="Ping" className="w-full h-full object-contain" />
+                    <div className="w-10 h-10 rounded-full flex-shrink-0" style={{display: 'flex', alignItems: 'center', justifyContent: 'center', backgroundColor: '#1d9bf0'}}>
+                      <img src="media/ping_logo.png" alt="Ping" className="w-6 h-6 object-contain" />
                     </div>
                   )}
 
@@ -389,7 +389,7 @@ export default function PingGenerator({ pingPost, setPingPost, onBack, isDraggin
 
               {/* Branding */}
               <div className="p-3 flex items-center justify-center gap-2" style={{backgroundColor: '#0a0a0a', opacity: 0.6}}>
-                <img src="media/ping_logo.png" alt="Ping" className="h-5 w-5 object-contain" />
+                <img src="media/ping_logo.png" alt="Ping" className="h-4 w-4 object-contain" />
                 <span className="text-white text-xs font-semibold tracking-wide">PING</span>
               </div>
             </div>

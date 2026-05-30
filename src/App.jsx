@@ -218,7 +218,7 @@ function App() {
             <img 
               src="media/nexus_logo.png" 
               alt="Nexus Logo" 
-              className="w-32 h-32 object-contain"
+              className="w-24 h-24 object-contain"
             />
             <h1 className="text-7xl font-bold text-white tracking-tight">
               NEXUS
@@ -795,7 +795,7 @@ function App() {
                     className="bg-zinc-900/50 border border-zinc-800 p-6 hover:border-zinc-700 transition-colors text-left w-full"
                   >
                     <div className="flex flex-col items-center text-center gap-4">
-                      <img src={reseau.logo} alt={reseau.name} className="h-16 max-w-32 object-contain" />
+                      <img src={reseau.logo} alt={reseau.name} className="h-12 max-w-24 object-contain" />
                       <div>
                         <h3 className="text-xl font-bold text-white">{reseau.name}</h3>
                         {reseau.equivalent && (
