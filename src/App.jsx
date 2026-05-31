@@ -6,9 +6,10 @@ import reseauxData from './data/reseaux.json'
 import NeolensGenerator from './components/NeolensGenerator'
 import HolofansGenerator from './components/HolofansGenerator'
 import PingGenerator from './components/PingGenerator'
+import HexagonBackground from './components/HexagonBackground'
 
 const Footer = () => (
-  <footer className="border-t border-zinc-800 mt-auto">
+  <footer className="border-t border-zinc-800 mt-auto relative z-10">
     <div className="max-w-7xl mx-auto px-8 py-8">
       <div className="flex flex-col md:flex-row items-center justify-between gap-4">
         <div>
@@ -129,6 +130,21 @@ function App() {
       .replace(/[\u0300-\u036f]/g, '')
   }
 
+  // Scroll en haut quand on change de page
+  useEffect(() => {
+    // Petit délai pour s'assurer que le DOM est mis à jour
+    setTimeout(() => {
+      // Pour les sections modales (fixed inset-0 overflow-y-auto)
+      const modalContainer = document.querySelector('.fixed.inset-0.overflow-y-auto')
+      if (modalContainer) {
+        modalContainer.scrollTo(0, 0)
+      } else {
+        // Pour la page d'accueil
+        window.scrollTo(0, 0)
+      }
+    }, 0)
+  }, [selectedCategory])
+
   useEffect(() => {
     const handleHashChange = () => {
       const hash = window.location.hash.substring(1)
@@ -238,23 +254,48 @@ function App() {
     })
 
   return (
-    <div className="min-h-screen bg-black flex flex-col">
-      <div className="flex-grow p-8">
+    <div className="min-h-screen bg-black flex flex-col relative">
+      <HexagonBackground />
+      <div className="flex-grow p-8 relative z-10">
         <div className="max-w-7xl mx-auto">
-          <header className="mb-16 text-center">
-            <div className="flex flex-col items-center justify-center gap-6">
-              <img 
-                src="media/nexus_logo.png" 
-                alt="Nexus Logo" 
-                className="w-24 h-24 object-contain"
-              />
-              <h1 className="text-7xl font-bold text-white tracking-tight">
-                NEXUS
-              </h1>
-            </div>
-          </header>
+          {!selectedCategory && (
+            <>
+              <header className="mb-20 text-center">
+                <div className="flex flex-col items-center justify-center gap-8">
+                  {/* Logo avec effet glow */}
+                  <div className="relative group">
+                    <div className="absolute inset-0 bg-cyan-500/20 blur-3xl rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                    <div className="relative p-6 rounded-full border-2 border-cyan-500/30 bg-black/50 backdrop-blur-sm">
+                      <img 
+                        src="media/nexus_logo.png" 
+                        alt="Nexus Logo" 
+                        className="w-32 h-32 object-contain drop-shadow-[0_0_25px_rgba(6,182,212,0.5)]"
+                      />
+                    </div>
+                  </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 max-w-4xl mx-auto">
+                  {/* Titre avec effet néon */}
+                  <div className="relative">
+                    <h1 className="text-8xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-white via-cyan-200 to-white tracking-[0.2em] mb-4 drop-shadow-[0_0_30px_rgba(6,182,212,0.8)]">
+                      NEXUS
+                    </h1>
+                    
+                    {/* Ligne décorative */}
+                    <div className="flex items-center justify-center gap-4 mb-4">
+                      <div className="h-px w-16 bg-gradient-to-r from-transparent via-cyan-500 to-transparent"></div>
+                      <div className="w-2 h-2 rounded-full bg-cyan-500 shadow-[0_0_10px_rgba(6,182,212,0.8)]"></div>
+                      <div className="h-px w-16 bg-gradient-to-r from-transparent via-cyan-500 to-transparent"></div>
+                    </div>
+
+                    {/* Slogan */}
+                    <p className="text-cyan-400/80 text-sm tracking-[0.3em] uppercase font-light">
+                      Final Fantasy XIV // Hub RP Cyber
+                    </p>
+                  </div>
+                </div>
+              </header>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 max-w-4xl mx-auto">
             {categories.map((category) => {
               const Icon = category.icon
               return (
@@ -267,40 +308,50 @@ function App() {
                   className="terminal-card group text-left"
                 >
                   <div className="flex items-center space-x-4">
-                    <div className="text-white group-hover:text-gray-300 transition-colors">
+                    <div className="text-white group-hover:text-cyan-400 transition-all duration-300">
                       <Icon className="w-7 h-7" strokeWidth={1.5} />
                     </div>
                     <div className="flex-1">
-                      <h3 className="text-lg font-semibold text-white tracking-wide">
+                      <h3 className="text-lg font-semibold text-white group-hover:text-cyan-100 tracking-wide transition-colors duration-300">
                         {category.title}
                       </h3>
                     </div>
-                    <div className="text-gray-600 group-hover:text-white transition-colors text-xs">
+                    <div className="text-gray-600 group-hover:text-cyan-400 transition-all duration-300 text-xs">
                       →
                     </div>
                   </div>
                 </button>
               )
             })}
-          </div>
+              </div>
+            </>
+          )}
 
         {selectedCategory && selectedCategory.title === 'ANNUAIRE' && (
-          <div className="fixed inset-0 bg-black z-50 overflow-y-auto flex flex-col">
-            <div className="flex-grow">
-              <div className="max-w-7xl mx-auto p-8">
+          <div className="fixed inset-0 bg-black z-50 overflow-y-auto flex flex-col relative">
+            <HexagonBackground />
+            <div className="flex-grow relative z-10">
+              <div className="max-w-7xl mx-auto p-8 pb-16">
                 <button
                 onClick={() => {
                   window.location.hash = ''
                   setSelectedCategory(null)
                 }}
-                className="flex items-center space-x-2 text-gray-400 hover:text-white transition-colors mb-8"
+                className="flex items-center space-x-2 text-gray-400 hover:text-cyan-400 transition-all duration-300 mb-8 group"
               >
                 <ArrowLeft className="w-5 h-5" />
                 <span>Retour</span>
               </button>
 
               <header className="mb-8">
-                <h1 className="text-5xl font-bold text-white mb-6 tracking-tight">ANNUAIRE</h1>
+                <div className="text-center mb-8">
+                  <h1 className="text-6xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-white via-cyan-200 to-white tracking-[0.15em] mb-4 drop-shadow-[0_0_20px_rgba(6,182,212,0.6)]">ANNUAIRE</h1>
+                  <div className="flex items-center justify-center gap-4">
+                    <div className="h-px w-12 bg-gradient-to-r from-transparent via-cyan-500/50 to-transparent"></div>
+                    <div className="w-1.5 h-1.5 rounded-full bg-cyan-500/80 shadow-[0_0_8px_rgba(6,182,212,0.6)]"></div>
+                    <div className="h-px w-12 bg-gradient-to-r from-transparent via-cyan-500/50 to-transparent"></div>
+                  </div>
+                </div>
                 
                 <div className="flex gap-4 mb-6">
                   <div className="relative flex-1">
@@ -582,27 +633,34 @@ function App() {
               </div>
               </div>
             </div>
-            <Footer />
           </div>
         )}
 
         {selectedCategory && selectedCategory.title === 'ARTISTES' && (
-          <div className="fixed inset-0 bg-black z-50 overflow-y-auto flex flex-col">
-            <div className="flex-grow">
-              <div className="max-w-7xl mx-auto p-8">
+          <div className="fixed inset-0 bg-black z-50 overflow-y-auto flex flex-col relative">
+            <HexagonBackground />
+            <div className="flex-grow relative z-10">
+              <div className="max-w-7xl mx-auto p-8 pb-16">
                 <button
                 onClick={() => {
                   window.location.hash = ''
                   setSelectedCategory(null)
                 }}
-                className="flex items-center space-x-2 text-gray-400 hover:text-white transition-colors mb-8"
+                className="flex items-center space-x-2 text-gray-400 hover:text-cyan-400 transition-all duration-300 mb-8 group"
               >
                 <ArrowLeft className="w-5 h-5" />
                 <span>Retour</span>
               </button>
 
               <header className="mb-8">
-                <h1 className="text-5xl font-bold text-white mb-6 tracking-tight">ARTISTES</h1>
+                <div className="text-center mb-8">
+                  <h1 className="text-6xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-white via-cyan-200 to-white tracking-[0.15em] mb-4 drop-shadow-[0_0_20px_rgba(6,182,212,0.6)]">ARTISTES</h1>
+                  <div className="flex items-center justify-center gap-4">
+                    <div className="h-px w-12 bg-gradient-to-r from-transparent via-cyan-500/50 to-transparent"></div>
+                    <div className="w-1.5 h-1.5 rounded-full bg-cyan-500/80 shadow-[0_0_8px_rgba(6,182,212,0.6)]"></div>
+                    <div className="h-px w-12 bg-gradient-to-r from-transparent via-cyan-500/50 to-transparent"></div>
+                  </div>
+                </div>
                 
                 <div className="flex gap-4 mb-6">
                   <div className="relative flex-1">
@@ -702,27 +760,34 @@ function App() {
               )}
               </div>
             </div>
-            <Footer />
           </div>
         )}
 
         {selectedCategory && selectedCategory.title === 'RESSOURCES' && (
-          <div className="fixed inset-0 bg-black z-50 overflow-y-auto flex flex-col">
-            <div className="flex-grow">
-              <div className="max-w-7xl mx-auto p-8">
+          <div className="fixed inset-0 bg-black z-50 overflow-y-auto flex flex-col relative">
+            <HexagonBackground />
+            <div className="flex-grow relative z-10">
+              <div className="max-w-7xl mx-auto p-8 pb-16">
                 <button
                 onClick={() => {
                   window.location.hash = ''
                   setSelectedCategory(null)
                 }}
-                className="flex items-center space-x-2 text-gray-400 hover:text-white transition-colors mb-8"
+                className="flex items-center space-x-2 text-gray-400 hover:text-cyan-400 transition-all duration-300 mb-8 group"
               >
                 <ArrowLeft className="w-5 h-5" />
                 <span>Retour</span>
               </button>
 
               <header className="mb-8">
-                <h1 className="text-5xl font-bold text-white mb-6 tracking-tight">RESSOURCES</h1>
+                <div className="text-center mb-8">
+                  <h1 className="text-6xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-white via-cyan-200 to-white tracking-[0.15em] mb-4 drop-shadow-[0_0_20px_rgba(6,182,212,0.6)]">RESSOURCES</h1>
+                  <div className="flex items-center justify-center gap-4">
+                    <div className="h-px w-12 bg-gradient-to-r from-transparent via-cyan-500/50 to-transparent"></div>
+                    <div className="w-1.5 h-1.5 rounded-full bg-cyan-500/80 shadow-[0_0_8px_rgba(6,182,212,0.6)]"></div>
+                    <div className="h-px w-12 bg-gradient-to-r from-transparent via-cyan-500/50 to-transparent"></div>
+                  </div>
+                </div>
                 
                 <div className="flex gap-4 mb-6">
                   <div className="relative flex-1">
@@ -863,28 +928,33 @@ function App() {
               })()}
               </div>
             </div>
-            <Footer />
           </div>
         )}
 
         {selectedCategory && selectedCategory.title === 'RÉSEAUX' && (
-          <div className="fixed inset-0 bg-black z-50 overflow-y-auto flex flex-col">
-            <div className="flex-grow">
-              <div className="max-w-7xl mx-auto p-8">
+          <div className="fixed inset-0 bg-black z-50 overflow-y-auto flex flex-col relative">
+            <HexagonBackground />
+            <div className="flex-grow relative z-10">
+              <div className="max-w-7xl mx-auto p-8 pb-16">
                 <button
                 onClick={() => {
                   window.location.hash = ''
                   setSelectedCategory(null)
                 }}
-                className="flex items-center space-x-2 text-gray-400 hover:text-white transition-colors mb-8"
+                className="flex items-center space-x-2 text-gray-400 hover:text-cyan-400 transition-all duration-300 mb-8 group"
               >
                 <ArrowLeft className="w-5 h-5" />
                 <span>Retour</span>
               </button>
 
-              <header className="mb-8">
-                <h1 className="text-5xl font-bold text-white mb-6 tracking-tight">RÉSEAUX</h1>
-              </header>
+              <div className="text-center mb-8">
+                <h1 className="text-6xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-white via-cyan-200 to-white tracking-[0.15em] mb-4 drop-shadow-[0_0_20px_rgba(6,182,212,0.6)]">RÉSEAUX</h1>
+                <div className="flex items-center justify-center gap-4">
+                  <div className="h-px w-12 bg-gradient-to-r from-transparent via-cyan-500/50 to-transparent"></div>
+                  <div className="w-1.5 h-1.5 rounded-full bg-cyan-500/80 shadow-[0_0_8px_rgba(6,182,212,0.6)]"></div>
+                  <div className="h-px w-12 bg-gradient-to-r from-transparent via-cyan-500/50 to-transparent"></div>
+                </div>
+              </div>
 
               <div className="text-gray-500 text-sm font-medium mb-6">
                 {reseauxData.length} réseau{reseauxData.length > 1 ? 'x' : ''}
@@ -922,7 +992,6 @@ function App() {
               )}
               </div>
             </div>
-            <Footer />
           </div>
         )}
 
@@ -992,15 +1061,16 @@ function App() {
         )}
 
         {selectedCategory && selectedCategory.title !== 'ANNUAIRE' && selectedCategory.title !== 'ARTISTES' && selectedCategory.title !== 'RÉSEAUX' && selectedCategory.title !== 'RESSOURCES' && (
-          <div className="fixed inset-0 bg-black z-50 overflow-y-auto flex flex-col">
-            <div className="flex-grow">
-              <div className="max-w-7xl mx-auto p-8">
+          <div className="fixed inset-0 bg-black z-50 overflow-y-auto flex flex-col relative">
+            <HexagonBackground />
+            <div className="flex-grow relative z-10">
+              <div className="max-w-7xl mx-auto p-8 pb-16">
                 <button
                 onClick={() => {
                   window.location.hash = ''
                   setSelectedCategory(null)
                 }}
-                className="flex items-center space-x-2 text-gray-400 hover:text-white transition-colors mb-8"
+                className="flex items-center space-x-2 text-gray-400 hover:text-cyan-400 transition-all duration-300 mb-8 group"
               >
                 <ArrowLeft className="w-5 h-5" />
                 <span>Retour</span>
@@ -1011,14 +1081,13 @@ function App() {
               </div>
               </div>
             </div>
-            <Footer />
           </div>
         )}
 
         </div>
       </div>
 
-      <Footer />
+      {!selectedReseau && <Footer />}
     </div>
   )
 }

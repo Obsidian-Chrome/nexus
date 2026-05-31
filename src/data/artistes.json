@@ -25,5 +25,23 @@
     "url": "https://obsidian-chrome.github.io/funkmachine/fatm/index.html",
     "youtube": "https://www.youtube.com/@Funk_Machine",
     "discord": null
+  },
+  {
+    "id": 4,
+    "name": "GHOSTLINE",
+    "logo": "media/artistes/Ghostline.png",
+    "styleMusical": "Dark electro / Dark techno / EDM / Industriel",
+    "url": null,
+    "youtube": "https://www.youtube.com/@GHOSTLINE_song",
+    "discord": null
+  },
+  {
+    "id": 5,
+    "name": "HeX",
+    "logo": "media/artistes/hex.png",
+    "styleMusical": "Hardcore techno / Witchcore / Dark synth",
+    "url": null,
+    "youtube": "https://www.youtube.com/@ArcaneaVII",
+    "discord": null
   }
 ]

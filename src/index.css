@@ -15,8 +15,8 @@
   }
   
   .terminal-card:hover {
-    @apply bg-zinc-900 border-zinc-700 transform translate-y-[-2px];
-    box-shadow: 0 8px 30px rgba(255, 255, 255, 0.05);
+    @apply bg-zinc-900/70 border-cyan-500/40 transform translate-y-[-2px];
+    box-shadow: 0 8px 30px rgba(6, 182, 212, 0.15), 0 0 20px rgba(6, 182, 212, 0.1);
   }
 
   .filter-section {
