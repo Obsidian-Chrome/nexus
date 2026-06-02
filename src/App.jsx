@@ -152,7 +152,6 @@ function App() {
     const handleHashChange = () => {
       const hash = window.location.hash.substring(1)
       if (hash) {
-        // Vérifier si c'est PyonPix Nightcity
         if (hash === 'pyonpix/nightcity') {
           setShowPyonPixNightcity(true)
           setSelectedCategory(null)
@@ -923,7 +922,7 @@ function App() {
                           className="block bg-zinc-900/50 border border-zinc-800 p-4 hover:border-zinc-700 transition-colors"
                         >
                           <div className="flex items-center gap-3">
-                            {ressource.isInternal ? (
+                            {ressource.tags.includes('PyonPix') ? (
                               <Monitor className="w-6 h-6 text-white flex-shrink-0" />
                             ) : ressource.title === 'Listingway' ? (
                               <ExternalLink className="w-6 h-6 text-white flex-shrink-0" />

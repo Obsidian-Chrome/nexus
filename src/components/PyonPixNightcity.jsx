@@ -130,24 +130,6 @@ const PyonPixNightcity = ({ onBack }) => {
 
   return (
     <div className="fixed inset-0 bg-black z-50">
-      {/* Bouton retour avec overlay */}
-      <div className={`absolute top-8 left-8 z-50 transition-opacity duration-500 ${showControls ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}>
-        <button
-          onClick={onBack}
-          className="flex items-center space-x-2 text-white/80 hover:text-cyan-400 transition-all duration-300 bg-black/50 backdrop-blur-sm px-4 py-2 rounded border border-cyan-500/30 hover:border-cyan-500/60 hover:shadow-[0_0_20px_rgba(6,182,212,0.3)]"
-        >
-          <ArrowLeft className="w-5 h-5" />
-          <span className="font-medium">Retour</span>
-        </button>
-      </div>
-
-      {/* Titre Night City */}
-      <div className={`absolute top-8 right-8 z-50 text-right transition-opacity duration-500 ${showControls ? 'opacity-100' : 'opacity-0'}`}>
-        <h1 className="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-white via-cyan-200 to-white tracking-[0.15em] drop-shadow-[0_0_20px_rgba(6,182,212,0.8)]">
-          // NIGHT CITY
-        </h1>
-      </div>
-
       {/* Loading indicator */}
       {isLoading && (
         <div className="absolute inset-0 flex items-center justify-center bg-black z-40">
@@ -167,25 +149,11 @@ const PyonPixNightcity = ({ onBack }) => {
         muted
         playsInline
         preload="auto"
+        onClick={onBack}
       >
         <source src="https://github.com/Obsidian-Chrome/nexus/releases/download/1.0.0/nightcity_24h.webm" type="video/webm" />
         Votre navigateur ne supporte pas la lecture de vidéos.
       </video>
-
-      {/* Info heure et position */}
-      <div className={`absolute bottom-8 left-1/2 transform -translate-x-1/2 z-50 transition-opacity duration-500 ${showControls ? 'opacity-100' : 'opacity-0'}`}>
-        <div className="bg-black/50 backdrop-blur-sm px-6 py-3 rounded border border-cyan-500/30">
-          <div className="flex items-center gap-6 text-xs">
-            <div className="text-cyan-400/80 tracking-wider">
-              <span className="opacity-60">LOCAL //</span> {currentTime.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit', second: '2-digit' })}
-            </div>
-            <div className="w-px h-4 bg-cyan-500/30"></div>
-            <div className="text-cyan-400/80 tracking-wider">
-              <span className="opacity-60">VIDEO //</span> {videoTime}
-            </div>
-          </div>
-        </div>
-      </div>
 
     </div>
   )
