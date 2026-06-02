@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { ExternalLink, Globe, Users, Music, Briefcase, BookOpen, ArrowLeft, Search, Clock, MapPin, Home, Download, Upload, Heart, MessageCircle, Send, Bookmark } from 'lucide-react'
+import { ExternalLink, Globe, Users, Music, Briefcase, BookOpen, ArrowLeft, Search, Clock, MapPin, Home, Download, Upload, Heart, MessageCircle, Send, Bookmark, Monitor } from 'lucide-react'
 import annuaireData from './data/annuaire.json'
 import artistesData from './data/artistes.json'
 import reseauxData from './data/reseaux.json'
@@ -7,6 +7,7 @@ import NeolensGenerator from './components/NeolensGenerator'
 import HolofansGenerator from './components/HolofansGenerator'
 import PingGenerator from './components/PingGenerator'
 import HexagonBackground from './components/HexagonBackground'
+import PyonPixNightcity from './components/PyonPixNightcity'
 
 const Footer = () => (
   <footer className="border-t border-zinc-800 mt-auto relative z-10">
@@ -44,6 +45,8 @@ function App() {
   const [sortAnnuaire, setSortAnnuaire] = useState('asc')
   const [sortArtistes, setSortArtistes] = useState('asc')
   const [selectedReseau, setSelectedReseau] = useState(null)
+  const [showPyonPixNightcity, setShowPyonPixNightcity] = useState(false)
+  const [showCopyNotification, setShowCopyNotification] = useState(false)
   const [neolensPost, setNeolensPost] = useState({
     images: [
       { url: '', position: { x: 0, y: 0 }, zoom: 1 },
@@ -143,41 +146,50 @@ function App() {
         window.scrollTo(0, 0)
       }
     }, 0)
-  }, [selectedCategory])
+  }, [selectedCategory, showPyonPixNightcity])
 
   useEffect(() => {
     const handleHashChange = () => {
       const hash = window.location.hash.substring(1)
       if (hash) {
-        // Vérifier si c'est un générateur spécifique
-        if (hash === 'neolens') {
+        // Vérifier si c'est PyonPix Nightcity
+        if (hash === 'pyonpix/nightcity') {
+          setShowPyonPixNightcity(true)
+          setSelectedCategory(null)
+          setSelectedReseau(null)
+        } else if (hash === 'neolens') {
           const neolens = reseauxData.find(r => r.name === 'Neolens')
           if (neolens) {
             setSelectedCategory(categories.find(cat => cat.title === 'RÉSEAUX'))
             setSelectedReseau(neolens)
+            setShowPyonPixNightcity(false)
           }
         } else if (hash === 'holofans') {
           const holofans = reseauxData.find(r => r.name === 'Holofans')
           if (holofans) {
             setSelectedCategory(categories.find(cat => cat.title === 'RÉSEAUX'))
             setSelectedReseau(holofans)
+            setShowPyonPixNightcity(false)
           }
         } else if (hash === 'ping') {
           const ping = reseauxData.find(r => r.name === 'Ping')
           if (ping) {
             setSelectedCategory(categories.find(cat => cat.title === 'RÉSEAUX'))
             setSelectedReseau(ping)
+            setShowPyonPixNightcity(false)
           }
         } else {
           // Navigation par catégorie
           const category = categories.find(cat => normalizeUrl(cat.title) === hash.toLowerCase())
           if (category) {
             setSelectedCategory(category)
+            setShowPyonPixNightcity(false)
           }
         }
       } else {
         setSelectedCategory(null)
         setSelectedReseau(null)
+        setShowPyonPixNightcity(false)
       }
     }
 
@@ -813,7 +825,7 @@ function App() {
                 <div className="mb-6">
                   <div className="text-gray-400 text-xs font-bold mb-3 uppercase tracking-wider">Filtrer par tag</div>
                   <div className="flex flex-wrap gap-2">
-                    {['Meuble', 'Meuble de jardin', 'Mascotte', 'Utilitaire'].map(tag => (
+                    {['PyonPix', 'Meuble', 'Meuble de jardin', 'Mascotte', 'Utilitaire'].map(tag => (
                       <button
                         key={tag}
                         onClick={() => {
@@ -839,6 +851,14 @@ function App() {
               {(() => {
                 const ressourcesData = [
                   {
+                    title: 'PyonPix: Night City',
+                    description: 'Timelapse 24h de Night City synchronisé avec l\'heure UTC+1',
+                    url: '#pyonpix/nightcity',
+                    tags: ['PyonPix'],
+                    isInternal: true,
+                    requiresPyonPix: true
+                  },
+                  {
                     title: 'Cyberpunk - Paysages magiques',
                     description: 'Mod modifiant les paysages magiques du jeu au profit de paysages du jeu Cyberpunk 2077',
                     url: 'https://heliosphere.app/mod/wnpyxb0ht96rfd85xzd3gqpgs0',
@@ -858,7 +878,7 @@ function App() {
                   },
                   {
                     title: 'Listingway',
-                    description: 'Importez votre fichier .txt Remakeplace et obtenez une estimation du prix de vos meubles et où les acheter.',
+                    description: 'Importez votre fichier .txt Remakeplace et obtenez une estimation du prix de vos meubles et où les acheter',
                     url: 'https://obsidian-chrome.github.io/listingway/',
                     tags: ['Utilitaire']
                   }
@@ -898,12 +918,14 @@ function App() {
                         <a
                           key={index}
                           href={ressource.url}
-                          target="_blank"
-                          rel="noopener noreferrer"
+                          id={ressource.id}
+                          {...(ressource.isInternal ? {} : { target: "_blank", rel: "noopener noreferrer" })}
                           className="block bg-zinc-900/50 border border-zinc-800 p-4 hover:border-zinc-700 transition-colors"
                         >
                           <div className="flex items-center gap-3">
-                            {ressource.title === 'Listingway' ? (
+                            {ressource.isInternal ? (
+                              <Monitor className="w-6 h-6 text-white flex-shrink-0" />
+                            ) : ressource.title === 'Listingway' ? (
                               <ExternalLink className="w-6 h-6 text-white flex-shrink-0" />
                             ) : (
                               <Download className="w-6 h-6 text-white flex-shrink-0" />
@@ -912,10 +934,28 @@ function App() {
                               <h3 className="text-white font-semibold">{ressource.title}</h3>
                               <p className="text-gray-400 text-sm mb-2">{ressource.description}</p>
                               {ressource.tags.length > 0 && (
-                                <div className="flex flex-wrap gap-1">
+                                <div className="flex flex-wrap gap-1 mb-2">
                                   {ressource.tags.map(tag => (
                                     <span key={tag} className="inline-block bg-zinc-800 text-gray-300 text-xs px-2 py-1 rounded">{tag}</span>
                                   ))}
+                                </div>
+                              )}
+                              {ressource.requiresPyonPix && (
+                                <div className="text-xs text-cyan-400/80 mt-2 pt-2 border-t border-zinc-800/50">
+                                  <span className="opacity-60">PRÉREQUIS //</span> Nécessite le plugin{' '}
+                                  <button
+                                    onClick={(e) => {
+                                      e.preventDefault()
+                                      e.stopPropagation()
+                                      navigator.clipboard.writeText('https://raw.githubusercontent.com/priprii/FFXIVPlugins/main/repo.json')
+                                      setShowCopyNotification(true)
+                                      setTimeout(() => setShowCopyNotification(false), 4000)
+                                    }}
+                                    className="inline-flex items-center px-2 py-0.5 bg-cyan-500/20 border border-cyan-500/40 rounded text-cyan-300 hover:bg-cyan-500/30 hover:border-cyan-500/60 transition-all"
+                                  >
+                                    PyonPix
+                                  </button>
+                                  {' '}par Pyon
                                 </div>
                               )}
                             </div>
@@ -1084,10 +1124,41 @@ function App() {
           </div>
         )}
 
+        {showPyonPixNightcity && (
+          <PyonPixNightcity
+            onBack={() => {
+              setShowPyonPixNightcity(false)
+              window.location.hash = ''
+            }}
+          />
+        )}
+
         </div>
       </div>
 
-      {!selectedReseau && <Footer />}
+      {/* Notification toast pour la copie */}
+      {showCopyNotification && (
+        <div className="fixed bottom-8 right-8 z-[100] transition-all duration-300 ease-out">
+          <div className="bg-zinc-900 border border-cyan-500/40 rounded-lg p-4 shadow-[0_0_30px_rgba(6,182,212,0.3)] backdrop-blur-sm min-w-[280px]">
+            <div className="flex items-start gap-3">
+              <div className="flex-shrink-0 w-5 h-5 rounded-full bg-cyan-500/20 border border-cyan-500/40 flex items-center justify-center mt-0.5">
+                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-cyan-400">
+                  <polyline points="20 6 9 17 4 12"></polyline>
+                </svg>
+              </div>
+              <div className="flex-1">
+                <h4 className="text-white font-semibold text-sm mb-1">Lien copié dans le presse-papier</h4>
+                <p className="text-gray-400 text-xs">
+                  Collez ce lien dans<br />
+                  <span className="text-cyan-400">Dalamud &gt; Settings &gt; Experimental</span>
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {!selectedReseau && !showPyonPixNightcity && <Footer />}
     </div>
   )
 }
