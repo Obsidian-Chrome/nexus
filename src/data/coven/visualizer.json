@@ -13,12 +13,12 @@
       "date": "03/06/2026",
       "heureDebut": "22:13",
       "heureFin": "23:59",
-      "fichier": "visualizer_ombre.webm",
+      "fichier": "visualizer_hex.webm",
       "hexadecimal": ""
     }
   ],
   "default": {
-    "fichier": "visualizer_hex.webm",
+    "fichier": "visualizer_coven.webm",
     "hexadecimal": ""
   }
 }
