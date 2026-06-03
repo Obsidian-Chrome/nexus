@@ -10,7 +10,7 @@ Ce dossier contient les fichiers vidéo (.webm) utilisés par le Visualizer de C
    - Chemin complet : `public/coven/visualizer/votre_fichier.webm`
    - Exemple: `concert_hex_2025.webm`
 
-2. **Modifiez le fichier `src/data/visualizer.json`**
+2. **Modifiez le fichier `src/data/coven/visualizer.json`**
    ```json
    [
      {
