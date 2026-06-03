@@ -172,7 +172,7 @@ function App() {
           setShowCovenVisualizer(false)
           setSelectedCategory(null)
           setSelectedReseau(null)
-        } else if (hash === 'coven') {
+        } else if (hash === 'coven' || hash === 'coven/') {
           setShowCoven(true)
           setShowPyonPixNightcity(false)
           setShowPyonPixCentreVille(false)
