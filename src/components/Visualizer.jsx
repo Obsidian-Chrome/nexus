@@ -6,9 +6,10 @@ const Visualizer = ({ onBack }) => {
   const [currentEvent, setCurrentEvent] = useState(null)
   const [visualizerData, setVisualizerData] = useState(null)
 
-  // Charger le JSON dynamiquement
+  // Charger le JSON dynamiquement avec cache-buster
   useEffect(() => {
-    fetch('/coven/visualizer.json')
+    const timestamp = new Date().getTime()
+    fetch(`/coven/visualizer.json?t=${timestamp}`)
       .then(res => res.json())
       .then(data => setVisualizerData(data))
       .catch(err => console.error('Erreur chargement visualizer.json:', err))
