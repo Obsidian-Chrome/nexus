@@ -1,12 +1,22 @@
 import { useState, useEffect, useRef } from 'react'
-import visualizerData from '../data/coven/visualizer.json'
 
 const Visualizer = ({ onBack }) => {
   const videoRef = useRef(null)
   const [isLoading, setIsLoading] = useState(true)
   const [currentEvent, setCurrentEvent] = useState(null)
+  const [visualizerData, setVisualizerData] = useState(null)
+
+  // Charger le JSON dynamiquement
+  useEffect(() => {
+    fetch('/coven/visualizer.json')
+      .then(res => res.json())
+      .then(data => setVisualizerData(data))
+      .catch(err => console.error('Erreur chargement visualizer.json:', err))
+  }, [])
 
   useEffect(() => {
+    if (!visualizerData) return
+
     const checkCurrentEvent = () => {
       const now = new Date()
       const currentDate = now.toLocaleDateString('fr-FR', { day: '2-digit', month: '2-digit', year: 'numeric' })
@@ -35,7 +45,7 @@ const Visualizer = ({ onBack }) => {
     const interval = setInterval(checkCurrentEvent, 60000) // Vérifier chaque minute
 
     return () => clearInterval(interval)
-  }, [])
+  }, [visualizerData])
 
   const handleCanPlay = () => {
     setIsLoading(false)
