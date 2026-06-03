@@ -1,10 +1,13 @@
-# Dossier Visualizer
+# Dossier Visualizer (Coven)
 
-Ce dossier contient les fichiers vidéo (.webm) utilisés par le Visualizer.
+Ce dossier contient les fichiers vidéo (.webm) utilisés par le Visualizer de Coven.
+
+**Chemin :** `public/coven/visualizer/`
 
 ## Comment ajouter un nouveau concert/événement
 
 1. **Placez votre fichier .webm dans ce dossier**
+   - Chemin complet : `public/coven/visualizer/votre_fichier.webm`
    - Exemple: `concert_hex_2025.webm`
 
 2. **Modifiez le fichier `src/data/visualizer.json`**
