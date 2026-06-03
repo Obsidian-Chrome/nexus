@@ -1,0 +1,16 @@
+{
+  "events": [
+    {
+      "concert": "Concert HeX",
+      "date": "15/06/2026",
+      "heureDebut": "20:00",
+      "heureFin": "23:30",
+      "fichier": "visualizer_hex.webm",
+      "hexadecimal": ""
+    }
+  ],
+  "default": {
+    "fichier": "visualizer_hex.webm",
+    "hexadecimal": ""
+  }
+}

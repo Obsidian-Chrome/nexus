@@ -1,0 +1,15 @@
+PLACEHOLDER - Remplacer par default.webm
+
+Ce fichier est un placeholder. 
+
+Pour que le Visualizer fonctionne correctement, vous devez :
+1. Supprimer ce fichier .txt
+2. Ajouter un fichier vidéo nommé "default.webm" à cet emplacement
+
+Ce fichier default.webm sera affiché quand aucun événement spécifique n'est programmé.
+
+Recommandations :
+- Format : WebM (VP9)
+- Résolution : 1920x1080 minimum
+- Boucle fluide (début = fin)
+- Thème : Ambiance Coven (rouge/noir)

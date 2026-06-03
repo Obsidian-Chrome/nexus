@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react'
-import visualizerData from '../data/visualizer.json'
+import visualizerData from '../data/coven/visualizer.json'
 
 const Visualizer = ({ onBack }) => {
   const videoRef = useRef(null)
@@ -13,7 +13,7 @@ const Visualizer = ({ onBack }) => {
       const currentTime = now.toTimeString().slice(0, 5) // HH:MM
 
       // Trouver l'événement actuel
-      const activeEvent = visualizerData.find(event => {
+      const activeEvent = visualizerData.events.find(event => {
         if (event.date !== currentDate) return false
         
         const [startHour, startMin] = event.heureDebut.split(':').map(Number)
@@ -27,8 +27,8 @@ const Visualizer = ({ onBack }) => {
         return nowMinutes >= startMinutes && nowMinutes <= endMinutes
       })
 
-      // Si aucun événement actif, prendre le premier par défaut
-      setCurrentEvent(activeEvent || visualizerData[0])
+      // Si aucun événement actif, utiliser le default
+      setCurrentEvent(activeEvent || visualizerData.default)
     }
 
     checkCurrentEvent()
@@ -55,8 +55,8 @@ const Visualizer = ({ onBack }) => {
       {isLoading && (
         <div className="absolute inset-0 flex items-center justify-center bg-black z-40">
           <div className="flex flex-col items-center">
-            <div className="w-16 h-16 border-4 border-cyan-500/30 border-t-cyan-500 rounded-full animate-spin mb-4"></div>
-            <p className="text-cyan-400/80 text-sm tracking-wider">CHARGEMENT...</p>
+            <div className="w-16 h-16 border-4 border-red-500/30 border-t-red-500 rounded-full animate-spin mb-4"></div>
+            <p className="text-red-400/80 text-sm tracking-wider">CHARGEMENT...</p>
           </div>
         </div>
       )}
