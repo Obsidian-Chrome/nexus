@@ -1,0 +1,10 @@
+[
+  {
+    "concert": "Visualizer par défaut",
+    "date": "01/01/2025",
+    "heureDebut": "00:00",
+    "heureFin": "23:59",
+    "fichier": "visualizer_hex.webm",
+    "hexadecimal": "#00FFFF"
+  }
+]

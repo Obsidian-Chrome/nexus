@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { ExternalLink, Globe, Users, Music, Briefcase, BookOpen, ArrowLeft, Search, Clock, MapPin, Home, Download, Upload, Heart, MessageCircle, Send, Bookmark, Monitor } from 'lucide-react'
+import { ExternalLink, Globe, Users, Music, Briefcase, BookOpen, ArrowLeft, Search, Clock, MapPin, Home, Download, Upload, Heart, MessageCircle, Send, Bookmark, Monitor, Play } from 'lucide-react'
 import annuaireData from './data/annuaire.json'
 import artistesData from './data/artistes.json'
 import reseauxData from './data/reseaux.json'
@@ -8,6 +8,9 @@ import HolofansGenerator from './components/HolofansGenerator'
 import PingGenerator from './components/PingGenerator'
 import HexagonBackground from './components/HexagonBackground'
 import PyonPixNightcity from './components/PyonPixNightcity'
+import PyonPixCentreVille from './components/PyonPixCentreVille'
+import Visualizer from './components/Visualizer'
+import Coven from './components/Coven'
 
 const Footer = () => (
   <footer className="border-t border-zinc-800 mt-auto relative z-10">
@@ -46,6 +49,9 @@ function App() {
   const [sortArtistes, setSortArtistes] = useState('asc')
   const [selectedReseau, setSelectedReseau] = useState(null)
   const [showPyonPixNightcity, setShowPyonPixNightcity] = useState(false)
+  const [showPyonPixCentreVille, setShowPyonPixCentreVille] = useState(false)
+  const [showCoven, setShowCoven] = useState(false)
+  const [showCovenVisualizer, setShowCovenVisualizer] = useState(false)
   const [showCopyNotification, setShowCopyNotification] = useState(false)
   const [neolensPost, setNeolensPost] = useState({
     images: [
@@ -146,7 +152,7 @@ function App() {
         window.scrollTo(0, 0)
       }
     }, 0)
-  }, [selectedCategory, showPyonPixNightcity])
+  }, [selectedCategory, showPyonPixNightcity, showPyonPixCentreVille, showCoven, showCovenVisualizer])
 
   useEffect(() => {
     const handleHashChange = () => {
@@ -154,6 +160,30 @@ function App() {
       if (hash) {
         if (hash === 'pyonpix/nightcity') {
           setShowPyonPixNightcity(true)
+          setShowPyonPixCentreVille(false)
+          setShowCoven(false)
+          setShowCovenVisualizer(false)
+          setSelectedCategory(null)
+          setSelectedReseau(null)
+        } else if (hash === 'pyonpix/centreville') {
+          setShowPyonPixCentreVille(true)
+          setShowPyonPixNightcity(false)
+          setShowCoven(false)
+          setShowCovenVisualizer(false)
+          setSelectedCategory(null)
+          setSelectedReseau(null)
+        } else if (hash === 'coven') {
+          setShowCoven(true)
+          setShowPyonPixNightcity(false)
+          setShowPyonPixCentreVille(false)
+          setShowCovenVisualizer(false)
+          setSelectedCategory(null)
+          setSelectedReseau(null)
+        } else if (hash === 'coven/visualizer') {
+          setShowCovenVisualizer(true)
+          setShowCoven(false)
+          setShowPyonPixNightcity(false)
+          setShowPyonPixCentreVille(false)
           setSelectedCategory(null)
           setSelectedReseau(null)
         } else if (hash === 'neolens') {
@@ -162,6 +192,9 @@ function App() {
             setSelectedCategory(categories.find(cat => cat.title === 'RÉSEAUX'))
             setSelectedReseau(neolens)
             setShowPyonPixNightcity(false)
+            setShowPyonPixCentreVille(false)
+            setShowCoven(false)
+            setShowCovenVisualizer(false)
           }
         } else if (hash === 'holofans') {
           const holofans = reseauxData.find(r => r.name === 'Holofans')
@@ -169,6 +202,9 @@ function App() {
             setSelectedCategory(categories.find(cat => cat.title === 'RÉSEAUX'))
             setSelectedReseau(holofans)
             setShowPyonPixNightcity(false)
+            setShowPyonPixCentreVille(false)
+            setShowCoven(false)
+            setShowCovenVisualizer(false)
           }
         } else if (hash === 'ping') {
           const ping = reseauxData.find(r => r.name === 'Ping')
@@ -176,6 +212,9 @@ function App() {
             setSelectedCategory(categories.find(cat => cat.title === 'RÉSEAUX'))
             setSelectedReseau(ping)
             setShowPyonPixNightcity(false)
+            setShowPyonPixCentreVille(false)
+            setShowCoven(false)
+            setShowCovenVisualizer(false)
           }
         } else {
           // Navigation par catégorie
@@ -183,12 +222,18 @@ function App() {
           if (category) {
             setSelectedCategory(category)
             setShowPyonPixNightcity(false)
+            setShowPyonPixCentreVille(false)
+            setShowCoven(false)
+            setShowCovenVisualizer(false)
           }
         }
       } else {
         setSelectedCategory(null)
         setSelectedReseau(null)
         setShowPyonPixNightcity(false)
+        setShowPyonPixCentreVille(false)
+        setShowCoven(false)
+        setShowCovenVisualizer(false)
       }
     }
 
@@ -858,6 +903,14 @@ function App() {
                     requiresPyonPix: true
                   },
                   {
+                    title: 'PyonPix: Night City - Centre ville',
+                    description: 'Boucle vidéo montrant le centre ville de Night City',
+                    url: '#pyonpix/centreville',
+                    tags: ['PyonPix'],
+                    isInternal: true,
+                    requiresPyonPix: true
+                  },
+                  {
                     title: 'Cyberpunk - Paysages magiques',
                     description: 'Mod modifiant les paysages magiques du jeu au profit de paysages du jeu Cyberpunk 2077',
                     url: 'https://heliosphere.app/mod/wnpyxb0ht96rfd85xzd3gqpgs0',
@@ -1132,6 +1185,28 @@ function App() {
           />
         )}
 
+        {showPyonPixCentreVille && (
+          <PyonPixCentreVille
+            onBack={() => {
+              setShowPyonPixCentreVille(false)
+              window.location.hash = ''
+            }}
+          />
+        )}
+
+        {showCoven && (
+          <Coven />
+        )}
+
+        {showCovenVisualizer && (
+          <Visualizer
+            onBack={() => {
+              setShowCovenVisualizer(false)
+              window.location.hash = 'coven'
+            }}
+          />
+        )}
+
         </div>
       </div>
 
@@ -1157,7 +1232,7 @@ function App() {
         </div>
       )}
 
-      {!selectedReseau && !showPyonPixNightcity && <Footer />}
+      {!selectedReseau && !showPyonPixNightcity && !showPyonPixCentreVille && !showCoven && !showCovenVisualizer && <Footer />}
     </div>
   )
 }
