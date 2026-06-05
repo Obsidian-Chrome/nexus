@@ -15,6 +15,14 @@
       "heureFin": "23:59",
       "fichier": "visualizer_ombre.webm",
       "hexadecimal": ""
+    },
+    {
+      "concert": "Test",
+      "date": "05/06/2026",
+      "heureDebut": "21:02",
+      "heureFin": "21:30",
+      "fichier": "visualizer_hex.webm",
+      "hexadecimal": ""
     }
   ],
   "default": {
