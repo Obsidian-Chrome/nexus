@@ -43,5 +43,14 @@
     "url": null,
     "youtube": "https://www.youtube.com/@ArcaneaVII",
     "discord": null
+  },
+  {
+    "id": 6,
+    "name": "Glitchtrap",
+    "logo": "media/artistes/Glitchtrap.png",
+    "styleMusical": "Electro / Drum and Bass",
+    "url": null,
+    "youtube": "https://www.youtube.com/@ombreMelody",
+    "discord": null
   }
 ]

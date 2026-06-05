@@ -402,11 +402,14 @@ function App() {
               <header className="mb-8">
                 <div className="text-center mb-8">
                   <h1 className="text-6xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-white via-cyan-200 to-white tracking-[0.15em] mb-4 drop-shadow-[0_0_20px_rgba(6,182,212,0.6)]">ANNUAIRE</h1>
-                  <div className="flex items-center justify-center gap-4">
+                  <div className="flex items-center justify-center gap-4 mb-4">
                     <div className="h-px w-12 bg-gradient-to-r from-transparent via-cyan-500/50 to-transparent"></div>
                     <div className="w-1.5 h-1.5 rounded-full bg-cyan-500/80 shadow-[0_0_8px_rgba(6,182,212,0.6)]"></div>
                     <div className="h-px w-12 bg-gradient-to-r from-transparent via-cyan-500/50 to-transparent"></div>
                   </div>
+                  <p className="text-gray-400 text-sm">
+                    Pour être ajouté à l'annuaire, créez un ticket sur le Discord
+                  </p>
                 </div>
                 
                 <div className="flex gap-4 mb-6">
@@ -711,11 +714,14 @@ function App() {
               <header className="mb-8">
                 <div className="text-center mb-8">
                   <h1 className="text-6xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-white via-cyan-200 to-white tracking-[0.15em] mb-4 drop-shadow-[0_0_20px_rgba(6,182,212,0.6)]">ARTISTES</h1>
-                  <div className="flex items-center justify-center gap-4">
+                  <div className="flex items-center justify-center gap-4 mb-4">
                     <div className="h-px w-12 bg-gradient-to-r from-transparent via-cyan-500/50 to-transparent"></div>
                     <div className="w-1.5 h-1.5 rounded-full bg-cyan-500/80 shadow-[0_0_8px_rgba(6,182,212,0.6)]"></div>
                     <div className="h-px w-12 bg-gradient-to-r from-transparent via-cyan-500/50 to-transparent"></div>
                   </div>
+                  <p className="text-gray-400 text-sm">
+                    Pour être ajouté dans les artistes, créez un ticket sur le Discord
+                  </p>
                 </div>
                 
                 <div className="flex gap-4 mb-6">
