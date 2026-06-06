@@ -13,6 +13,7 @@
     "horaires": [
       {"jour": "Lun.", "heures": "21h00 - 00h00"}
     ],
+    "banner": "https://www.deadwire.fr/media/deadwire_banner.webp",
     "url": "https://www.deadwire.fr/",
     "discord": "https://discord.gg/QC6CEGcpgq"
   },
@@ -28,6 +29,7 @@
     "annexe": false,
     "types": ["Lieu public"],
     "horaires": "Sur rendez-vous",
+    "banner": null,
     "url": null,
     "discord": "https://discord.gg/85j9preTZ6"
   },
@@ -43,6 +45,7 @@
     "annexe": false,
     "types": ["Nightclub"],
     "horaires": null,
+    "banner": null,
     "url": null,
     "discord": "https://discord.gg/wae4VhUxPE"
   },
@@ -58,6 +61,7 @@
     "annexe": false,
     "types": ["Bar"],
     "horaires": null,
+    "banner": null,
     "url": null,
     "discord": null
   },
@@ -73,6 +77,7 @@
     "annexe": false,
     "types": ["Lieu public"],
     "horaires": null,
+    "banner": null,
     "url": null,
     "discord": null
   },
@@ -88,6 +93,7 @@
     "annexe": true,
     "types": ["Lieu public", "Boutique"],
     "horaires": "09h00 - 17h00 (PNJ) / Sur rendez-vous (Straya)",
+    "banner": null,
     "url": null,
     "discord": "https://discord.gg/f32rrfRfcA"
   },
@@ -101,8 +107,9 @@
     "numero": "46",
     "appartement": false,
     "annexe": true,
-    "types": ["Nightclub"],
+    "types": ["Bar"],
     "horaires": null,
+    "banner": null,
     "url": "https://www.nexusxiv.fr/#coven",
     "discord": "https://discord.gg/n8amsvtxN7"
   }

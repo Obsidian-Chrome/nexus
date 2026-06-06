@@ -605,9 +605,35 @@ function App() {
               <div className="space-y-4">
                 {filteredAnnuaire.map(etab => (
                   <div key={etab.id} className="establishment-card">
-                    <div className="flex items-start justify-between mb-4">
-                      <div className="flex-1">
-                        <h3 className="text-2xl font-bold text-white mb-3">{etab.name}</h3>
+                    <div className="flex flex-col md:flex-row gap-6">
+                      <div className="flex-shrink-0 w-full md:w-[440px]">
+                        {etab.banner ? (
+                          <div className="w-full h-[130px] overflow-hidden rounded border border-zinc-800 mb-3">
+                            <img 
+                              src={etab.banner} 
+                              alt={`Bannière ${etab.name}`}
+                              className="w-full h-full object-cover"
+                            />
+                          </div>
+                        ) : (
+                          <div className="w-full h-[130px] rounded border border-zinc-800/50 bg-gradient-to-br from-zinc-900/50 via-zinc-800/30 to-zinc-900/50 flex items-center justify-center mb-3">
+                            <div className="w-20 h-1 bg-gradient-to-r from-cyan-500/30 via-cyan-400/50 to-cyan-500/30"></div>
+                          </div>
+                        )}
+                        {etab.types && etab.types.length > 0 && (
+                          <div className="flex gap-2 flex-wrap">
+                            {etab.types.map(type => (
+                              <span key={type} className="tag">
+                                {type}
+                              </span>
+                            ))}
+                          </div>
+                        )}
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-start justify-between mb-4">
+                          <div className="flex-1">
+                            <h3 className="text-2xl font-bold text-white mb-3">{etab.name}</h3>
                         
                         <div className="space-y-2">
                           <div className="flex flex-wrap items-center gap-x-3 gap-y-2 text-sm">
@@ -653,9 +679,10 @@ function App() {
                             href={etab.url}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="btn-primary"
+                            className="btn-primary flex items-center gap-2"
+                            title="Site web"
                           >
-                            Site web
+                            <Globe className="w-4 h-4" />
                           </a>
                         )}
                         {etab.discord && (
@@ -673,15 +700,8 @@ function App() {
                         )}
                       </div>
                     </div>
-                    {etab.types && etab.types.length > 0 && (
-                      <div className="flex gap-2 flex-wrap">
-                        {etab.types.map(type => (
-                          <span key={type} className="tag">
-                            {type}
-                          </span>
-                        ))}
-                      </div>
-                    )}
+                  </div>
+                  </div>
                   </div>
                 ))}
                 {filteredAnnuaire.length === 0 && (
@@ -690,9 +710,9 @@ function App() {
                   </div>
                 )}
               </div>
-              </div>
             </div>
           </div>
+        </div>
         )}
 
         {selectedCategory && selectedCategory.title === 'ARTISTES' && (
@@ -778,10 +798,10 @@ function App() {
                             href={artiste.url}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="btn-primary"
+                            className="btn-primary flex items-center gap-2"
                             title="Site web"
                           >
-                            Site web
+                            <Globe className="w-4 h-4" />
                           </a>
                         )}
                         {artiste.youtube && (
