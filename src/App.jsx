@@ -9,6 +9,7 @@ import PingGenerator from './components/PingGenerator'
 import HexagonBackground from './components/HexagonBackground'
 import PyonPixNightcity from './components/PyonPixNightcity'
 import PyonPixCentreVille from './components/PyonPixCentreVille'
+import PyonPixPubs from './components/PyonPixPubs'
 import Visualizer from './components/Visualizer'
 import Coven from './components/Coven'
 
@@ -50,6 +51,7 @@ function App() {
   const [selectedReseau, setSelectedReseau] = useState(null)
   const [showPyonPixNightcity, setShowPyonPixNightcity] = useState(false)
   const [showPyonPixCentreVille, setShowPyonPixCentreVille] = useState(false)
+  const [showPyonPixPubs, setShowPyonPixPubs] = useState(false)
   const [showCoven, setShowCoven] = useState(false)
   const [showCovenVisualizer, setShowCovenVisualizer] = useState(false)
   const [showCopyNotification, setShowCopyNotification] = useState(false)
@@ -152,7 +154,7 @@ function App() {
         window.scrollTo(0, 0)
       }
     }, 0)
-  }, [selectedCategory, showPyonPixNightcity, showPyonPixCentreVille, showCoven, showCovenVisualizer])
+  }, [selectedCategory, showPyonPixNightcity, showPyonPixCentreVille, showPyonPixPubs, showCoven, showCovenVisualizer])
 
   useEffect(() => {
     const handleHashChange = () => {
@@ -161,6 +163,7 @@ function App() {
         if (hash === 'pyonpix/nightcity') {
           setShowPyonPixNightcity(true)
           setShowPyonPixCentreVille(false)
+          setShowPyonPixPubs(false)
           setShowCoven(false)
           setShowCovenVisualizer(false)
           setSelectedCategory(null)
@@ -168,6 +171,15 @@ function App() {
         } else if (hash === 'pyonpix/centreville') {
           setShowPyonPixCentreVille(true)
           setShowPyonPixNightcity(false)
+          setShowPyonPixPubs(false)
+          setShowCoven(false)
+          setShowCovenVisualizer(false)
+          setSelectedCategory(null)
+          setSelectedReseau(null)
+        } else if (hash === 'pyonpix/pubs') {
+          setShowPyonPixPubs(true)
+          setShowPyonPixNightcity(false)
+          setShowPyonPixCentreVille(false)
           setShowCoven(false)
           setShowCovenVisualizer(false)
           setSelectedCategory(null)
@@ -176,6 +188,7 @@ function App() {
           setShowCoven(true)
           setShowPyonPixNightcity(false)
           setShowPyonPixCentreVille(false)
+          setShowPyonPixPubs(false)
           setShowCovenVisualizer(false)
           setSelectedCategory(null)
           setSelectedReseau(null)
@@ -184,6 +197,7 @@ function App() {
           setShowCoven(false)
           setShowPyonPixNightcity(false)
           setShowPyonPixCentreVille(false)
+          setShowPyonPixPubs(false)
           setSelectedCategory(null)
           setSelectedReseau(null)
         } else if (hash === 'neolens') {
@@ -193,6 +207,7 @@ function App() {
             setSelectedReseau(neolens)
             setShowPyonPixNightcity(false)
             setShowPyonPixCentreVille(false)
+            setShowPyonPixPubs(false)
             setShowCoven(false)
             setShowCovenVisualizer(false)
           }
@@ -203,6 +218,7 @@ function App() {
             setSelectedReseau(holofans)
             setShowPyonPixNightcity(false)
             setShowPyonPixCentreVille(false)
+            setShowPyonPixPubs(false)
             setShowCoven(false)
             setShowCovenVisualizer(false)
           }
@@ -213,6 +229,7 @@ function App() {
             setSelectedReseau(ping)
             setShowPyonPixNightcity(false)
             setShowPyonPixCentreVille(false)
+            setShowPyonPixPubs(false)
             setShowCoven(false)
             setShowCovenVisualizer(false)
           }
@@ -223,6 +240,7 @@ function App() {
             setSelectedCategory(category)
             setShowPyonPixNightcity(false)
             setShowPyonPixCentreVille(false)
+            setShowPyonPixPubs(false)
             setShowCoven(false)
             setShowCovenVisualizer(false)
           }
@@ -232,6 +250,7 @@ function App() {
         setSelectedReseau(null)
         setShowPyonPixNightcity(false)
         setShowPyonPixCentreVille(false)
+        setShowPyonPixPubs(false)
         setShowCoven(false)
         setShowCovenVisualizer(false)
       }
@@ -937,6 +956,14 @@ function App() {
                     requiresPyonPix: true
                   },
                   {
+                    title: 'PyonPix: Cyberpunk - Pubs',
+                    description: 'Boucle vidéo montrant les pubs de Cyberpunk 2077',
+                    url: '#pyonpix/pubs',
+                    tags: ['PyonPix'],
+                    isInternal: true,
+                    requiresPyonPix: true
+                  },
+                  {
                     title: 'Cyberpunk - Paysages magiques',
                     description: 'Mod modifiant les paysages magiques du jeu au profit de paysages du jeu Cyberpunk 2077',
                     url: 'https://heliosphere.app/mod/wnpyxb0ht96rfd85xzd3gqpgs0',
@@ -1220,6 +1247,15 @@ function App() {
           />
         )}
 
+        {showPyonPixPubs && (
+          <PyonPixPubs
+            onBack={() => {
+              setShowPyonPixPubs(false)
+              window.location.hash = ''
+            }}
+          />
+        )}
+
         {showCoven && (
           <Coven />
         )}
@@ -1258,7 +1294,7 @@ function App() {
         </div>
       )}
 
-      {!selectedReseau && !showPyonPixNightcity && !showPyonPixCentreVille && !showCoven && !showCovenVisualizer && <Footer />}
+      {!selectedReseau && !showPyonPixNightcity && !showPyonPixCentreVille && !showPyonPixPubs && !showCoven && !showCovenVisualizer && <Footer />}
     </div>
   )
 }

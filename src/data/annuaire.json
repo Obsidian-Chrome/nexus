@@ -109,7 +109,7 @@
     "annexe": true,
     "types": ["Bar"],
     "horaires": null,
-    "banner": null,
+    "banner": "/annuaire/banniere_coven.png",
     "url": "https://www.nexusxiv.fr/#coven",
     "discord": "https://discord.gg/n8amsvtxN7"
   }
