@@ -1,8 +1,9 @@
 import { useState, useEffect } from 'react'
-import { ExternalLink, Globe, Users, Music, Briefcase, BookOpen, ArrowLeft, Search, Clock, MapPin, Home, Download, Upload, Heart, MessageCircle, Send, Bookmark, Monitor, Play } from 'lucide-react'
+import { ExternalLink, Globe, Users, Music, Briefcase, BookOpen, ArrowLeft, Search, Clock, MapPin, Home, Download, Upload, Heart, MessageCircle, Send, Bookmark, Monitor, Play, Calendar } from 'lucide-react'
 import annuaireData from './data/annuaire.json'
 import artistesData from './data/artistes.json'
 import reseauxData from './data/reseaux.json'
+import eventsData from './data/events.json'
 import NeolensGenerator from './components/NeolensGenerator'
 import HolofansGenerator from './components/HolofansGenerator'
 import PingGenerator from './components/PingGenerator'
@@ -12,6 +13,10 @@ import PyonPixCentreVille from './components/PyonPixCentreVille'
 import PyonPixPubs from './components/PyonPixPubs'
 import Visualizer from './components/Visualizer'
 import Coven from './components/Coven'
+import EventsCalendar from './components/EventsCalendar'
+import MonthCalendar from './components/MonthCalendar'
+import EventModal from './components/EventModal'
+import EventDetailModal from './components/EventDetailModal'
 
 const Footer = () => (
   <footer className="border-t border-zinc-800 mt-auto relative z-10">
@@ -55,6 +60,9 @@ function App() {
   const [showCoven, setShowCoven] = useState(false)
   const [showCovenVisualizer, setShowCovenVisualizer] = useState(false)
   const [showCopyNotification, setShowCopyNotification] = useState(false)
+  const [selectedDayEvents, setSelectedDayEvents] = useState(null)
+  const [selectedEventDate, setSelectedEventDate] = useState(null)
+  const [selectedEventDetail, setSelectedEventDetail] = useState(null)
   const [neolensPost, setNeolensPost] = useState({
     images: [
       { url: '', position: { x: 0, y: 0 }, zoom: 1 },
@@ -284,11 +292,16 @@ function App() {
     },
     {
       id: 3,
+      title: 'ÉVÉNEMENTS',
+      icon: Calendar
+    },
+    {
+      id: 4,
       title: 'RÉSEAUX',
       icon: Globe
     },
     {
-      id: 4,
+      id: 5,
       title: 'RESSOURCES',
       icon: Download
     }
@@ -1076,6 +1089,71 @@ function App() {
           </div>
         )}
 
+        {selectedCategory && selectedCategory.title === 'ÉVÉNEMENTS' && (
+          <div className="fixed inset-0 bg-black z-50 overflow-y-auto flex flex-col relative">
+            <HexagonBackground />
+            <div className="flex-grow relative z-10">
+              <div className="max-w-7xl mx-auto p-8 pb-16">
+                <button
+                  onClick={() => {
+                    window.location.hash = ''
+                    setSelectedCategory(null)
+                  }}
+                  className="flex items-center space-x-2 text-gray-400 hover:text-cyan-400 transition-all duration-300 mb-8 group"
+                >
+                  <ArrowLeft className="w-5 h-5" />
+                  <span>Retour</span>
+                </button>
+
+                <header className="mb-8 text-center">
+                  <h1 className="text-6xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-white via-cyan-200 to-white tracking-[0.15em] mb-4 drop-shadow-[0_0_20px_rgba(6,182,212,0.6)]">ÉVÉNEMENTS</h1>
+                  <div className="flex items-center justify-center gap-4">
+                    <div className="h-px w-12 bg-gradient-to-r from-transparent via-cyan-500/50 to-transparent"></div>
+                    <div className="w-1.5 h-1.5 rounded-full bg-cyan-500/80 shadow-[0_0_8px_rgba(6,182,212,0.6)]"></div>
+                    <div className="h-px w-12 bg-gradient-to-r from-transparent via-cyan-500/50 to-transparent"></div>
+                  </div>
+                </header>
+
+                <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-0 lg:h-[700px]">
+                  <div className="lg:col-span-2 h-full">
+                    <MonthCalendar 
+                      events={eventsData} 
+                      onDayClick={(events, date) => {
+                        setSelectedDayEvents(events)
+                        setSelectedEventDate(date)
+                      }}
+                    />
+                  </div>
+                  <div className="lg:col-span-1 h-full">
+                    <EventsCalendar events={eventsData} />
+                  </div>
+                </div>
+                
+                {selectedDayEvents && (
+                  <EventModal
+                    events={selectedDayEvents}
+                    date={selectedEventDate}
+                    onClose={() => {
+                      setSelectedDayEvents(null)
+                      setSelectedEventDate(null)
+                    }}
+                    onEventClick={(event) => {
+                      setSelectedEventDetail(event)
+                    }}
+                  />
+                )}
+                
+                {selectedEventDetail && (
+                  <EventDetailModal
+                    event={selectedEventDetail}
+                    onClose={() => setSelectedEventDetail(null)}
+                  />
+                )}
+              </div>
+            </div>
+          </div>
+        )}
+
         {selectedCategory && selectedCategory.title === 'RÉSEAUX' && (
           <div className="fixed inset-0 bg-black z-50 overflow-y-auto flex flex-col relative">
             <HexagonBackground />
@@ -1205,7 +1283,7 @@ function App() {
           />
         )}
 
-        {selectedCategory && selectedCategory.title !== 'ANNUAIRE' && selectedCategory.title !== 'ARTISTES' && selectedCategory.title !== 'RÉSEAUX' && selectedCategory.title !== 'RESSOURCES' && (
+        {selectedCategory && selectedCategory.title !== 'ANNUAIRE' && selectedCategory.title !== 'ARTISTES' && selectedCategory.title !== 'ÉVÉNEMENTS' && selectedCategory.title !== 'RÉSEAUX' && selectedCategory.title !== 'RESSOURCES' && (
           <div className="fixed inset-0 bg-black z-50 overflow-y-auto flex flex-col relative">
             <HexagonBackground />
             <div className="flex-grow relative z-10">
