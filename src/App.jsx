@@ -1125,7 +1125,10 @@ function App() {
                     />
                   </div>
                   <div className="lg:col-span-1 h-full">
-                    <EventsCalendar events={eventsData} />
+                    <EventsCalendar 
+                      events={eventsData}
+                      onEventClick={(event) => setSelectedEventDetail(event)}
+                    />
                   </div>
                 </div>
                 

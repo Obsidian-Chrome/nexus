@@ -1,6 +1,6 @@
 import { Calendar, Clock, MapPin } from 'lucide-react'
 
-const EventsCalendar = ({ events }) => {
+const EventsCalendar = ({ events, onEventClick }) => {
   const safeEvents = events && Array.isArray(events) ? events : []
   
   const today = new Date()
@@ -36,7 +36,11 @@ const EventsCalendar = ({ events }) => {
               const endTime = event.scheduledEndTime ? new Date(event.scheduledEndTime) : null
               
               return (
-                <div key={event.id} className="border border-zinc-800 rounded p-4 hover:border-cyan-500/50 transition-colors">
+                <div 
+                  key={event.id} 
+                  onClick={() => onEventClick && onEventClick(event)}
+                  className="border border-zinc-800 rounded p-4 hover:border-cyan-500/50 transition-colors cursor-pointer"
+                >
                   {event.image && (
                     <img 
                       src={event.image} 
