@@ -3,6 +3,10 @@ import { X, Clock, MapPin } from 'lucide-react'
 const EventModal = ({ events, date, onClose, onEventClick }) => {
   if (!events || events.length === 0) return null
   
+  const sortedEvents = [...events].sort((a, b) => 
+    new Date(a.scheduledStartTime) - new Date(b.scheduledStartTime)
+  )
+  
   const formattedDate = date.toLocaleDateString('fr-FR', { 
     weekday: 'long', 
     day: 'numeric', 
@@ -24,7 +28,7 @@ const EventModal = ({ events, date, onClose, onEventClick }) => {
         </div>
         
         <div className="space-y-4">
-          {events.map(event => {
+          {sortedEvents.map(event => {
             const startTime = new Date(event.scheduledStartTime)
             const endTime = event.scheduledEndTime ? new Date(event.scheduledEndTime) : null
             

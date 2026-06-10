@@ -1,8 +1,51 @@
 import { useState } from 'react'
 import { Calendar, ChevronLeft, ChevronRight } from 'lucide-react'
 
-const MonthCalendar = ({ events, onDayClick }) => {
+const MonthCalendar = ({ events, onDayClick, filters }) => {
   const safeEvents = events && Array.isArray(events) ? events : []
+  
+  // Appliquer les filtres
+  const filteredEvents = safeEvents.filter(event => {
+    if (!event.scheduledStartTime) return false
+    
+    const eventDate = new Date(event.scheduledStartTime)
+    
+    // Filtre de date de début
+    if (filters?.startDate) {
+      const startDate = new Date(filters.startDate)
+      startDate.setHours(0, 0, 0, 0)
+      if (eventDate < startDate) return false
+    }
+    
+    // Filtre de date de fin
+    if (filters?.endDate) {
+      const endDate = new Date(filters.endDate)
+      endDate.setHours(23, 59, 59, 999)
+      if (eventDate > endDate) return false
+    }
+    
+    // Filtre par heure de début
+    if (filters?.startTime) {
+      const [hours, minutes] = filters.startTime.split(':').map(Number)
+      const eventHours = eventDate.getHours()
+      const eventMinutes = eventDate.getMinutes()
+      const eventTimeInMinutes = eventHours * 60 + eventMinutes
+      const filterTimeInMinutes = hours * 60 + minutes
+      if (eventTimeInMinutes < filterTimeInMinutes) return false
+    }
+    
+    // Filtre par heure de fin
+    if (filters?.endTime) {
+      const [hours, minutes] = filters.endTime.split(':').map(Number)
+      const eventHours = eventDate.getHours()
+      const eventMinutes = eventDate.getMinutes()
+      const eventTimeInMinutes = eventHours * 60 + eventMinutes
+      const filterTimeInMinutes = hours * 60 + minutes
+      if (eventTimeInMinutes > filterTimeInMinutes) return false
+    }
+    
+    return true
+  })
   
   const now = new Date()
   const [currentDate, setCurrentDate] = useState(new Date(now.getFullYear(), now.getMonth(), 1))
@@ -22,7 +65,7 @@ const MonthCalendar = ({ events, onDayClick }) => {
   }
   
   const eventsByDate = {}
-  safeEvents.forEach(event => {
+  filteredEvents.forEach(event => {
     if (event.scheduledStartTime) {
       const date = new Date(event.scheduledStartTime)
       const key = `${date.getFullYear()}-${date.getMonth()}-${date.getDate()}`

@@ -1,6 +1,6 @@
 import { Calendar, Clock, MapPin } from 'lucide-react'
 
-const EventsCalendar = ({ events, onEventClick }) => {
+const EventsCalendar = ({ events, onEventClick, filters }) => {
   const safeEvents = events && Array.isArray(events) ? events : []
   
   const today = new Date()
@@ -12,22 +12,68 @@ const EventsCalendar = ({ events, onEventClick }) => {
     .filter(event => {
       if (!event.scheduledStartTime) return false
       const eventDate = new Date(event.scheduledStartTime)
-      return eventDate >= today && eventDate < tomorrow
+      
+      // Si pas de filtres, afficher uniquement aujourd'hui
+      if (!filters?.startDate && !filters?.endDate) {
+        return eventDate >= today && eventDate < tomorrow
+      }
+      
+      // Avec filtres, afficher tous les événements filtrés
+      // Filtre de date de début
+      if (filters?.startDate) {
+        const startDate = new Date(filters.startDate)
+        startDate.setHours(0, 0, 0, 0)
+        if (eventDate < startDate) return false
+      }
+      
+      // Filtre de date de fin
+      if (filters?.endDate) {
+        const endDate = new Date(filters.endDate)
+        endDate.setHours(23, 59, 59, 999)
+        if (eventDate > endDate) return false
+      }
+      
+      // Filtre par heure de début
+      if (filters?.startTime) {
+        const [hours, minutes] = filters.startTime.split(':').map(Number)
+        const eventHours = eventDate.getHours()
+        const eventMinutes = eventDate.getMinutes()
+        const eventTimeInMinutes = eventHours * 60 + eventMinutes
+        const filterTimeInMinutes = hours * 60 + minutes
+        if (eventTimeInMinutes < filterTimeInMinutes) return false
+      }
+      
+      // Filtre par heure de fin
+      if (filters?.endTime) {
+        const [hours, minutes] = filters.endTime.split(':').map(Number)
+        const eventHours = eventDate.getHours()
+        const eventMinutes = eventDate.getMinutes()
+        const eventTimeInMinutes = eventHours * 60 + eventMinutes
+        const filterTimeInMinutes = hours * 60 + minutes
+        if (eventTimeInMinutes > filterTimeInMinutes) return false
+      }
+      
+      return true
     })
     .sort((a, b) => new Date(a.scheduledStartTime) - new Date(b.scheduledStartTime))
+  
+  const hasFilters = filters?.startDate || filters?.endDate || filters?.startTime || filters?.endTime
+  const titleText = hasFilters ? 'Événements filtrés' : 'Événements du jour'
   
   return (
     <div className="lg:sticky lg:top-8 h-full">
       <div className="bg-zinc-900/50 border border-zinc-800 p-6 rounded lg:rounded-l-none lg:border-l-0 flex flex-col h-full">
         <h2 className="text-2xl font-bold text-white mb-6 flex items-center gap-2 flex-shrink-0">
           <Clock className="w-6 h-6 text-cyan-400" />
-          Événements du jour
+          {titleText}
         </h2>
         
         <div className="overflow-y-auto flex-1 pr-2 -mr-2">
           {todayEvents.length === 0 ? (
             <div className="text-center py-8">
-              <p className="text-gray-500 text-sm">Aucun événement prévu aujourd'hui</p>
+              <p className="text-gray-500 text-sm">
+                {hasFilters ? 'Aucun événement ne correspond aux filtres' : 'Aucun événement prévu aujourd\'hui'}
+              </p>
             </div>
           ) : (
             <div className="space-y-4">
@@ -59,6 +105,11 @@ const EventsCalendar = ({ events, onEventClick }) => {
                   <h3 className="text-lg font-bold text-white mb-2">{event.name}</h3>
                   
                   <div className="space-y-1 text-sm text-gray-400 mb-3">
+                    {hasFilters && (
+                      <div className="text-xs font-semibold text-cyan-400 mb-1">
+                        {startTime.toLocaleDateString('fr-FR', { weekday: 'long', day: 'numeric', month: 'long' })}
+                      </div>
+                    )}
                     <div className="flex items-center gap-2">
                       <Clock className="w-4 h-4" />
                       <span>
