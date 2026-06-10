@@ -30,7 +30,7 @@ jobs:
               location: .entity_metadata.location,
               status: .status,
               userCount: .user_count,
-              image: (if .image then "https://cdn.discordapp.com/guild-events/" + .id + "/" + .image + ".png" else null end),
+              image: (if .image then "https://cdn.discordapp.com/guild-events/" + .id + "/" + .image + ".png?size=1024" else null end),
               creator: {
                 id: .creator.id,
                 username: .creator.username,
