@@ -1,1 +1,18 @@
-[]
+[
+  {
+    "id": "1514361700822945993",
+    "name": "Événement test",
+    "description": "Ceci est une description de test.",
+    "scheduledStartTime": "2026-06-11T21:00:00+00:00",
+    "scheduledEndTime": "2026-06-11T22:00:00+00:00",
+    "location": "Quelque part !",
+    "status": 1,
+    "userCount": null,
+    "image": "a6b9cb9c78ca1a8de0813a19dac8849e",
+    "creator": {
+      "id": "159360181476524032",
+      "username": "jago_is_real",
+      "avatar": "97968ed36034f3d8b5e5316d9d645600"
+    }
+  }
+]
