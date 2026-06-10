@@ -5,6 +5,9 @@ on:
     - cron: '*/5 * * * *'  # Toutes les 5 minutes
   workflow_dispatch:  # Permet de lancer manuellement
 
+permissions:
+  contents: write
+
 jobs:
   fetch-events:
     runs-on: ubuntu-latest
@@ -68,6 +71,7 @@ jobs:
         run: |
           git config user.name "GitHub Actions"
           git config user.email "actions@github.com"
+          git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git
           npm run deploy
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
