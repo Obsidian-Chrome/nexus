@@ -1,30 +1,14 @@
 [
   {
-    "id": "1514361700822945993",
-    "name": "Événement test",
-    "description": "Ceci est une description de test.",
-    "scheduledStartTime": "2026-06-11T21:00:00+00:00",
-    "scheduledEndTime": "2026-06-11T22:00:00+00:00",
-    "location": "Quelque part !",
+    "id": "1514387322253086801",
+    "name": "Ouverture du Deadwire",
+    "description": "",
+    "scheduledStartTime": "2026-06-15T19:00:00+00:00",
+    "scheduledEndTime": "2026-06-15T21:45:00+00:00",
+    "location": "La Coupe 2 - 6 | Ragnarok",
     "status": 1,
     "userCount": null,
-    "image": "https://cdn.discordapp.com/guild-events/1514361700822945993/a6b9cb9c78ca1a8de0813a19dac8849e.png?size=1024",
-    "creator": {
-      "id": "159360181476524032",
-      "username": "jago_is_real",
-      "avatar": "https://cdn.discordapp.com/avatars/159360181476524032/97968ed36034f3d8b5e5316d9d645600.png"
-    }
-  },
-  {
-    "id": "1514378032289419555",
-    "name": "event test",
-    "description": "test",
-    "scheduledStartTime": "2026-06-10T21:30:00+00:00",
-    "scheduledEndTime": "2026-06-10T22:30:00+00:00",
-    "location": "Là ! tout de suite !",
-    "status": 1,
-    "userCount": null,
-    "image": "https://cdn.discordapp.com/guild-events/1514378032289419555/a6b9cb9c78ca1a8de0813a19dac8849e.png?size=1024",
+    "image": "https://cdn.discordapp.com/guild-events/1514387322253086801/a6b9cb9c78ca1a8de0813a19dac8849e.png?size=1024",
     "creator": {
       "id": "159360181476524032",
       "username": "jago_is_real",
