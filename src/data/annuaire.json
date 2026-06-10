@@ -18,22 +18,6 @@
     "discord": "https://discord.gg/QC6CEGcpgq"
   },
   {
-    "id": 2,
-    "name": "Luminary Vector",
-    "datacenter": "Chaos",
-    "server": "Louisoix",
-    "location": "La Coupe",
-    "secteur": "23",
-    "numero": "20",
-    "appartement": false,
-    "annexe": false,
-    "types": ["Lieu public"],
-    "horaires": "Sur rendez-vous",
-    "banner": null,
-    "url": null,
-    "discord": "https://discord.gg/85j9preTZ6"
-  },
-  {
     "id": 3,
     "name": "L'Exil",
     "datacenter": "Chaos",
@@ -45,7 +29,7 @@
     "annexe": false,
     "types": ["Nightclub"],
     "horaires": null,
-    "banner": null,
+    "banner": "https://i.imgur.com/VR1mi7T.png",
     "url": null,
     "discord": "https://discord.gg/wae4VhUxPE"
   },
@@ -93,7 +77,7 @@
     "annexe": true,
     "types": ["Lieu public", "Boutique"],
     "horaires": "09h00 - 17h00 (PNJ) / Sur rendez-vous (Straya)",
-    "banner": null,
+    "banner": "https://i.imgur.com/CwhP3G8.gif",
     "url": null,
     "discord": "https://discord.gg/f32rrfRfcA"
   },

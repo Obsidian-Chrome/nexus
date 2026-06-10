@@ -25,3 +25,6 @@ dist-ssr
 
 # Media intra (fichiers personnels)
 public/media/intra/
+
+# Documentation
+*.md
