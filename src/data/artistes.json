@@ -52,5 +52,14 @@
     "url": null,
     "youtube": "https://www.youtube.com/@ombreMelody",
     "discord": null
+  },
+  {
+    "id": 7,
+    "name": "Les Black Harpies",
+    "logo": "media/artistes/blackharpies.png",
+    "styleMusical": "Metal / Punk",
+    "url": null,
+    "youtube": "https://www.youtube.com/@Black-Harpies",
+    "discord": null
   }
 ]
