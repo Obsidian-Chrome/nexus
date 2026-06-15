@@ -22,7 +22,7 @@
     "scheduledStartTime": "2026-06-15T19:00:00+00:00",
     "scheduledEndTime": "2026-06-15T21:45:00+00:00",
     "location": "La Coupe 2 - 6 | Ragnarok",
-    "status": 1,
+    "status": 2,
     "userCount": null,
     "image": "https://cdn.discordapp.com/guild-events/1514667440464728064/bee6fb6bd4abfbd68bb96822c2a10fff.png?size=1024",
     "creator": {
