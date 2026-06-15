@@ -14,21 +14,5 @@
       "username": "jago_is_real",
       "avatar": "https://cdn.discordapp.com/avatars/159360181476524032/97968ed36034f3d8b5e5316d9d645600.png"
     }
-  },
-  {
-    "id": "1514667440464728064",
-    "name": "Ouverture du Deadwire (Avec Aube)",
-    "description": "",
-    "scheduledStartTime": "2026-06-15T19:00:00+00:00",
-    "scheduledEndTime": "2026-06-15T21:45:00+00:00",
-    "location": "La Coupe 2 - 6 | Ragnarok",
-    "status": 2,
-    "userCount": null,
-    "image": "https://cdn.discordapp.com/guild-events/1514667440464728064/bee6fb6bd4abfbd68bb96822c2a10fff.png?size=1024",
-    "creator": {
-      "id": "159360181476524032",
-      "username": "jago_is_real",
-      "avatar": "https://cdn.discordapp.com/avatars/159360181476524032/97968ed36034f3d8b5e5316d9d645600.png"
-    }
   }
 ]
