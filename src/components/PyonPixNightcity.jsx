@@ -4,6 +4,7 @@ import { ArrowLeft } from 'lucide-react'
 const PyonPixNightcity = ({ onBack }) => {
   const videoRef = useRef(null)
   const [isLoading, setIsLoading] = useState(true)
+  const [showVideo, setShowVideo] = useState(false)
   const [showControls, setShowControls] = useState(true)
   const [currentTime, setCurrentTime] = useState(new Date())
   const [videoTime, setVideoTime] = useState('00:00')
@@ -55,15 +56,17 @@ const PyonPixNightcity = ({ onBack }) => {
         // Puis lancer la lecture
         video.play().then(() => {
           setIsLoading(false)
+          setTimeout(() => setShowVideo(true), 100)
         }).catch(err => {
           console.log('Erreur lecture vidéo:', err)
           setIsLoading(false)
+          setShowVideo(true)
         })
       }
     }
 
     // Gérer les événements vidéo
-    const handleCanPlay = () => {
+    const handleCanPlayThrough = () => {
       if (!hasInitialized.current) {
         hasInitialized.current = true
         syncVideoWithParisTime()
@@ -81,11 +84,11 @@ const PyonPixNightcity = ({ onBack }) => {
       setVideoTime(`${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}`)
     }
 
-    video.addEventListener('canplay', handleCanPlay, { once: true })
+    video.addEventListener('canplaythrough', handleCanPlayThrough, { once: true })
     video.addEventListener('timeupdate', handleTimeUpdate)
 
     // Si la vidéo est déjà prête
-    if (video.readyState >= 3 && !hasInitialized.current) {
+    if (video.readyState >= 4 && !hasInitialized.current) {
       hasInitialized.current = true
       syncVideoWithParisTime()
     }
@@ -143,12 +146,14 @@ const PyonPixNightcity = ({ onBack }) => {
       {/* Vidéo en plein écran */}
       <video
         ref={videoRef}
-        className="w-full h-full object-cover"
+        className={`w-full h-full object-cover transition-opacity duration-500 ${
+          showVideo ? 'opacity-100' : 'opacity-0'
+        }`}
         autoPlay
         loop
         muted
         playsInline
-        preload="auto"
+        preload="metadata"
         onClick={onBack}
       >
         <source src="https://github.com/Obsidian-Chrome/nexus/releases/download/1.0.0/nightcity_24h.webm" type="video/webm" />

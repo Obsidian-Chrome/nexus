@@ -3,9 +3,11 @@ import { useRef, useState } from 'react'
 const PyonPixCentreVille = ({ onBack }) => {
   const videoRef = useRef(null)
   const [isLoading, setIsLoading] = useState(true)
+  const [showVideo, setShowVideo] = useState(false)
 
-  const handleCanPlay = () => {
+  const handleCanPlayThrough = () => {
     setIsLoading(false)
+    setTimeout(() => setShowVideo(true), 100)
   }
 
   return (
@@ -23,14 +25,16 @@ const PyonPixCentreVille = ({ onBack }) => {
       {/* Vidéo en plein écran */}
       <video
         ref={videoRef}
-        className="w-full h-full object-cover"
+        className={`w-full h-full object-cover transition-opacity duration-500 ${
+          showVideo ? 'opacity-100' : 'opacity-0'
+        }`}
         autoPlay
         loop
         muted
         playsInline
-        preload="auto"
+        preload="metadata"
         onClick={onBack}
-        onCanPlay={handleCanPlay}
+        onCanPlayThrough={handleCanPlayThrough}
       >
         <source src="https://github.com/Obsidian-Chrome/nexus/releases/download/1.1.0/PyonPix.-.Centre.Ville.webm" type="video/webm" />
         Votre navigateur ne supporte pas la lecture de vidéos.
