@@ -23,6 +23,30 @@
       "heureFin": "21:30",
       "fichier": "visualizer_hex.webm",
       "hexadecimal": ""
+    },
+    {
+      "concert": "Inauguration CoVeN",
+      "date": "22/06/2026",
+      "heureDebut": "00:00",
+      "heureFin": "23:59",
+      "fichier": "visualizer_hex.webm",
+      "hexadecimal": ""
+    },
+    {
+      "concert": "Inauguration CoVeN",
+      "date": "23/06/2026",
+      "heureDebut": "00:00",
+      "heureFin": "23:59",
+      "fichier": "visualizer_hex.webm",
+      "hexadecimal": ""
+    },
+    {
+      "concert": "Inauguration CoVeN",
+      "date": "24/06/2026",
+      "heureDebut": "00:00",
+      "heureFin": "23:59",
+      "fichier": "visualizer_hex.webm",
+      "hexadecimal": ""
     }
   ],
   "default": {
