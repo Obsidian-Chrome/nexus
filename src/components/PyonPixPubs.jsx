@@ -56,6 +56,12 @@ const PyonPixPubs = ({ onBack }) => {
 
     return () => {
       video.removeEventListener('canplaythrough', handleCanPlayThrough)
+      // Cleanup complet de la vidéo
+      if (video) {
+        video.pause()
+        video.src = ''
+        video.load()
+      }
     }
   }, [])
 

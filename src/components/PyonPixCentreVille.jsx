@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
 const PyonPixCentreVille = ({ onBack }) => {
   const videoRef = useRef(null)
@@ -9,6 +9,18 @@ const PyonPixCentreVille = ({ onBack }) => {
     setIsLoading(false)
     setTimeout(() => setShowVideo(true), 100)
   }
+
+  // Cleanup vidéo au unmount
+  useEffect(() => {
+    return () => {
+      const video = videoRef.current
+      if (video) {
+        video.pause()
+        video.src = ''
+        video.load()
+      }
+    }
+  }, [])
 
   return (
     <div className="fixed inset-0 bg-black z-50">

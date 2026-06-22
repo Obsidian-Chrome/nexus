@@ -94,7 +94,14 @@ const PyonPixNightcity = ({ onBack }) => {
     }
 
     return () => {
+      video.removeEventListener('canplaythrough', handleCanPlayThrough)
       video.removeEventListener('timeupdate', handleTimeUpdate)
+      // Cleanup complet de la vidéo
+      if (video) {
+        video.pause()
+        video.src = ''
+        video.load()
+      }
     }
   }, [])
 
