@@ -3,8 +3,10 @@ import { useState, useEffect, useRef } from 'react'
 const Visualizer = ({ onBack }) => {
   const videoRef = useRef(null)
   const [isLoading, setIsLoading] = useState(true)
+  const [showVideo, setShowVideo] = useState(false)
   const [currentEvent, setCurrentEvent] = useState(null)
   const [visualizerData, setVisualizerData] = useState(null)
+  const [videoKey, setVideoKey] = useState(0)
 
   // Charger le JSON dynamiquement avec cache-buster
   useEffect(() => {
@@ -38,8 +40,17 @@ const Visualizer = ({ onBack }) => {
         return nowMinutes >= startMinutes && nowMinutes <= endMinutes
       })
 
-      // Si aucun événement actif, utiliser le default
-      setCurrentEvent(activeEvent || visualizerData.default)
+      const newEvent = activeEvent || visualizerData.default
+      
+      // Si l'événement change, reset l'affichage et la clé de la vidéo
+      setCurrentEvent(prevEvent => {
+        if (prevEvent?.fichier !== newEvent?.fichier) {
+          setIsLoading(true)
+          setShowVideo(false)
+          setVideoKey(prev => prev + 1)
+        }
+        return newEvent
+      })
     }
 
     checkCurrentEvent()
@@ -48,9 +59,22 @@ const Visualizer = ({ onBack }) => {
     return () => clearInterval(interval)
   }, [visualizerData])
 
-  const handleCanPlay = () => {
+  const handleCanPlayThrough = () => {
     setIsLoading(false)
+    setTimeout(() => setShowVideo(true), 100)
   }
+
+  // Cleanup vidéo quand le composant unmount
+  useEffect(() => {
+    return () => {
+      const video = videoRef.current
+      if (video) {
+        video.pause()
+        video.src = ''
+        video.load()
+      }
+    }
+  }, [])
 
   if (!currentEvent) {
     return (
@@ -75,24 +99,27 @@ const Visualizer = ({ onBack }) => {
       {/* Vidéo avec filtre de couleur */}
       <div className="relative w-full h-full">
         <video
+          key={videoKey}
           ref={videoRef}
-          className="w-full h-full object-cover"
+          className={`w-full h-full object-cover transition-opacity duration-500 ${
+            showVideo ? 'opacity-100' : 'opacity-0'
+          }`}
           autoPlay
           loop
           muted
           playsInline
-          preload="auto"
+          preload="metadata"
           onClick={onBack}
-          onCanPlay={handleCanPlay}
+          onCanPlayThrough={handleCanPlayThrough}
         >
           <source src={`/coven/visualizer/${currentEvent.fichier}`} type="video/webm" />
           Votre navigateur ne supporte pas la lecture de vidéos.
         </video>
         
         {/* Filtre de couleur */}
-        {currentEvent.hexadecimal && currentEvent.hexadecimal !== '#000000' && (
+        {showVideo && currentEvent.hexadecimal && currentEvent.hexadecimal !== '#000000' && (
           <div 
-            className="absolute inset-0 pointer-events-none mix-blend-multiply"
+            className="absolute inset-0 pointer-events-none mix-blend-multiply transition-opacity duration-500"
             style={{ backgroundColor: currentEvent.hexadecimal, opacity: 0.3 }}
           />
         )}
