@@ -13,6 +13,7 @@ import PyonPixCentreVille from './components/PyonPixCentreVille'
 import PyonPixPubs from './components/PyonPixPubs'
 import Visualizer from './components/Visualizer'
 import Coven from './components/Coven'
+import CovenDVD from './components/CovenDVD'
 import EventsCalendar from './components/EventsCalendar'
 import MonthCalendar from './components/MonthCalendar'
 import EventModal from './components/EventModal'
@@ -60,6 +61,7 @@ function App() {
   const [showPyonPixPubs, setShowPyonPixPubs] = useState(false)
   const [showCoven, setShowCoven] = useState(false)
   const [showCovenVisualizer, setShowCovenVisualizer] = useState(false)
+  const [showCovenDVD, setShowCovenDVD] = useState(false)
   const [showCopyNotification, setShowCopyNotification] = useState(false)
   const [selectedDayEvents, setSelectedDayEvents] = useState(null)
   const [selectedEventDate, setSelectedEventDate] = useState(null)
@@ -169,7 +171,7 @@ function App() {
         window.scrollTo(0, 0)
       }
     }, 0)
-  }, [selectedCategory, showPyonPixNightcity, showPyonPixCentreVille, showPyonPixPubs, showCoven, showCovenVisualizer])
+  }, [selectedCategory, showPyonPixNightcity, showPyonPixCentreVille, showPyonPixPubs, showCoven, showCovenVisualizer, showCovenDVD])
 
   useEffect(() => {
     const handleHashChange = () => {
@@ -181,6 +183,7 @@ function App() {
           setShowPyonPixPubs(false)
           setShowCoven(false)
           setShowCovenVisualizer(false)
+          setShowCovenDVD(false)
           setSelectedCategory(null)
           setSelectedReseau(null)
         } else if (hash === 'pyonpix/centreville') {
@@ -189,6 +192,7 @@ function App() {
           setShowPyonPixPubs(false)
           setShowCoven(false)
           setShowCovenVisualizer(false)
+          setShowCovenDVD(false)
           setSelectedCategory(null)
           setSelectedReseau(null)
         } else if (hash === 'pyonpix/pubs') {
@@ -197,6 +201,7 @@ function App() {
           setShowPyonPixCentreVille(false)
           setShowCoven(false)
           setShowCovenVisualizer(false)
+          setShowCovenDVD(false)
           setSelectedCategory(null)
           setSelectedReseau(null)
         } else if (hash === 'coven' || hash === 'coven/') {
@@ -205,11 +210,22 @@ function App() {
           setShowPyonPixCentreVille(false)
           setShowPyonPixPubs(false)
           setShowCovenVisualizer(false)
+          setShowCovenDVD(false)
           setSelectedCategory(null)
           setSelectedReseau(null)
         } else if (hash === 'coven/visualizer') {
           setShowCovenVisualizer(true)
           setShowCoven(false)
+          setShowCovenDVD(false)
+          setShowPyonPixNightcity(false)
+          setShowPyonPixCentreVille(false)
+          setShowPyonPixPubs(false)
+          setSelectedCategory(null)
+          setSelectedReseau(null)
+        } else if (hash === 'coven/dvd') {
+          setShowCovenDVD(true)
+          setShowCoven(false)
+          setShowCovenVisualizer(false)
           setShowPyonPixNightcity(false)
           setShowPyonPixCentreVille(false)
           setShowPyonPixPubs(false)
@@ -225,6 +241,7 @@ function App() {
             setShowPyonPixPubs(false)
             setShowCoven(false)
             setShowCovenVisualizer(false)
+            setShowCovenDVD(false)
           }
         } else if (hash === 'holofans') {
           const holofans = reseauxData.find(r => r.name === 'Holofans')
@@ -236,6 +253,7 @@ function App() {
             setShowPyonPixPubs(false)
             setShowCoven(false)
             setShowCovenVisualizer(false)
+            setShowCovenDVD(false)
           }
         } else if (hash === 'ping') {
           const ping = reseauxData.find(r => r.name === 'Ping')
@@ -247,6 +265,7 @@ function App() {
             setShowPyonPixPubs(false)
             setShowCoven(false)
             setShowCovenVisualizer(false)
+            setShowCovenDVD(false)
           }
         } else {
           // Navigation par catégorie
@@ -258,6 +277,7 @@ function App() {
             setShowPyonPixPubs(false)
             setShowCoven(false)
             setShowCovenVisualizer(false)
+            setShowCovenDVD(false)
           }
         }
       } else {
@@ -268,6 +288,7 @@ function App() {
         setShowPyonPixPubs(false)
         setShowCoven(false)
         setShowCovenVisualizer(false)
+        setShowCovenDVD(false)
       }
     }
 
@@ -1364,6 +1385,10 @@ function App() {
           />
         )}
 
+        {showCovenDVD && (
+          <CovenDVD />
+        )}
+
         </div>
       </div>
 
@@ -1389,7 +1414,7 @@ function App() {
         </div>
       )}
 
-      {!selectedReseau && !showPyonPixNightcity && !showPyonPixCentreVille && !showPyonPixPubs && !showCoven && !showCovenVisualizer && <Footer />}
+      {!selectedReseau && !showPyonPixNightcity && !showPyonPixCentreVille && !showPyonPixPubs && !showCoven && !showCovenVisualizer && !showCovenDVD && <Footer />}
     </div>
   )
 }

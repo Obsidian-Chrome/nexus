@@ -1,4 +1,4 @@
-import { ArrowLeft, Play, Wine } from 'lucide-react'
+import { ArrowLeft, Play, Wine, Monitor } from 'lucide-react'
 
 const Coven = () => {
   return (
@@ -24,7 +24,7 @@ const Coven = () => {
         </div>
 
         {/* Contenu */}
-        <div className="max-w-4xl mx-auto px-8 py-24">
+        <div className="max-w-6xl mx-auto px-8 py-24">
           <div className="flex flex-col md:flex-row gap-6 justify-center items-stretch">
             
             {/* Card Visualizer */}
@@ -38,6 +38,21 @@ const Coven = () => {
                 </div>
                 <h2 className="text-2xl font-bold text-white group-hover:text-red-400 transition-colors">
                   Visualizer
+                </h2>
+              </div>
+            </a>
+
+            {/* Card DVD Screensaver */}
+            <a
+              href="#coven/dvd"
+              className="flex-1 max-w-md bg-zinc-900/50 border border-zinc-800 p-8 hover:border-red-500/60 hover:shadow-[0_0_30px_rgba(220,38,38,0.3)] transition-all duration-300 group"
+            >
+              <div className="flex flex-col items-center text-center gap-4">
+                <div className="w-16 h-16 rounded-full bg-red-500/20 border border-red-500/40 flex items-center justify-center group-hover:bg-red-500/30 transition-all">
+                  <Monitor className="w-8 h-8 text-red-400" />
+                </div>
+                <h2 className="text-2xl font-bold text-white group-hover:text-red-400 transition-colors">
+                  DVD Screensaver
                 </h2>
               </div>
             </a>
