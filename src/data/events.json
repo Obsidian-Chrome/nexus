@@ -3,10 +3,10 @@
     "id": "1514667227088027771",
     "name": "Ouverture du Deadwire",
     "description": "",
-    "scheduledStartTime": "2026-07-06T19:00:00+00:00",
-    "scheduledEndTime": "2026-07-06T21:45:00+00:00",
+    "scheduledStartTime": "2026-07-20T19:00:00+00:00",
+    "scheduledEndTime": "2026-07-20T21:45:00+00:00",
     "location": "La Coupe 2 - 6 | Ragnarok",
-    "status": 2,
+    "status": 1,
     "userCount": null,
     "image": "https://cdn.discordapp.com/guild-events/1514667227088027771/a6b9cb9c78ca1a8de0813a19dac8849e.png?size=1024",
     "creator": {
