@@ -26,17 +26,17 @@ const RADIOS = [
 ]
 
 const ScanBar = ({ active, color }) => (
-  <div className="flex items-end gap-[2px] h-8">
-    {[...Array(16)].map((_, i) => {
+  <div className="flex items-end gap-[2px] h-5">
+    {[...Array(4)].map((_, i) => {
       const animDuration = 0.3 + Math.random() * 0.4
-      const animDelay = i * 0.05
+      const animDelay = i * 0.1
       return (
         <div
           key={i}
-          className="w-1 rounded-sm transition-all duration-150"
+          className="w-[3px] rounded-sm transition-all duration-150"
           style={{
             height: active ? `${Math.random() * 80 + 20}%` : '20%',
-            backgroundColor: active ? color : '#1a0000',
+            backgroundColor: active ? '#22c55e' : '#1a0000',
             animationName: active ? 'barPulse' : 'none',
             animationDuration: active ? `${animDuration}s` : undefined,
             animationTimingFunction: active ? 'ease-in-out' : undefined,
@@ -516,7 +516,7 @@ const Radio = ({ onBack }) => {
                           {radio.freq} FM
                         </span>
                         {isActive && isPlaying && (
-                          <span className="text-sm animate-pulse" style={{ color: '#00FF88' }}>
+                          <span className="text-sm animate-pulse" style={{ color: '#22c55e' }}>
                             ◉
                           </span>
                         )}
