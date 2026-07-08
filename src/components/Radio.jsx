@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
-import { ArrowLeft, Play, Pause, Volume2, VolumeX, Radio as RadioIcon } from 'lucide-react'
+import { ArrowLeft, Play, Pause, Volume2, VolumeX, Radio as RadioIcon, Link } from 'lucide-react'
 
 // URL de base pour les MP3 : GitHub en production, local en dev
 const MP3_BASE_URL = import.meta.env.PROD 
@@ -7,22 +7,22 @@ const MP3_BASE_URL = import.meta.env.PROD
   : '/media/radio/mp3/'
 
 const RADIOS = [
-  { id: 1, freq: '69.9', name: 'Funk Radio', logo: '/media/radio/logos/69.9_Funk_Radio.webp', color: '#2596be', playlistFile: '/media/radio/playlists/69.9_Funk_Radio.json' },
-  { id: 2, freq: '87.7', name: 'Magenta Station', logo: '/media/radio/logos/87.7_Magenta_Station.webp', color: '#2596be', playlistFile: '/media/radio/playlists/87.7_Magenta_Station.json' },
-  { id: 3, freq: '88.9', name: 'Pacific Dreams', logo: '/media/radio/logos/88.9_Pacific_Dreams.webp', color: '#2596be', playlistFile: '/media/radio/playlists/88.9_Pacific_Dreams.json' },
-  { id: 4, freq: '89.3', name: 'Radio Vexelstrom', logo: '/media/radio/logos/89.3_Radio_Vexelstrom.webp', color: '#2596be', playlistFile: '/media/radio/playlists/89.3_Radio_Vexelstrom.json' },
-  { id: 5, freq: '89.7', name: 'Growl FM', logo: '/media/radio/logos/89.7_Growl_FM.webp', color: '#2596be', playlistFile: '/media/radio/playlists/89.7_Growl_FM.json' },
-  { id: 6, freq: '91.9', name: 'Royal Blue Radio', logo: '/media/radio/logos/91.9_Royal_Blue_Radio.webp', color: '#2596be', playlistFile: '/media/radio/playlists/91.9_Royal_Blue_Radio.json' },
-  { id: 7, freq: '92.9', name: 'Night FM', logo: '/media/radio/logos/92.9_Night_FM.webp', color: '#2596be', playlistFile: '/media/radio/playlists/92.9_Night_FM.json' },
-  { id: 8, freq: '95.2', name: 'Samizdat Radio', logo: '/media/radio/logos/95.2_Samizdat_Radio.webp', color: '#2596be', playlistFile: '/media/radio/playlists/95.2_Samizdat_Radio.json' },
-  { id: 9, freq: '96.1', name: 'Ritual FM', logo: '/media/radio/logos/96.1_Ritual_FM.webp', color: '#2596be', playlistFile: '/media/radio/playlists/96.1_Ritual_FM.json' },
-  { id: 10, freq: '98.7', name: 'Body Heat Radio', logo: '/media/radio/logos/98.7_Body_Heat_Radio.webp', color: '#2596be', playlistFile: '/media/radio/playlists/98.7_Body_Heat_Radio.json' },
-  { id: 11, freq: '99.9', name: 'Impulse', logo: '/media/radio/logos/99.9_Impulse.webp', color: '#2596be', playlistFile: '/media/radio/playlists/99.9_Impulse.json' },
-  { id: 12, freq: '101.9', name: 'The Dirge', logo: '/media/radio/logos/101.9_The_Dirge.webp', color: '#2596be', playlistFile: '/media/radio/playlists/101.9_The_Dirge.json' },
-  { id: 13, freq: '103.5', name: 'Radio PEBKAC', logo: '/media/radio/logos/103.5_Radio_PEBKAC.webp', color: '#2596be', playlistFile: '/media/radio/playlists/103.5_Radio_PEBKAC.json' },
-  { id: 14, freq: '106.9', name: '30 PRINCIPALES', logo: '/media/radio/logos/106.9_30_PRINCIPALES.webp', color: '#2596be', playlistFile: '/media/radio/playlists/106.9_30_PRINCIPALES.json' },
-  { id: 15, freq: '107.3', name: 'Morro Rock Radio', logo: '/media/radio/logos/107.3_Morro_Rock_Radio.webp', color: '#2596be', playlistFile: '/media/radio/playlists/107.3_Morro_Rock_Radio.json' },
-  { id: 16, freq: '107.5', name: 'Dark Star', logo: '/media/radio/logos/107.5_Dark_Star.webp', color: '#2596be', playlistFile: '/media/radio/playlists/107.5_Dark_Star.json' },
+  { id: 1, freq: '69.9', name: 'Funk Radio', slug: 'funk-radio', logo: '/media/radio/logos/69.9_Funk_Radio.webp', color: '#2596be', playlistFile: '/media/radio/playlists/69.9_Funk_Radio.json' },
+  { id: 2, freq: '87.7', name: 'Magenta Station', slug: 'magenta-station', logo: '/media/radio/logos/87.7_Magenta_Station.webp', color: '#2596be', playlistFile: '/media/radio/playlists/87.7_Magenta_Station.json' },
+  { id: 3, freq: '88.9', name: 'Pacific Dreams', slug: 'pacific-dreams', logo: '/media/radio/logos/88.9_Pacific_Dreams.webp', color: '#2596be', playlistFile: '/media/radio/playlists/88.9_Pacific_Dreams.json' },
+  { id: 4, freq: '89.3', name: 'Radio Vexelstrom', slug: 'radio-vexelstrom', logo: '/media/radio/logos/89.3_Radio_Vexelstrom.webp', color: '#2596be', playlistFile: '/media/radio/playlists/89.3_Radio_Vexelstrom.json' },
+  { id: 5, freq: '89.7', name: 'Growl FM', slug: 'growl-fm', logo: '/media/radio/logos/89.7_Growl_FM.webp', color: '#2596be', playlistFile: '/media/radio/playlists/89.7_Growl_FM.json' },
+  { id: 6, freq: '91.9', name: 'Royal Blue Radio', slug: 'royal-blue-radio', logo: '/media/radio/logos/91.9_Royal_Blue_Radio.webp', color: '#2596be', playlistFile: '/media/radio/playlists/91.9_Royal_Blue_Radio.json' },
+  { id: 7, freq: '92.9', name: 'Night FM', slug: 'night-fm', logo: '/media/radio/logos/92.9_Night_FM.webp', color: '#2596be', playlistFile: '/media/radio/playlists/92.9_Night_FM.json' },
+  { id: 8, freq: '95.2', name: 'Samizdat Radio', slug: 'samizdat-radio', logo: '/media/radio/logos/95.2_Samizdat_Radio.webp', color: '#2596be', playlistFile: '/media/radio/playlists/95.2_Samizdat_Radio.json' },
+  { id: 9, freq: '96.1', name: 'Ritual FM', slug: 'ritual-fm', logo: '/media/radio/logos/96.1_Ritual_FM.webp', color: '#2596be', playlistFile: '/media/radio/playlists/96.1_Ritual_FM.json' },
+  { id: 10, freq: '98.7', name: 'Body Heat Radio', slug: 'body-heat-radio', logo: '/media/radio/logos/98.7_Body_Heat_Radio.webp', color: '#2596be', playlistFile: '/media/radio/playlists/98.7_Body_Heat_Radio.json' },
+  { id: 11, freq: '99.9', name: 'Impulse', slug: 'impulse', logo: '/media/radio/logos/99.9_Impulse.webp', color: '#2596be', playlistFile: '/media/radio/playlists/99.9_Impulse.json' },
+  { id: 12, freq: '101.9', name: 'The Dirge', slug: 'the-dirge', logo: '/media/radio/logos/101.9_The_Dirge.webp', color: '#2596be', playlistFile: '/media/radio/playlists/101.9_The_Dirge.json' },
+  { id: 13, freq: '103.5', name: 'Radio PEBKAC', slug: 'radio-pebkac', logo: '/media/radio/logos/103.5_Radio_PEBKAC.webp', color: '#2596be', playlistFile: '/media/radio/playlists/103.5_Radio_PEBKAC.json' },
+  { id: 14, freq: '106.9', name: '30 PRINCIPALES', slug: '30-principales', logo: '/media/radio/logos/106.9_30_PRINCIPALES.webp', color: '#2596be', playlistFile: '/media/radio/playlists/106.9_30_PRINCIPALES.json' },
+  { id: 15, freq: '107.3', name: 'Morro Rock Radio', slug: 'morro-rock-radio', logo: '/media/radio/logos/107.3_Morro_Rock_Radio.webp', color: '#2596be', playlistFile: '/media/radio/playlists/107.3_Morro_Rock_Radio.json' },
+  { id: 16, freq: '107.5', name: 'Dark Star', slug: 'dark-star', logo: '/media/radio/logos/107.5_Dark_Star.webp', color: '#2596be', playlistFile: '/media/radio/playlists/107.5_Dark_Star.json' },
 ]
 
 const ScanBar = ({ active, color }) => (
@@ -68,6 +68,21 @@ const Radio = ({ onBack }) => {
   const lastRadioIdRef = useRef(null)
   const shouldAutoPlayRef = useRef(false)
   const isFirstLoadRef = useRef(true)
+  const [linkCopied, setLinkCopied] = useState(false)
+
+  // Charger la radio depuis l'URL au démarrage
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search)
+    const radioSlug = params.get('radio')
+    
+    if (radioSlug) {
+      const radio = RADIOS.find(r => r.slug === radioSlug)
+      if (radio) {
+        setSelectedRadio(radio)
+        shouldAutoPlayRef.current = true
+      }
+    }
+  }, [])
 
   // Effet glitch aléatoire
   useEffect(() => {
@@ -249,6 +264,14 @@ const Radio = ({ onBack }) => {
       ;[shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]]
     }
     return shuffled
+  }
+
+  const handleCopyLink = (radio) => {
+    const url = `${window.location.origin}${window.location.pathname}?radio=${radio.slug}`
+    navigator.clipboard.writeText(url).then(() => {
+      setLinkCopied(true)
+      setTimeout(() => setLinkCopied(false), 2000)
+    })
   }
 
   const handleSelectRadio = (radio) => {
@@ -453,7 +476,7 @@ const Radio = ({ onBack }) => {
                       </div>
                     </div>
 
-                    {/* Indicateur / Bouton Play */}
+                    {/* Indicateur / Bouton Play / Bouton Link */}
                     <div className="flex-shrink-0 flex items-center gap-2">
                       {isActive && isPlaying ? (
                         <>
@@ -511,6 +534,32 @@ const Radio = ({ onBack }) => {
                           <Play className="w-4 h-4 ml-0.5" />
                         </div>
                       )}
+                      
+                      {/* Bouton copier lien */}
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation()
+                          handleCopyLink(radio)
+                        }}
+                        className="w-8 h-8 rounded-sm flex items-center justify-center border transition-all duration-200 hover:scale-110 cursor-pointer relative"
+                        style={{
+                          borderColor: isActive ? radio.color : '#2a0000',
+                          background: 'transparent',
+                          color: isActive ? radio.color : '#333333',
+                          opacity: isActive ? 1 : 0.3
+                        }}
+                        title="Copier le lien direct"
+                      >
+                        <Link className="w-4 h-4" />
+                        {linkCopied && (
+                          <span 
+                            className="absolute -top-8 left-1/2 -translate-x-1/2 bg-black/90 text-white text-xs px-2 py-1 rounded whitespace-nowrap"
+                            style={{ color: radio.color }}
+                          >
+                            Copié !
+                          </span>
+                        )}
+                      </button>
                     </div>
                   </div>
                 </div>
