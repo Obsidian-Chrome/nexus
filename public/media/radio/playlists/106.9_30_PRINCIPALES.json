@@ -1,0 +1,60 @@
+{
+  "station": "106.9 30 PRINCIPALES",
+  "tracks": [
+    {
+      "name": "Bamo",
+      "artist": "Kartel Sonoro",
+      "file": "PrincipalesRadio/11-01 Bamo.mp3"
+    },
+    {
+      "name": "Barrio",
+      "artist": "Big Machete",
+      "file": "PrincipalesRadio/11-02 Barrio.mp3"
+    },
+    {
+      "name": "Dagga",
+      "artist": "Kartel Sonoro",
+      "file": "PrincipalesRadio/11-03 Dagga.mp3"
+    },
+    {
+      "name": "Dinero",
+      "artist": "7 Facas",
+      "file": "PrincipalesRadio/11-04 Dinero.mp3"
+    },
+    {
+      "name": "Hood",
+      "artist": "Chickychickas",
+      "file": "PrincipalesRadio/11-05 Hood.mp3"
+    },
+    {
+      "name": "Muerto Thrash",
+      "artist": "FKxU",
+      "file": "PrincipalesRadio/11-06 Muerto Thrash.mp3"
+    },
+    {
+      "name": "Muévelo/Cumbia",
+      "artist": "Papito Gringo",
+      "file": "PrincipalesRadio/11-07 Muévelo_Cumbia.mp3"
+    },
+    {
+      "name": "Only Son",
+      "artist": "Chickychickas",
+      "file": "PrincipalesRadio/11-08 Only Son.mp3"
+    },
+    {
+      "name": "Serpant",
+      "artist": "7 Facas",
+      "file": "PrincipalesRadio/11-09 Serpant.mp3"
+    },
+    {
+      "name": "Tatted on My Face",
+      "artist": "Don Mara",
+      "file": "PrincipalesRadio/11-10 Tatted on My Face.mp3"
+    },
+    {
+      "name": "Westcoast Til I Die",
+      "artist": "Dj Choloz",
+      "file": "PrincipalesRadio/11-11 Westcoast Til I Die.mp3"
+    }
+  ]
+}

@@ -1,0 +1,50 @@
+{
+  "station": "91.9 Royal Blue Radio",
+  "tracks": [
+    {
+      "name": "Bitches Brew (Live at the Fillmore West, San Francisco, CA - April 1970)",
+      "artist": "Miles Davis",
+      "file": "RoyalBlueRadio/4-01 Bitches Brew (Live at the Fillm.mp3"
+    },
+    {
+      "name": "Black Satin/What If/Agartha Prelude Dub",
+      "artist": "Mile Davis",
+      "file": "RoyalBlueRadio/4-02 Black Satin_What If_Agartha Pre.mp3"
+    },
+    {
+      "name": "Dark Prince",
+      "artist": "Trio Of Doom",
+      "file": "RoyalBlueRadio/4-03 Dark Prince.mp3"
+    },
+    {
+      "name": "Générique (from Acenseur Pour L'Échafaud)",
+      "artist": "Miles Davis",
+      "file": "RoyalBlueRadio/4-04 Générique (from Acenseur Pour L.mp3"
+    },
+    {
+      "name": "Impression",
+      "artist": "John Coltrane",
+      "file": "RoyalBlueRadio/4-05 Impression.mp3"
+    },
+    {
+      "name": "Laura",
+      "artist": "Dexter Gordon",
+      "file": "RoyalBlueRadio/4-06 Laura.mp3"
+    },
+    {
+      "name": "Round Midnight",
+      "artist": "Thelonious Monk",
+      "file": "RoyalBlueRadio/4-07 Round Midnight.mp3"
+    },
+    {
+      "name": "Solo Dancer",
+      "artist": "Charles Mingus",
+      "file": "RoyalBlueRadio/4-08 Solo Dancer.mp3"
+    },
+    {
+      "name": "You Don't Know What Love Is",
+      "artist": "Chet Baker",
+      "file": "RoyalBlueRadio/4-09 You Don_t Know What Love Is.mp3"
+    }
+  ]
+}

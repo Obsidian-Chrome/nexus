@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { ExternalLink, Globe, Users, Music, Briefcase, BookOpen, ArrowLeft, Search, Clock, MapPin, Home, Download, Upload, Heart, MessageCircle, Send, Bookmark, Monitor, Play, Calendar } from 'lucide-react'
+import { ExternalLink, Globe, Users, Music, Briefcase, BookOpen, ArrowLeft, Search, Clock, MapPin, Home, Download, Upload, Heart, MessageCircle, Send, Bookmark, Monitor, Play, Calendar, Radio as RadioIcon } from 'lucide-react'
 import annuaireData from './data/annuaire.json'
 import artistesData from './data/artistes.json'
 import reseauxData from './data/reseaux.json'
@@ -14,6 +14,7 @@ import PyonPixPubs from './components/PyonPixPubs'
 import Visualizer from './components/Visualizer'
 import Coven from './components/Coven'
 import CovenDVD from './components/CovenDVD'
+import Radio from './components/Radio'
 import EventsCalendar from './components/EventsCalendar'
 import MonthCalendar from './components/MonthCalendar'
 import EventModal from './components/EventModal'
@@ -62,6 +63,7 @@ function App() {
   const [showCoven, setShowCoven] = useState(false)
   const [showCovenVisualizer, setShowCovenVisualizer] = useState(false)
   const [showCovenDVD, setShowCovenDVD] = useState(false)
+  const [showRadio, setShowRadio] = useState(false)
   const [showCopyNotification, setShowCopyNotification] = useState(false)
   const [selectedDayEvents, setSelectedDayEvents] = useState(null)
   const [selectedEventDate, setSelectedEventDate] = useState(null)
@@ -171,19 +173,30 @@ function App() {
         window.scrollTo(0, 0)
       }
     }, 0)
-  }, [selectedCategory, showPyonPixNightcity, showPyonPixCentreVille, showPyonPixPubs, showCoven, showCovenVisualizer, showCovenDVD])
+  }, [selectedCategory, showPyonPixNightcity, showPyonPixCentreVille, showPyonPixPubs, showCoven, showCovenVisualizer, showCovenDVD, showRadio])
 
   useEffect(() => {
     const handleHashChange = () => {
       const hash = window.location.hash.substring(1)
       if (hash) {
-        if (hash === 'pyonpix/nightcity') {
+        if (hash === 'radio') {
+          setShowRadio(true)
+          setShowPyonPixNightcity(false)
+          setShowPyonPixCentreVille(false)
+          setShowPyonPixPubs(false)
+          setShowCoven(false)
+          setShowCovenVisualizer(false)
+          setShowCovenDVD(false)
+          setSelectedCategory(null)
+          setSelectedReseau(null)
+        } else if (hash === 'pyonpix/nightcity') {
           setShowPyonPixNightcity(true)
           setShowPyonPixCentreVille(false)
           setShowPyonPixPubs(false)
           setShowCoven(false)
           setShowCovenVisualizer(false)
           setShowCovenDVD(false)
+          setShowRadio(false)
           setSelectedCategory(null)
           setSelectedReseau(null)
         } else if (hash === 'pyonpix/centreville') {
@@ -193,6 +206,7 @@ function App() {
           setShowCoven(false)
           setShowCovenVisualizer(false)
           setShowCovenDVD(false)
+          setShowRadio(false)
           setSelectedCategory(null)
           setSelectedReseau(null)
         } else if (hash === 'pyonpix/pubs') {
@@ -202,6 +216,7 @@ function App() {
           setShowCoven(false)
           setShowCovenVisualizer(false)
           setShowCovenDVD(false)
+          setShowRadio(false)
           setSelectedCategory(null)
           setSelectedReseau(null)
         } else if (hash === 'coven' || hash === 'coven/') {
@@ -211,12 +226,14 @@ function App() {
           setShowPyonPixPubs(false)
           setShowCovenVisualizer(false)
           setShowCovenDVD(false)
+          setShowRadio(false)
           setSelectedCategory(null)
           setSelectedReseau(null)
         } else if (hash === 'coven/visualizer') {
           setShowCovenVisualizer(true)
           setShowCoven(false)
           setShowCovenDVD(false)
+          setShowRadio(false)
           setShowPyonPixNightcity(false)
           setShowPyonPixCentreVille(false)
           setShowPyonPixPubs(false)
@@ -226,6 +243,7 @@ function App() {
           setShowCovenDVD(true)
           setShowCoven(false)
           setShowCovenVisualizer(false)
+          setShowRadio(false)
           setShowPyonPixNightcity(false)
           setShowPyonPixCentreVille(false)
           setShowPyonPixPubs(false)
@@ -289,6 +307,7 @@ function App() {
         setShowCoven(false)
         setShowCovenVisualizer(false)
         setShowCovenDVD(false)
+        setShowRadio(false)
       }
     }
 
@@ -439,6 +458,26 @@ function App() {
                 </button>
               )
             })}
+
+              {/* Bouton RADIO — à côté de RESSOURCES */}
+              <button
+                onClick={() => { window.location.hash = 'radio'; setShowRadio(true) }}
+                className="terminal-card group text-left"
+              >
+                <div className="flex items-center space-x-4">
+                  <div className="text-white group-hover:text-cyan-400 transition-all duration-300">
+                    <RadioIcon className="w-7 h-7" strokeWidth={1.5} />
+                  </div>
+                  <div className="flex-1">
+                    <h3 className="text-lg font-semibold text-white group-hover:text-cyan-100 tracking-wide transition-colors duration-300">
+                      RADIO
+                    </h3>
+                  </div>
+                  <div className="text-gray-600 group-hover:text-cyan-400 transition-all duration-300 text-xs">
+                    →
+                  </div>
+                </div>
+              </button>
               </div>
             </>
           )}
@@ -1389,6 +1428,15 @@ function App() {
           <CovenDVD />
         )}
 
+        {showRadio && (
+          <Radio
+            onBack={() => {
+              setShowRadio(false)
+              window.location.hash = ''
+            }}
+          />
+        )}
+
         </div>
       </div>
 
@@ -1414,7 +1462,7 @@ function App() {
         </div>
       )}
 
-      {!selectedReseau && !showPyonPixNightcity && !showPyonPixCentreVille && !showPyonPixPubs && !showCoven && !showCovenVisualizer && !showCovenDVD && <Footer />}
+      {!selectedReseau && !showPyonPixNightcity && !showPyonPixCentreVille && !showPyonPixPubs && !showCoven && !showCovenVisualizer && !showCovenDVD && !showRadio && <Footer />}
     </div>
   )
 }

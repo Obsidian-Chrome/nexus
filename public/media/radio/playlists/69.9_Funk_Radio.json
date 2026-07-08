@@ -1,0 +1,240 @@
+{
+  "station": "69.9 Funk Radio",
+  "tracks": [
+    {
+      "name": "Funky Blues",
+      "artist": "Dorothy Martin X Funk Machine",
+      "file": "FunkRadio/Dorothy Martin X Funk Machine - Funky Blues.mp3"
+    },
+    {
+      "name": "Death",
+      "artist": "Funk and the Machines",
+      "file": "FunkRadio/Funk and the Machines - Death.mp3"
+    },
+    {
+      "name": "Strength",
+      "artist": "Funk and the Machines",
+      "file": "FunkRadio/Funk and the Machines - Strength.mp3"
+    },
+    {
+      "name": "The Devil",
+      "artist": "Funk and the Machines",
+      "file": "FunkRadio/Funk and the Machines - The Devil.mp3"
+    },
+    {
+      "name": "The Fool",
+      "artist": "Funk and the Machines",
+      "file": "FunkRadio/Funk and the Machines - The Fool.mp3"
+    },
+    {
+      "name": "The Hanged Man",
+      "artist": "Funk and the Machines",
+      "file": "FunkRadio/Funk and the Machines - The Hanged Man.mp3"
+    },
+    {
+      "name": "The Lovers",
+      "artist": "Funk and the Machines",
+      "file": "FunkRadio/Funk and the Machines - The Lovers.mp3"
+    },
+    {
+      "name": "The Magician",
+      "artist": "Funk and the Machines",
+      "file": "FunkRadio/Funk and the Machines - The Magician.mp3"
+    },
+    {
+      "name": "The Sun",
+      "artist": "Funk and the Machines",
+      "file": "FunkRadio/Funk and the Machines - The Sun.mp3"
+    },
+    {
+      "name": "The Tower",
+      "artist": "Funk and the Machines",
+      "file": "FunkRadio/Funk and the Machines - The Tower.mp3"
+    },
+    {
+      "name": "The World",
+      "artist": "Funk and the Machines",
+      "file": "FunkRadio/Funk and the Machines - The World.mp3"
+    },
+    {
+      "name": "Wheel of Fortune",
+      "artist": "Funk and the Machines",
+      "file": "FunkRadio/Funk and the Machines - Wheel of Fortune.mp3"
+    },
+    {
+      "name": "Alys In Blue",
+      "artist": "Funk Machine",
+      "file": "FunkRadio/Funk Machine - Alys In Blue.mp3"
+    },
+    {
+      "name": "Chains of the Past",
+      "artist": "Funk Machine",
+      "file": "FunkRadio/Funk Machine - Chains of the Past.mp3"
+    },
+    {
+      "name": "Chrome Paradise",
+      "artist": "Funk Machine",
+      "file": "FunkRadio/Funk Machine - Chrome Paradise.mp3"
+    },
+    {
+      "name": "Concept of Love",
+      "artist": "Funk Machine",
+      "file": "FunkRadio/Funk Machine - Concept of Love [Cover].mp3"
+    },
+    {
+      "name": "Dancing Green",
+      "artist": "Funk Machine",
+      "file": "FunkRadio/Funk Machine - Dancing Green.mp3"
+    },
+    {
+      "name": "Dolls",
+      "artist": "Funk Machine",
+      "file": "FunkRadio/Funk Machine - Dolls.mp3"
+    },
+    {
+      "name": "Don't Do Drugs, Choom !",
+      "artist": "Funk Machine",
+      "file": "FunkRadio/Funk Machine - Don't Do Drugs, Choom !.mp3"
+    },
+    {
+      "name": "Everything Burns",
+      "artist": "Funk Machine",
+      "file": "FunkRadio/Funk Machine - Everything Burns [Cover].mp3"
+    },
+    {
+      "name": "Fast Forward",
+      "artist": "Funk Machine",
+      "file": "FunkRadio/Funk Machine - Fast Forward.mp3"
+    },
+    {
+      "name": "Fighting Shadows",
+      "artist": "Funk Machine",
+      "file": "FunkRadio/Funk Machine - Fighting Shadows.mp3"
+    },
+    {
+      "name": "Funk Me In The Bass",
+      "artist": "Funk Machine",
+      "file": "FunkRadio/Funk Machine - Funk Me In The Bass.mp3"
+    },
+    {
+      "name": "Garlond Groove",
+      "artist": "Funk Machine",
+      "file": "FunkRadio/Funk Machine - Garlond Groove.mp3"
+    },
+    {
+      "name": "Gold Saucer",
+      "artist": "Funk Machine",
+      "file": "FunkRadio/Funk Machine - Gold Saucer.mp3"
+    },
+    {
+      "name": "I Want It",
+      "artist": "Funk Machine",
+      "file": "FunkRadio/Funk Machine - I Want It.mp3"
+    },
+    {
+      "name": "I'm the Fun in Funk",
+      "artist": "Funk Machine",
+      "file": "FunkRadio/Funk Machine - I'm the Fun in Funk.mp3"
+    },
+    {
+      "name": "La La La",
+      "artist": "Funk Machine",
+      "file": "FunkRadio/Funk Machine - La La La.mp3"
+    },
+    {
+      "name": "Laser Roller Love",
+      "artist": "Funk Machine",
+      "file": "FunkRadio/Funk Machine - Laser Roller Love.mp3"
+    },
+    {
+      "name": "Last Train",
+      "artist": "Funk Machine",
+      "file": "FunkRadio/Funk Machine - Last Train.mp3"
+    },
+    {
+      "name": "Let's Boogie",
+      "artist": "Funk Machine",
+      "file": "FunkRadio/Funk Machine - Let's Boogie [Cover].mp3"
+    },
+    {
+      "name": "Let's Funk Tonight",
+      "artist": "Funk Machine",
+      "file": "FunkRadio/Funk Machine - Let's Funk Tonight.mp3"
+    },
+    {
+      "name": "Life Is Short",
+      "artist": "Funk Machine",
+      "file": "FunkRadio/Funk Machine - Life Is Short.mp3"
+    },
+    {
+      "name": "Mist 9",
+      "artist": "Funk Machine",
+      "file": "FunkRadio/Funk Machine - Mist 9.mp3"
+    },
+    {
+      "name": "Neon Sunrise",
+      "artist": "Funk Machine",
+      "file": "FunkRadio/Funk Machine - Neon Sunrise.mp3"
+    },
+    {
+      "name": "Panthera",
+      "artist": "Funk Machine",
+      "file": "FunkRadio/Funk Machine - Panthera.mp3"
+    },
+    {
+      "name": "Rollin' in the Groove",
+      "artist": "Funk Machine",
+      "file": "FunkRadio/Funk Machine - Rollin' in the Groove.mp3"
+    },
+    {
+      "name": "The Funk Messiah",
+      "artist": "Funk Machine",
+      "file": "FunkRadio/Funk Machine - The Funk Messiah.mp3"
+    },
+    {
+      "name": "The Groove Protocol",
+      "artist": "Funk Machine",
+      "file": "FunkRadio/Funk Machine - The Groove Protocol.mp3"
+    },
+    {
+      "name": "The Surgeon",
+      "artist": "Funk Machine",
+      "file": "FunkRadio/Funk Machine - The Surgeon.mp3"
+    },
+    {
+      "name": "The Ultimate Solution",
+      "artist": "Funk Machine",
+      "file": "FunkRadio/Funk Machine - The Ultimate Solution.mp3"
+    },
+    {
+      "name": "Where's His Left Arm",
+      "artist": "Funk Machine",
+      "file": "FunkRadio/Funk Machine - Where's His Left Arm.mp3"
+    },
+    {
+      "name": "HeX Machine",
+      "artist": "HeX X Funk Machine",
+      "file": "FunkRadio/HeX X Funk Machine - HeX Machine.mp3"
+    },
+    {
+      "name": "Live Obscene",
+      "artist": "HeX X Funk Machine",
+      "file": "FunkRadio/HeX X Funk Machine - Live Obscene.mp3"
+    },
+    {
+      "name": "Spark the Night",
+      "artist": "Lucien X Funk Machine",
+      "file": "FunkRadio/Lucien X Funk Machine - Spark the Night.mp3"
+    },
+    {
+      "name": "Blood On The Dancefloor",
+      "artist": "Nahrys X Funk Machine",
+      "file": "FunkRadio/Nahrys X Funk Machine - Blood On The Dancefloor.mp3"
+    },
+    {
+      "name": "Thank You, Net (But Mean It)",
+      "artist": "Ombre X Funk Machine",
+      "file": "FunkRadio/Ombre X Funk Machine - Thank You, Net (But Mean It).mp3"
+    }
+  ]
+}

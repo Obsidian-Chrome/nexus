@@ -1,0 +1,80 @@
+{
+  "station": "107.3 Morro Rock Radio",
+  "tracks": [
+    {
+      "name": "The Ballad of Buck Ravers",
+      "artist": "Samurai",
+      "file": "MorroRockRadio/12-01 The Ballad of Buck Ravers.mp3"
+    },
+    {
+      "name": "Black Dog",
+      "artist": "Samurai",
+      "file": "MorroRockRadio/12-02 Black Dog.mp3"
+    },
+    {
+      "name": "Chippin' In",
+      "artist": "Samurai",
+      "file": "MorroRockRadio/12-03 Chippin_ In.mp3"
+    },
+    {
+      "name": "Friday Night Fire Fight",
+      "artist": "Rubicones",
+      "file": "MorroRockRadio/12-04 Friday Night Fire Fight.mp3"
+    },
+    {
+      "name": "Heave Ho",
+      "artist": "XerzeX",
+      "file": "MorroRockRadio/12-05 Heave Ho.mp3"
+    },
+    {
+      "name": "I Will Follow",
+      "artist": "Bleached tarantula",
+      "file": "MorroRockRadio/12-06 I Will Follow.mp3"
+    },
+    {
+      "name": "Likewise",
+      "artist": "IBDY",
+      "file": "MorroRockRadio/12-07 Likewise.mp3"
+    },
+    {
+      "name": "Never Fade Away",
+      "artist": "Samurai",
+      "file": "MorroRockRadio/12-08 Never Fade Away.mp3"
+    },
+    {
+      "name": "So it Goes",
+      "artist": "Fingers and the Outlaws",
+      "file": "MorroRockRadio/12-09 So it Goes.mp3"
+    },
+    {
+      "name": "Suffer Me",
+      "artist": "Brutus Backlash",
+      "file": "MorroRockRadio/12-10 Suffer Me.mp3"
+    },
+    {
+      "name": "Summer of 2069",
+      "artist": "Blood and Ice",
+      "file": "MorroRockRadio/12-11 Summer of 2069.mp3"
+    },
+    {
+      "name": "Testmaster",
+      "artist": "Krushchev's Ghost",
+      "file": "MorroRockRadio/12-12 Testmaster.mp3"
+    },
+    {
+      "name": "To the Fullest",
+      "artist": "Artificial Kids",
+      "file": "MorroRockRadio/12-13 To the Fullest.mp3"
+    },
+    {
+      "name": "Trauma",
+      "artist": "Rubicones",
+      "file": "MorroRockRadio/12-14 Trauma.mp3"
+    },
+    {
+      "name": "Who's Ready for Tomorrow",
+      "artist": "IBDY",
+      "file": "MorroRockRadio/12-15 Who_s Ready for Tomorrow.mp3"
+    }
+  ]
+}

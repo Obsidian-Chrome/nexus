@@ -1,0 +1,75 @@
+{
+  "station": "89.7 Growl FM",
+  "tracks": [
+    {
+      "name": "Let the Stars Die",
+      "artist": "Coeur Noir",
+      "file": "GrowlFMRadio/01. Let the Stars Die.mp3"
+    },
+    {
+      "name": "Flatline",
+      "artist": "Red Dead Roadkill",
+      "file": "GrowlFMRadio/02. Flatline.mp3"
+    },
+    {
+      "name": "Candy Shell",
+      "artist": "Spirit Machines",
+      "file": "GrowlFMRadio/03. Candy Shell.mp3"
+    },
+    {
+      "name": "Do or Die",
+      "artist": "NoWorld",
+      "file": "GrowlFMRadio/04. Do or Die.mp3"
+    },
+    {
+      "name": "LIT",
+      "artist": "Entolim",
+      "file": "GrowlFMRadio/05. LIT.mp3"
+    },
+    {
+      "name": "El Tiempo",
+      "artist": "Skin On Flesh",
+      "file": "GrowlFMRadio/06. El Tiempo.mp3"
+    },
+    {
+      "name": "Killshot",
+      "artist": "FROST, Justtjokay, Dubbygotbard & Knyvez",
+      "file": "GrowlFMRadio/07. Killshot.mp3"
+    },
+    {
+      "name": "Let It Go as If You Wander",
+      "artist": "春ねむり",
+      "file": "GrowlFMRadio/08. Let It Go as If You Wander.mp3"
+    },
+    {
+      "name": "Slipstream",
+      "artist": "狂馬",
+      "file": "GrowlFMRadio/09. Slipstream.mp3"
+    },
+    {
+      "name": "Fumes",
+      "artist": "Aleyna Moon & Shrinjay Ghosh",
+      "file": "GrowlFMRadio/10. Fumes.mp3"
+    },
+    {
+      "name": "Look Through My Kiroshi's (The Solo Life)",
+      "artist": "D.O.H. Dollahz Ova Hoez",
+      "file": "GrowlFMRadio/11. Look Through My Kiroshi's (The Solo Life).mp3"
+    },
+    {
+      "name": "Going to Heaven",
+      "artist": "St. Aurora",
+      "file": "GrowlFMRadio/12. Going to Heaven.mp3"
+    },
+    {
+      "name": "Nebula",
+      "artist": "ESAI & Pure 100%",
+      "file": "GrowlFMRadio/13. Nebula.mp3"
+    },
+    {
+      "name": "Afterlife",
+      "artist": "Thai McGrath feat. Just Cosplay Sings",
+      "file": "GrowlFMRadio/14. Afterlife.mp3"
+    }
+  ]
+}

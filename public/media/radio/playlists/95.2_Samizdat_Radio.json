@@ -1,0 +1,30 @@
+{
+  "station": "95.2 Samizdat Radio",
+  "tracks": [
+    {
+      "name": "Pilling in My Head",
+      "artist": "Bara Nova",
+      "file": "SamizdatRadio/6-01 Pilling in My Head.mp3"
+    },
+    {
+      "name": "Delirium 2",
+      "artist": "Bara Nova",
+      "file": "SamizdatRadio/6-02 Delirium 2.mp3"
+    },
+    {
+      "name": "Harm Sweaty Pit",
+      "artist": "Bara Nova",
+      "file": "SamizdatRadio/6-03 Harm Sweaty Pit.mp3"
+    },
+    {
+      "name": "My Lullaby for You",
+      "artist": "Bara Nova",
+      "file": "SamizdatRadio/6-04 My Lullaby for You.mp3"
+    },
+    {
+      "name": "Surprise Me, I'm Surprised Today",
+      "artist": "Bara Nova",
+      "file": "SamizdatRadio/6-05 Surprise Me, I_m Surprised Toda.mp3"
+    }
+  ]
+}

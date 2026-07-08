@@ -1,0 +1,75 @@
+{
+  "station": "96.1 Ritual FM",
+  "tracks": [
+    {
+      "name": "Abandoned Land",
+      "artist": "Fist of Satan",
+      "file": "RitualFM/7-01 Abandoned Land.mp3"
+    },
+    {
+      "name": "The Accursed",
+      "artist": "Dread Soul",
+      "file": "RitualFM/7-02 The Accursed.mp3"
+    },
+    {
+      "name": "Acid Breather",
+      "artist": "Forlorn Scourge",
+      "file": "RitualFM/7-03 Acid Breather.mp3"
+    },
+    {
+      "name": "Adaptive Manipulator",
+      "artist": "Bacillus",
+      "file": "RitualFM/7-04 Adaptive Manipulator.mp3"
+    },
+    {
+      "name": "Black Concrete",
+      "artist": "Fist of Satan",
+      "file": "RitualFM/7-05 Black Concrete.mp3"
+    },
+    {
+      "name": "Finis",
+      "artist": "V3rm1n",
+      "file": "RitualFM/7-06 Finis.mp3"
+    },
+    {
+      "name": "Fueled by Poison",
+      "artist": "Inferno Corps",
+      "file": "RitualFM/7-07 Fueled by Poison.mp3"
+    },
+    {
+      "name": "Future Drugs",
+      "artist": "Hexxxer",
+      "file": "RitualFM/7-08 Future Drugs.mp3"
+    },
+    {
+      "name": "I Won't Let You Go",
+      "artist": "Shattered Void",
+      "file": "RitualFM/7-09 I Won_t Let You Go.mp3"
+    },
+    {
+      "name": "Kevin",
+      "artist": "Inferno Corps",
+      "file": "RitualFM/7-10 Kevin.mp3"
+    },
+    {
+      "name": "The Loop",
+      "artist": "Weles",
+      "file": "RitualFM/7-11 The Loop.mp3"
+    },
+    {
+      "name": "Scrum",
+      "artist": "Hysteria",
+      "file": "RitualFM/7-12 Scrum.mp3"
+    },
+    {
+      "name": "Witches of the Harz Mountains",
+      "artist": "Nuclear Aura",
+      "file": "RitualFM/7-13 Witches of the Harz Mountains.mp3"
+    },
+    {
+      "name": "Żurawie",
+      "artist": "Wydech",
+      "file": "RitualFM/7-14 Żurawie.mp3"
+    }
+  ]
+}

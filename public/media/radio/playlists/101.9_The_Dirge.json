@@ -1,0 +1,120 @@
+{
+  "station": "101.9 The Dirge",
+  "tracks": [
+    {
+      "name": "Bigger Man",
+      "artist": "Droox",
+      "file": "TheDirgeRadio/9-01 Bigger Man.mp3"
+    },
+    {
+      "name": "Blouses Blue",
+      "artist": "NC3",
+      "file": "TheDirgeRadio/9-02 Blouses Blue.mp3"
+    },
+    {
+      "name": "Bruzez",
+      "artist": "Knixit",
+      "file": "TheDirgeRadio/9-03 Bruzez.mp3"
+    },
+    {
+      "name": "Clip Boss",
+      "artist": "Sugarcoob ft. Anak Konda",
+      "file": "TheDirgeRadio/9-04 Clip Boss.mp3"
+    },
+    {
+      "name": "Day of Dead",
+      "artist": "Haps",
+      "file": "TheDirgeRadio/9-05 Day of Dead.mp3"
+    },
+    {
+      "name": "Dishonor",
+      "artist": "Ichibanchi",
+      "file": "TheDirgeRadio/9-06 Dishonor.mp3"
+    },
+    {
+      "name": "Flacko Locko",
+      "artist": "Telo$",
+      "file": "TheDirgeRadio/9-07 Flacko Locko.mp3"
+    },
+    {
+      "name": "Frost",
+      "artist": "Yamete",
+      "file": "TheDirgeRadio/9-08 Frost.mp3"
+    },
+    {
+      "name": "Go Blaze",
+      "artist": "One ft. G'Natt",
+      "file": "TheDirgeRadio/9-09 Go Blaze.mp3"
+    },
+    {
+      "name": "The God Machines",
+      "artist": "Kill Trigger ft. Paul Senai, Krakow",
+      "file": "TheDirgeRadio/9-10 The God Machines.mp3"
+    },
+    {
+      "name": "Gr4ves",
+      "artist": "Kyubik",
+      "file": "TheDirgeRadio/9-11 Gr4ves.mp3"
+    },
+    {
+      "name": "Hello Good Morning",
+      "artist": "Pazoozu",
+      "file": "TheDirgeRadio/9-12 Hello Good Morning.mp3"
+    },
+    {
+      "name": "High School Bully",
+      "artist": "UMVN ft. Imp Ra",
+      "file": "TheDirgeRadio/9-13 High School Bully.mp3"
+    },
+    {
+      "name": "Metamorphosis",
+      "artist": "Gorgon Madonna",
+      "file": "TheDirgeRadio/9-14 Metamorphosis.mp3"
+    },
+    {
+      "name": "NBOM",
+      "artist": "Dapxflem",
+      "file": "TheDirgeRadio/9-15 NBOM.mp3"
+    },
+    {
+      "name": "No Save Point",
+      "artist": "Run The Jewels",
+      "file": "TheDirgeRadio/9-16 No Save Point.mp3"
+    },
+    {
+      "name": "Pluck U",
+      "artist": "Triple B ft. Gun Fu",
+      "file": "TheDirgeRadio/9-17 Pluck U.mp3"
+    },
+    {
+      "name": "Problem Kids",
+      "artist": "Young Kenny",
+      "file": "TheDirgeRadio/9-18 Problem Kids.mp3"
+    },
+    {
+      "name": "RATATATA",
+      "artist": "Baron Celine",
+      "file": "TheDirgeRadio/9-19 RATATATA.mp3"
+    },
+    {
+      "name": "Run the Block",
+      "artist": "Bez Tatami ft. Gully Foyle",
+      "file": "TheDirgeRadio/9-20 Run the Block.mp3"
+    },
+    {
+      "name": "Suicide",
+      "artist": "Code 137",
+      "file": "TheDirgeRadio/9-21 Suicide.mp3"
+    },
+    {
+      "name": "Warning Shots",
+      "artist": "Laputan Machine",
+      "file": "TheDirgeRadio/9-22 Warning Shots.mp3"
+    },
+    {
+      "name": "When It's War",
+      "artist": "Footage Missing",
+      "file": "TheDirgeRadio/9-23 When It_s War.mp3"
+    }
+  ]
+}
