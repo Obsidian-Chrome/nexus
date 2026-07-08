@@ -1,0 +1,70 @@
+{
+  "station": "92.9 Night FM",
+  "tracks": [
+    {
+      "name": "Brain Damaged",
+      "artist": "Cyber Coorayber",
+      "file": "NightFMRadio/5-01 Brain Damaged.mp3"
+    },
+    {
+      "name": "Dirty Roses",
+      "artist": "Perilous Futur",
+      "file": "NightFMRadio/5-02 Dirty Roses.mp3"
+    },
+    {
+      "name": "Flying Heads",
+      "artist": "Ashes Potts",
+      "file": "NightFMRadio/5-03 Flying Heads.mp3"
+    },
+    {
+      "name": "Glitched Revelation",
+      "artist": "Reviscerator",
+      "file": "NightFMRadio/5-04 Glitched Revelation.mp3"
+    },
+    {
+      "name": "Kill Kill",
+      "artist": "The Bait",
+      "file": "NightFMRadio/5-05 Kill Kill.mp3"
+    },
+    {
+      "name": "Like a Miracle",
+      "artist": "Lick Switch",
+      "file": "NightFMRadio/5-06 Like a Miracle.mp3"
+    },
+    {
+      "name": "Maniak",
+      "artist": "Doctor Berserk",
+      "file": "NightFMRadio/5-07 Maniak.mp3"
+    },
+    {
+      "name": "Me Machine",
+      "artist": "Generating Dependencies",
+      "file": "NightFMRadio/5-08 Me Machine.mp3"
+    },
+    {
+      "name": "Run",
+      "artist": "Kings of Collapse",
+      "file": "NightFMRadio/5-09 Run.mp3"
+    },
+    {
+      "name": "Volcano The Sail",
+      "artist": "Yards Of The Moon",
+      "file": "NightFMRadio/5-10 Volcano The Sail.mp3"
+    },
+    {
+      "name": "Worlds",
+      "artist": "The Unresolved",
+      "file": "NightFMRadio/5-11 Worlds.mp3"
+    },
+    {
+      "name": "X",
+      "artist": "The Unresolved",
+      "file": "NightFMRadio/5-12 X.mp3"
+    },
+    {
+      "name": "Yellow Box",
+      "artist": "Reviscerator",
+      "file": "NightFMRadio/5-13 Yellow Box.mp3"
+    }
+  ]
+}

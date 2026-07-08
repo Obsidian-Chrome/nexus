@@ -1,0 +1,85 @@
+{
+  "station": "103.5 Radio PEBKAC",
+  "tracks": [
+    {
+      "name": "Across The Floor",
+      "artist": "Retinal Scam",
+      "file": "PebkacRadio/10-01 Across The Floor.mp3"
+    },
+    {
+      "name": "Bios",
+      "artist": "Error",
+      "file": "PebkacRadio/10-02 Bios.mp3"
+    },
+    {
+      "name": "Cannibalismus",
+      "artist": "Bullet in The Head",
+      "file": "PebkacRadio/10-03 Cannibalismus.mp3"
+    },
+    {
+      "name": "La Canopée",
+      "artist": "Cutex",
+      "file": "PebkacRadio/10-04 La Canopée.mp3"
+    },
+    {
+      "name": "Darkretro",
+      "artist": "Dukes of Azure",
+      "file": "PebkacRadio/10-05 Darkretro.mp3"
+    },
+    {
+      "name": "Drained",
+      "artist": "Sao Mai",
+      "file": "PebkacRadio/10-06 Drained.mp3"
+    },
+    {
+      "name": "Fake Spook",
+      "artist": "Ioshrine",
+      "file": "PebkacRadio/10-07 Fake Spook.mp3"
+    },
+    {
+      "name": "Follow the White Crow",
+      "artist": "Nablus",
+      "file": "PebkacRadio/10-08 Follow the White Crow.mp3"
+    },
+    {
+      "name": "Gridflow",
+      "artist": "Retinal Scam",
+      "file": "PebkacRadio/10-09 Gridflow.mp3"
+    },
+    {
+      "name": "IIOI Break",
+      "artist": "Yards Of The Moon",
+      "file": "PebkacRadio/10-10 IIOI Break.mp3"
+    },
+    {
+      "name": "Move Dat",
+      "artist": "[Flesh]Reactor",
+      "file": "PebkacRadio/10-11 Move Dat.mp3"
+    },
+    {
+      "name": "On My Way to Hell",
+      "artist": "Tinnitus",
+      "file": "PebkacRadio/10-12 On My Way to Hell.mp3"
+    },
+    {
+      "name": "Stackoverflow",
+      "artist": "Clockwork OS",
+      "file": "PebkacRadio/10-13 Stackoverflow.mp3"
+    },
+    {
+      "name": "Subvert",
+      "artist": "Spooneater",
+      "file": "PebkacRadio/10-14 Subvert.mp3"
+    },
+    {
+      "name": "Undertow Velocity",
+      "artist": "Skin<>Drifter",
+      "file": "PebkacRadio/10-15 Undertow Velocity.mp3"
+    },
+    {
+      "name": "Vascular",
+      "artist": "Tar Hawk",
+      "file": "PebkacRadio/10-16 Vascular.mp3"
+    }
+  ]
+}

@@ -1,0 +1,90 @@
+{
+  "station": "88.9 Pacific Dreams",
+  "tracks": [
+    {
+      "name": "Antagonistic",
+      "artist": "Pacific Avenue",
+      "file": "PacificDreamsRadio/2-01 Antagonistic.mp3"
+    },
+    {
+      "name": "Ashes and Diamonds",
+      "artist": "Wormview",
+      "file": "PacificDreamsRadio/2-02 Ashes and Diamonds.mp3"
+    },
+    {
+      "name": "Blurred",
+      "artist": "Lick Switch",
+      "file": "PacificDreamsRadio/2-03 Blurred.mp3"
+    },
+    {
+      "name": "Chooze",
+      "artist": "Muchomoor",
+      "file": "PacificDreamsRadio/2-04 Chooze.mp3"
+    },
+    {
+      "name": "Ice Maddox",
+      "artist": "Mona Mitchell",
+      "file": "PacificDreamsRadio/2-05 Ice Maddox.mp3"
+    },
+    {
+      "name": "Isometric Air",
+      "artist": "Quantum Lovers",
+      "file": "PacificDreamsRadio/2-06 Isometric Air.mp3"
+    },
+    {
+      "name": "Lithium",
+      "artist": "Flatlander Woman",
+      "file": "PacificDreamsRadio/2-07 Lithium.mp3"
+    },
+    {
+      "name": "Miami Suicide",
+      "artist": "Talk To Us",
+      "file": "PacificDreamsRadio/2-08 Miami Suicide.mp3"
+    },
+    {
+      "name": "Midnight",
+      "artist": "Lick Switch",
+      "file": "PacificDreamsRadio/2-09 Midnight.mp3"
+    },
+    {
+      "name": "The Other Room",
+      "artist": "Lick Switch",
+      "file": "PacificDreamsRadio/2-10 The Other Room.mp3"
+    },
+    {
+      "name": "Practical Heart",
+      "artist": "Quantum Lovers",
+      "file": "PacificDreamsRadio/2-11 Practical Heart.mp3"
+    },
+    {
+      "name": "Real Window",
+      "artist": "Quantum Lovers",
+      "file": "PacificDreamsRadio/2-12 Real Window.mp3"
+    },
+    {
+      "name": "Retrogenesis",
+      "artist": "Left Unsaid",
+      "file": "PacificDreamsRadio/2-13 Retrogenesis.mp3"
+    },
+    {
+      "name": "Simple Pleasures",
+      "artist": "Jansens",
+      "file": "PacificDreamsRadio/2-14 Simple Pleasures.mp3"
+    },
+    {
+      "name": "Slag",
+      "artist": "Flatlander Woman",
+      "file": "PacificDreamsRadio/2-15 Slag.mp3"
+    },
+    {
+      "name": "Slippery Stars",
+      "artist": "Talk To Us",
+      "file": "PacificDreamsRadio/2-16 Slippery Stars.mp3"
+    },
+    {
+      "name": "La Stessa Causa",
+      "artist": "Sonoris Causa",
+      "file": "PacificDreamsRadio/2-17 La Stessa Causa.mp3"
+    }
+  ]
+}

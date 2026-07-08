@@ -1,0 +1,75 @@
+{
+  "station": "89.3 Radio Vexelstrom",
+  "tracks": [
+    {
+      "name": "Black Terminal",
+      "artist": "Upgrade",
+      "file": "VexelstormRadio/3-01 Black Terminal.mp3"
+    },
+    {
+      "name": "A Caça",
+      "artist": "Tainted Overlord",
+      "file": "VexelstormRadio/3-02 A Caça.mp3"
+    },
+    {
+      "name": "Come Close",
+      "artist": "Keine",
+      "file": "VexelstormRadio/3-03 Come Close.mp3"
+    },
+    {
+      "name": "Dead Pilot",
+      "artist": "Keine",
+      "file": "VexelstormRadio/3-04 Dead Pilot.mp3"
+    },
+    {
+      "name": "Kill the Messenger",
+      "artist": "The Cartesian Duelists",
+      "file": "VexelstormRadio/3-05 Kill the Messenger.mp3"
+    },
+    {
+      "name": "Makes Me Feel Better",
+      "artist": "Slavoj McAllister",
+      "file": "VexelstormRadio/3-06 Makes Me Feel Better.mp3"
+    },
+    {
+      "name": "Never Stop Me",
+      "artist": "Den of Degenerates",
+      "file": "VexelstormRadio/3-07 Never Stop Me.mp3"
+    },
+    {
+      "name": "Night City Aliens",
+      "artist": "Homeschool Dropouts",
+      "file": "VexelstormRadio/3-08 Night City Aliens.mp3"
+    },
+    {
+      "name": "Pain",
+      "artist": "The Red Glare",
+      "file": "VexelstormRadio/3-09 Pain.mp3"
+    },
+    {
+      "name": "Reaktion",
+      "artist": "Alexei Brayko",
+      "file": "VexelstormRadio/3-10 Reaktion.mp3"
+    },
+    {
+      "name": "Resist and Disorder",
+      "artist": "The Cartesian Duelists",
+      "file": "VexelstormRadio/3-11 Resist and Disorder.mp3"
+    },
+    {
+      "name": "Selva Pulsátil",
+      "artist": "Tainted Overlord",
+      "file": "VexelstormRadio/3-12 Selva Pulsátil.mp3"
+    },
+    {
+      "name": "Violence",
+      "artist": "The Red Glare",
+      "file": "VexelstormRadio/3-13 Violence.mp3"
+    },
+    {
+      "name": "With Her",
+      "artist": "Ego Affliction",
+      "file": "VexelstormRadio/3-14 With Her.mp3"
+    }
+  ]
+}

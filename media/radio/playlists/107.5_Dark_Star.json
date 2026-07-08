@@ -1,0 +1,70 @@
+{
+  "station": "107.5 Dark Star",
+  "tracks": [
+    {
+      "name": "Choke Hold",
+      "artist": "Idris Elba & Mr. Kipper",
+      "file": "DarkStarRadio/01. Choke Hold.mp3"
+    },
+    {
+      "name": "Headrush",
+      "artist": "Backxwash & BADPANNINI",
+      "file": "DarkStarRadio/02. Headrush.mp3"
+    },
+    {
+      "name": "Orbital Insertion",
+      "artist": "Hagop Tchaparian & No Strings Attached",
+      "file": "DarkStarRadio/03. Orbital Insertion.mp3"
+    },
+    {
+      "name": "Cyko Arctic",
+      "artist": "Lord Spikeheart, Chrisman & BWANA MUNGU",
+      "file": "DarkStarRadio/04. Cyko Arctic.mp3"
+    },
+    {
+      "name": "Pierwszy raz naprawdę",
+      "artist": "27.Fuckdemons & OLO Y",
+      "file": "DarkStarRadio/05. Pierwszy raz naprawdę.mp3"
+    },
+    {
+      "name": "NUCLEAR DREAMLAND",
+      "artist": "julek ploski & DJ papergekko",
+      "file": "DarkStarRadio/06. NUCLEAR DREAMLAND.mp3"
+    },
+    {
+      "name": "Rolla Coaster",
+      "artist": "Idris Elba & Mr. Kipper",
+      "file": "DarkStarRadio/07. Rolla Coaster.mp3"
+    },
+    {
+      "name": "IKARI",
+      "artist": "Ecko Bazz, Slikback & ECKO FREQUENCY",
+      "file": "DarkStarRadio/08. IKARI.mp3"
+    },
+    {
+      "name": "fabrica KOSMOS",
+      "artist": "Kuba Wandachowicz & Her Mashewsky",
+      "file": "DarkStarRadio/09. fabrica KOSMOS.mp3"
+    },
+    {
+      "name": "dRk",
+      "artist": "Krzysztof Freeze Ostrowski & Walt Air",
+      "file": "DarkStarRadio/10. dRk.mp3"
+    },
+    {
+      "name": "Minion Sex",
+      "artist": "T'Ien Lai & Mightonauts",
+      "file": "DarkStarRadio/11. Minion Sex.mp3"
+    },
+    {
+      "name": "Bigger Crimes",
+      "artist": "julek ploski & DJ papergekko",
+      "file": "DarkStarRadio/12. Bigger Crimes.mp3"
+    },
+    {
+      "name": "Memories of Mzuzu",
+      "artist": "Połoz & Łotr",
+      "file": "DarkStarRadio/13. Memories of Mzuzu.mp3"
+    }
+  ]
+}

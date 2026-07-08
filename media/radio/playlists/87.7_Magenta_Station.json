@@ -1,0 +1,60 @@
+{
+  "station": "87.7 Magenta Station",
+  "tracks": [
+    {
+      "name": "Before I Pull The Pin",
+      "artist": "Magenta",
+      "file": "MagentaRadio/MAGENTA - BEFORE I PULL THE PIN.mp3"
+    },
+    {
+      "name": "Cattle",
+      "artist": "Magenta",
+      "file": "MagentaRadio/MAGENTA - CATTLE.mp3"
+    },
+    {
+      "name": "Crimson Safari",
+      "artist": "Magenta",
+      "file": "MagentaRadio/MAGENTA - CRIMSON SAFARI.mp3"
+    },
+    {
+      "name": "Eat The Rich",
+      "artist": "Magenta",
+      "file": "MagentaRadio/MAGENTA - EAT THE RICH.mp3"
+    },
+    {
+      "name": "Let Them Burn",
+      "artist": "Magenta",
+      "file": "MagentaRadio/MAGENTA - LET THEM BURN.mp3"
+    },
+    {
+      "name": "Nofuckingway",
+      "artist": "Magenta",
+      "file": "MagentaRadio/MAGENTA - NOFUCKINGWAY.mp3"
+    },
+    {
+      "name": "Ouroboros",
+      "artist": "Magenta",
+      "file": "MagentaRadio/MAGENTA - OUROBOROS.mp3"
+    },
+    {
+      "name": "Tea Time",
+      "artist": "Magenta",
+      "file": "MagentaRadio/MAGENTA - TEA TIME.mp3"
+    },
+    {
+      "name": "The Woman In Yellow",
+      "artist": "Magenta",
+      "file": "MagentaRadio/MAGENTA - THE WOMAN IN YELLOW.mp3"
+    },
+    {
+      "name": "Under My Skin",
+      "artist": "Magenta",
+      "file": "MagentaRadio/MAGENTA - UNDER MY SKIN.mp3"
+    },
+    {
+      "name": "What Did You Think",
+      "artist": "Magenta",
+      "file": "MagentaRadio/MAGENTA - WHAT DID YOU THINK.mp3"
+    }
+  ]
+}

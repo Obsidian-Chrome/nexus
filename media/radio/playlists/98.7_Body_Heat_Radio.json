@@ -1,0 +1,75 @@
+{
+  "station": "98.7 Body Heat Radio",
+  "tracks": [
+    {
+      "name": "Blind",
+      "artist": "American Medical Association",
+      "file": "BodyHeatRadio/8-01 Blind.mp3"
+    },
+    {
+      "name": "BM",
+      "artist": "Clockwork Venus",
+      "file": "BodyHeatRadio/8-02 BM.mp3"
+    },
+    {
+      "name": "Circus Minimus",
+      "artist": "Neon Haze",
+      "file": "BodyHeatRadio/8-03 Circus Minimus.mp3"
+    },
+    {
+      "name": "Crustpunk",
+      "artist": "IBDY",
+      "file": "BodyHeatRadio/8-04 Crustpunk.mp3"
+    },
+    {
+      "name": "Here's a Thought",
+      "artist": "IBDY",
+      "file": "BodyHeatRadio/8-05 Here_s a Thought.mp3"
+    },
+    {
+      "name": "History",
+      "artist": "Trash Generation",
+      "file": "BodyHeatRadio/8-06 History.mp3"
+    },
+    {
+      "name": "Hole in the Sun",
+      "artist": "Point Break Candy",
+      "file": "BodyHeatRadio/8-07 Hole in the Sun.mp3"
+    },
+    {
+      "name": "I Really Want to Stay at Your House",
+      "artist": "Hallie Coggins",
+      "file": "BodyHeatRadio/8-08 I Really Want to Stay at Your H.mp3"
+    },
+    {
+      "name": "Major Crimes",
+      "artist": "Window Weather",
+      "file": "BodyHeatRadio/8-09 Major Crimes.mp3"
+    },
+    {
+      "name": "Night City",
+      "artist": "Artemis Delta",
+      "file": "BodyHeatRadio/8-10 Night City.mp3"
+    },
+    {
+      "name": "Off The Leash",
+      "artist": "Us Cracks ft. Kerry Eurodine",
+      "file": "BodyHeatRadio/8-11 Off The Leash.mp3"
+    },
+    {
+      "name": "Ponpon Shit",
+      "artist": "Us Cracks",
+      "file": "BodyHeatRadio/8-12 Ponpon Shit.mp3"
+    },
+    {
+      "name": "User Friendly",
+      "artist": "Us Cracks",
+      "file": "BodyHeatRadio/8-13 User Friendly.mp3"
+    },
+    {
+      "name": "Delicate Weapon",
+      "artist": "Lizzy Wizzy",
+      "file": "BodyHeatRadio/8-14 4Æ_Delicate Weapon.mp3"
+    }
+  ]
+}
