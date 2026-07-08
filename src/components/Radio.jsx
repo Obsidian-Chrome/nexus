@@ -68,18 +68,27 @@ const Radio = ({ onBack }) => {
   const lastRadioIdRef = useRef(null)
   const shouldAutoPlayRef = useRef(false)
   const isFirstLoadRef = useRef(true)
-  const [linkCopied, setLinkCopied] = useState(false)
+  const [linkCopied, setLinkCopied] = useState(null)
+  const [standaloneMode, setStandaloneMode] = useState(false)
 
   // Charger la radio depuis l'URL au démarrage
   useEffect(() => {
-    const params = new URLSearchParams(window.location.search)
-    const radioSlug = params.get('radio')
+    // Chercher le paramètre dans le hash (#radio?radio=funk-radio)
+    const hash = window.location.hash
+    const queryStartIndex = hash.indexOf('?')
     
-    if (radioSlug) {
-      const radio = RADIOS.find(r => r.slug === radioSlug)
-      if (radio) {
-        setSelectedRadio(radio)
-        shouldAutoPlayRef.current = true
+    if (queryStartIndex > -1) {
+      const queryString = hash.substring(queryStartIndex + 1)
+      const params = new URLSearchParams(queryString)
+      const radioSlug = params.get('radio')
+      
+      if (radioSlug) {
+        const radio = RADIOS.find(r => r.slug === radioSlug)
+        if (radio) {
+          setSelectedRadio(radio)
+          setStandaloneMode(true) // Activer le mode standalone
+          // Pas d'autoplay, l'utilisateur devra cliquer sur Play
+        }
       }
     }
   }, [])
@@ -201,7 +210,7 @@ const Radio = ({ onBack }) => {
       audioRef.current.volume = volume
       audioRef.current.play().catch(e => console.error('Erreur lecture:', e))
       setIsPlaying(true)
-      setIsLoading(false) // Fin du chargement
+      setIsLoading(false)
     }
     
     // Reset le flag pour ne pas rejouer
@@ -267,10 +276,10 @@ const Radio = ({ onBack }) => {
   }
 
   const handleCopyLink = (radio) => {
-    const url = `${window.location.origin}${window.location.pathname}?radio=${radio.slug}`
+    const url = `${window.location.origin}${window.location.pathname}#radio?radio=${radio.slug}`
     navigator.clipboard.writeText(url).then(() => {
-      setLinkCopied(true)
-      setTimeout(() => setLinkCopied(false), 2000)
+      setLinkCopied(radio.id)
+      setTimeout(() => setLinkCopied(null), 2000)
     })
   }
 
@@ -305,6 +314,50 @@ const Radio = ({ onBack }) => {
       audioRef.current?.pause()
       setIsPlaying(false)
     } else {
+      // Si pas de currentTrack, déclencher le chargement/lecture
+      if (!currentTrack && selectedRadio) {
+        if (playlistReady && shuffledPlaylist.length > 0) {
+          // La playlist est déjà chargée, calculer et jouer la piste
+          const totalDuration = shuffledPlaylist.reduce((acc, track) => acc + track.duration, 0)
+          const now = Date.now() / 1000
+          const positionInCycle = now % totalDuration
+          
+          let elapsed = 0
+          let trackIndex = 0
+          let trackPosition = 0
+          
+          for (let i = 0; i < shuffledPlaylist.length; i++) {
+            if (elapsed + shuffledPlaylist[i].duration > positionInCycle) {
+              trackIndex = i
+              trackPosition = positionInCycle - elapsed
+              break
+            }
+            elapsed += shuffledPlaylist[i].duration
+          }
+          
+          const track = shuffledPlaylist[trackIndex]
+          setCurrentTrack(track)
+          setCurrentTrackIndex(trackIndex)
+          
+          if (audioRef.current) {
+            const audioSrc = track.file.startsWith('http') 
+              ? track.file 
+              : `${MP3_BASE_URL}${track.file}`
+            
+            audioRef.current.src = audioSrc
+            audioRef.current.currentTime = trackPosition
+            audioRef.current.volume = volume
+            audioRef.current.play().catch(e => console.error('Erreur lecture:', e))
+            setIsPlaying(true)
+          }
+        } else {
+          // La playlist n'est pas encore chargée, attendre
+          setIsLoading(true)
+          shouldAutoPlayRef.current = true
+        }
+        return
+      }
+      
       if (audioRef.current && currentTrack) {
         audioRef.current.volume = volume
         audioRef.current.play().catch(e => console.error('Erreur lecture:', e))
@@ -340,8 +393,8 @@ const Radio = ({ onBack }) => {
 
   return (
     <div
-      className="fixed inset-0 z-50 overflow-hidden"
-      style={{ fontFamily: "'Rajdhani', sans-serif", background: '#0a0000' }}
+      className="fixed inset-0 z-50 overflow-hidden overflow-x-hidden max-w-screen"
+      style={{ fontFamily: "'Rajdhani', sans-serif", background: '#0a0000', maxWidth: '100vw', width: '100vw', boxSizing: 'border-box' }}
     >
       {/* Scanlines overlay */}
       <div
@@ -354,60 +407,63 @@ const Radio = ({ onBack }) => {
       {/* Red background glow */}
       <div className="pointer-events-none fixed inset-0 z-0" style={{ background: 'radial-gradient(ellipse at 50% 30%, rgba(180,0,0,0.18) 0%, transparent 70%)' }} />
 
-      <div className="relative z-20 h-screen flex flex-col">
+      <div className="relative z-20 h-screen flex flex-col overflow-x-hidden">
         {/* HEADER */}
         <div
-          className="border-b px-8 py-5 flex items-center justify-between flex-shrink-0"
+          className="border-b px-2 lg:px-8 py-5 flex items-center justify-between flex-shrink-0"
           style={{ borderColor: '#8B0000', background: 'rgba(10,0,0,0.95)' }}
         >
+          {!standaloneMode && (
           <button
             onClick={onBack}
-            className="flex items-center gap-2 transition-colors duration-200 group"
+            className="flex items-center gap-2 transition-colors duration-200 group lg:w-auto w-8"
             style={{ color: '#2596be' }}
           >
             <ArrowLeft className="w-5 h-5 group-hover:text-white transition-colors" />
-            <span className="text-lg font-semibold tracking-widest uppercase">Retour</span>
+            <span className="text-lg font-semibold tracking-widest uppercase hidden lg:inline">Retour</span>
           </button>
+          )}
+          {standaloneMode && <div className="w-8 lg:w-32" />}
 
           {/* Logo RADIO */}
-          <div className="flex flex-col items-center">
-            <div className="flex items-center gap-3">
-              <div className="w-2 h-2 rounded-full animate-pulse" style={{ backgroundColor: '#8B0000', boxShadow: '0 0 8px #ff0000' }} />
+          <div className="flex flex-col items-center flex-1 lg:flex-none">
+            <div className="flex items-center gap-2 lg:gap-3">
+              <div className="w-2 h-2 rounded-full animate-pulse hidden lg:block" style={{ backgroundColor: '#8B0000', boxShadow: '0 0 8px #ff0000' }} />
               <span
-                className="text-4xl font-bold tracking-[0.25em] uppercase"
+                className="text-2xl lg:text-4xl font-bold tracking-widest lg:tracking-[0.25em] uppercase"
                 style={{
                   color: '#2596be',
                   textShadow: glitch
                     ? '3px 0 #ff0000, -3px 0 #00ffff'
                     : '0 0 20px rgba(0,180,255,0.8), 0 0 40px rgba(0,180,255,0.3)',
-                  letterSpacing: '0.3em'
                 }}
               >
                 RADIO
               </span>
-              <div className="w-2 h-2 rounded-full animate-pulse" style={{ backgroundColor: '#8B0000', boxShadow: '0 0 8px #ff0000', animationDelay: '0.5s' }} />
+              <div className="w-2 h-2 rounded-full animate-pulse hidden lg:block" style={{ backgroundColor: '#8B0000', boxShadow: '0 0 8px #ff0000', animationDelay: '0.5s' }} />
             </div>
-            <div className="text-xs tracking-[0.5em] mt-1" style={{ color: '#8B0000' }}>
+            <div className="text-[0.5rem] lg:text-xs tracking-[0.3em] lg:tracking-[0.5em] mt-1" style={{ color: '#8B0000' }}>
               NIGHT CITY BROADCAST
             </div>
           </div>
 
-          <div className="w-32" />
+          <div className="w-8 lg:w-32" />
         </div>
 
-        <div className="flex flex-col lg:flex-row gap-0 flex-1 min-h-0">
-          {/* LISTE DES RADIOS */}
+        <div className="flex flex-col lg:flex-row gap-0 flex-1 min-h-0 overflow-hidden">
+          {/* LISTE DES RADIOS - Cachée en mode standalone */}
+          {!standaloneMode && (
           <div
-            className="lg:w-[420px] border-r flex-shrink-0 flex flex-col overflow-hidden"
+            className="lg:w-[420px] lg:border-r flex-shrink-0 flex flex-col overflow-x-hidden overflow-y-hidden h-auto lg:h-full"
             style={{ borderColor: '#3a0000', background: 'rgba(8,0,0,0.97)' }}
           >
-            <div className="px-6 py-4 border-b flex-shrink-0" style={{ borderColor: '#3a0000' }}>
-              <div className="text-xs tracking-[0.4em] uppercase font-semibold" style={{ color: '#8B0000' }}>
+            <div className="px-4 lg:px-6 py-4 border-b flex-shrink-0" style={{ borderColor: '#3a0000' }}>
+              <div className="text-xs tracking-wider lg:tracking-[0.4em] uppercase font-semibold text-center lg:text-left" style={{ color: '#8B0000' }}>
                 — STATIONS DISPONIBLES —
               </div>
             </div>
 
-            <div className="flex-1 overflow-y-auto"
+            <div className="flex-1 overflow-y-auto max-h-[40vh] lg:max-h-none"
               style={{
                 scrollbarWidth: 'thin',
                 scrollbarColor: '#3a0000 transparent'
@@ -420,7 +476,7 @@ const Radio = ({ onBack }) => {
                 <div
                   key={radio.id}
                   onClick={() => handleSelectRadio(radio)}
-                  className="w-full px-6 py-4 border-b transition-all duration-200 relative cursor-pointer"
+                  className="w-full px-2 lg:px-6 py-4 border-b transition-all duration-200 relative cursor-pointer"
                   style={{
                     borderColor: '#1a0000',
                     background: isActive
@@ -523,16 +579,21 @@ const Radio = ({ onBack }) => {
                           <Play className="w-4 h-4 ml-0.5" />
                         </button>
                       ) : (
-                        <div
-                          className="w-8 h-8 rounded-sm flex items-center justify-center border opacity-30"
+                        <button
+                          onClick={(e) => {
+                            e.stopPropagation()
+                            handleSelectRadio(radio)
+                          }}
+                          className="w-8 h-8 rounded-sm flex items-center justify-center border transition-all duration-200 hover:scale-110 cursor-pointer"
                           style={{
-                            borderColor: '#2a0000',
+                            borderColor: radio.color,
                             background: 'transparent',
-                            color: '#333333'
+                            color: radio.color,
+                            opacity: 0.6
                           }}
                         >
                           <Play className="w-4 h-4 ml-0.5" />
-                        </div>
+                        </button>
                       )}
                       
                       {/* Bouton copier lien */}
@@ -543,15 +604,15 @@ const Radio = ({ onBack }) => {
                         }}
                         className="w-8 h-8 rounded-sm flex items-center justify-center border transition-all duration-200 hover:scale-110 cursor-pointer relative"
                         style={{
-                          borderColor: isActive ? radio.color : '#2a0000',
+                          borderColor: radio.color,
                           background: 'transparent',
-                          color: isActive ? radio.color : '#333333',
-                          opacity: isActive ? 1 : 0.3
+                          color: radio.color,
+                          opacity: isActive ? 1 : 0.6
                         }}
                         title="Copier le lien direct"
                       >
                         <Link className="w-4 h-4" />
-                        {linkCopied && (
+                        {linkCopied === radio.id && (
                           <span 
                             className="absolute -top-8 left-1/2 -translate-x-1/2 bg-black/90 text-white text-xs px-2 py-1 rounded whitespace-nowrap"
                             style={{ color: radio.color }}
@@ -567,27 +628,30 @@ const Radio = ({ onBack }) => {
             })}
             </div>
           </div>
+          )}
 
           {/* PANNEAU PRINCIPAL */}
-          <div className="flex-1 flex items-center justify-center overflow-hidden p-8">
+          <div className="flex-1 flex items-center justify-center overflow-y-auto overflow-x-hidden p-2 lg:p-8">
             {selectedRadio ? (
-              <div className="flex flex-col items-center gap-8 w-full max-w-xl">
-                {/* Logo de la station */}
-                <div className="flex items-center justify-center">
+              <div className="flex flex-col items-center gap-4 lg:gap-8 w-full max-w-full lg:max-w-xl py-4 lg:py-0">
+                {/* Logo de la station - Caché en mode normal mobile */}
+                {(standaloneMode || window.innerWidth >= 1024) && (
+                <div className="flex items-center justify-center flex-shrink-0">
                   <img
                     src={selectedRadio.logo}
                     alt={selectedRadio.name}
-                    className="w-80 h-80 object-contain"
+                    className="w-48 h-48 lg:w-80 lg:h-80 object-contain"
                     style={{
                       filter: 'brightness(1.2) drop-shadow(0 0 30px rgba(37, 150, 190, 0.5))'
                     }}
                   />
                 </div>
+                )}
 
                 {/* Nom + Fréquence */}
-                <div className="text-center">
+                <div className="text-center flex-shrink-0 px-2 max-w-full">
                   <h2
-                    className="text-5xl font-bold tracking-widest uppercase mb-2"
+                    className="text-2xl lg:text-5xl font-bold tracking-wide lg:tracking-widest uppercase mb-2 truncate"
                     style={{
                       color: selectedRadio.color,
                     textShadow: `0 0 30px ${selectedRadio.color}80, 0 0 60px ${selectedRadio.color}30`
@@ -595,21 +659,54 @@ const Radio = ({ onBack }) => {
                 >
                   {selectedRadio.name}
                 </h2>
-                <div className="text-2xl font-bold tracking-widest" style={{ color: '#2596be' }}>
+                <div className="text-xl lg:text-2xl font-bold tracking-wide lg:tracking-widest" style={{ color: '#2596be' }}>
                   {selectedRadio.freq} FM
                 </div>
               </div>
 
+              {/* Bouton Play/Pause central - Uniquement en mode standalone */}
+              {standaloneMode && (
+              <div className="flex justify-center">
+                {isLoading ? (
+                  <div
+                    className="w-16 h-16 rounded-full flex items-center justify-center border-2"
+                    style={{
+                      borderColor: selectedRadio.color,
+                      background: 'transparent'
+                    }}
+                  >
+                    <div className="w-8 h-8 border-2 border-t-transparent rounded-full animate-spin" style={{ borderColor: selectedRadio.color, borderTopColor: 'transparent' }} />
+                  </div>
+                ) : (
+                  <button
+                    onClick={handlePlayPause}
+                    className="w-16 h-16 rounded-full flex items-center justify-center border-2 transition-all duration-200 hover:scale-110"
+                    style={{
+                      borderColor: selectedRadio.color,
+                      background: isPlaying ? `${selectedRadio.color}20` : 'transparent',
+                      color: selectedRadio.color
+                    }}
+                  >
+                    {isPlaying ? (
+                      <Pause className="w-8 h-8" />
+                    ) : (
+                      <Play className="w-8 h-8 ml-1" />
+                    )}
+                  </button>
+                )}
+              </div>
+              )}
+
               {/* Titre en cours */}
               {isPlaying && currentTrack ? (
-                <div className="text-center">
-                  <div className="text-xs tracking-[0.5em] mb-2" style={{ color: '#8B0000' }}>
+                <div className="text-center flex-shrink-0 px-2 max-w-full">
+                  <div className="text-xs tracking-wider lg:tracking-[0.5em] mb-2" style={{ color: '#8B0000' }}>
                     EN LECTURE
                   </div>
-                  <div className="text-xl font-bold tracking-wider mb-1" style={{ color: '#ffffff' }}>
+                  <div className="text-base lg:text-xl font-bold tracking-wide lg:tracking-wider mb-1 truncate" style={{ color: '#ffffff' }}>
                     {currentTrack.name}
                   </div>
-                  <div className="text-sm tracking-widest" style={{ color: '#2596be' }}>
+                  <div className="text-sm tracking-wide lg:tracking-widest truncate" style={{ color: '#2596be' }}>
                     {currentTrack.artist}
                   </div>
                   <div className="mt-3 flex items-center justify-center gap-2">
@@ -623,15 +720,15 @@ const Radio = ({ onBack }) => {
                   </div>
                 </div>
               ) : (
-                <div className="text-center py-4">
+                <div className="text-center py-4 flex-shrink-0">
                   <div className="text-sm tracking-widest" style={{ color: '#555555' }}>
                     {isPlaying ? 'CHARGEMENT...' : 'APPUYEZ SUR PLAY'}
                   </div>
                 </div>
               )}
 
-              {/* Contrôles - Volume uniquement */}
-              <div className="flex flex-col items-center gap-6 w-full max-w-sm">
+              {/* Contrôles - Volume uniquement - Caché sur mobile */}
+              <div className="hidden lg:flex flex-col items-center gap-6 w-full max-w-sm flex-shrink-0">
                 {/* Volume */}
                 <div 
                   className="w-full px-6 py-4 rounded-sm border"

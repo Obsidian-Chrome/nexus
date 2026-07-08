@@ -160,6 +160,23 @@ function App() {
       .replace(/[\u0300-\u036f]/g, '')
   }
 
+  // Détecter si l'URL contient un paramètre radio pour afficher directement la Radio
+  useEffect(() => {
+    // Chercher le paramètre dans le hash (#radio?radio=funk-radio)
+    const hash = window.location.hash
+    const queryStartIndex = hash.indexOf('?')
+    
+    if (queryStartIndex > -1) {
+      const queryString = hash.substring(queryStartIndex + 1)
+      const params = new URLSearchParams(queryString)
+      const radioParam = params.get('radio')
+      
+      if (radioParam) {
+        setShowRadio(true)
+      }
+    }
+  }, [])
+
   // Scroll en haut quand on change de page
   useEffect(() => {
     // Petit délai pour s'assurer que le DOM est mis à jour
