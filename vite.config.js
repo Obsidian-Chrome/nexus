@@ -48,7 +48,7 @@ const copyPublicExcludeMp3 = () => {
 
 export default defineConfig({
   plugins: [react(), copyPublicExcludeMp3()],
-  base: '/nexus/',
+  base: './', // Chemin relatif pour gh-pages
   build: {
     copyPublicDir: false // Désactiver la copie automatique, on utilise notre plugin
   }
