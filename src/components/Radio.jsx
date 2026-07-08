@@ -1,6 +1,11 @@
 import { useEffect, useRef, useState } from 'react'
 import { ArrowLeft, Play, Pause, Volume2, VolumeX, Radio as RadioIcon } from 'lucide-react'
 
+// URL de base pour les MP3 : GitHub en production, local en dev
+const MP3_BASE_URL = import.meta.env.PROD 
+  ? 'https://raw.githubusercontent.com/Obsidian-Chrome/nexus/main/public/media/radio/mp3/'
+  : '/media/radio/mp3/'
+
 const RADIOS = [
   { id: 1, freq: '69.9', name: 'Funk Radio', logo: '/media/radio/logos/69.9_Funk_Radio.webp', color: '#2596be', playlistFile: '/media/radio/playlists/69.9_Funk_Radio.json' },
   { id: 2, freq: '87.7', name: 'Magenta Station', logo: '/media/radio/logos/87.7_Magenta_Station.webp', color: '#2596be', playlistFile: '/media/radio/playlists/87.7_Magenta_Station.json' },
@@ -96,7 +101,7 @@ const Radio = ({ onBack }) => {
               // Gérer les URLs externes (GitHub releases) et les fichiers locaux
               const audioSrc = track.file.startsWith('http') 
                 ? track.file 
-                : `/media/radio/mp3/${track.file}`
+                : `${MP3_BASE_URL}${track.file}`
               
               const audio = new Audio(audioSrc)
               audio.addEventListener('loadedmetadata', () => {
@@ -174,7 +179,7 @@ const Radio = ({ onBack }) => {
       // Gérer les URLs externes (GitHub releases) et les fichiers locaux
       const audioSrc = track.file.startsWith('http') 
         ? track.file 
-        : `/media/radio/mp3/${track.file}`
+        : `${MP3_BASE_URL}${track.file}`
       
       audioRef.current.src = audioSrc
       audioRef.current.currentTime = trackPosition
@@ -202,7 +207,7 @@ const Radio = ({ onBack }) => {
       // Gérer les URLs externes (GitHub releases) et les fichiers locaux
       const audioSrc = nextTrack.file.startsWith('http') 
         ? nextTrack.file 
-        : `/media/radio/mp3/${nextTrack.file}`
+        : `${MP3_BASE_URL}${nextTrack.file}`
       
       audioRef.current.src = audioSrc
       audioRef.current.currentTime = 0
