@@ -5,11 +5,10 @@ import SeamlessVideoOverlay from './SeamlessVideoOverlay'
 
 const PyonPixVisualizerOverlay = ({ onBack, simple = false }) => {
   const [showControls, setShowControls] = useState(true)
-  const [activeOverlay, setActiveOverlay] = useState(null)
+  const [activeOverlays, setActiveOverlays] = useState(new Set())
   const [blindsOpen, setBlindsOpen] = useState(false)
   const [videoKey, setVideoKey] = useState(0)
   const hideControlsTimeout = useRef(null)
-  const overlayVideoRef = useRef(null)
   const menuRef = useRef(null)
 
   const overlayOptions = [
@@ -66,9 +65,10 @@ const PyonPixVisualizerOverlay = ({ onBack, simple = false }) => {
       const params = new URLSearchParams(fullHash.substring(queryIndex + 1))
       const overlayParam = params.get('overlay')
       const openParam = params.get('open')
-      if (overlayOptions.some(o => o.id === overlayParam)) {
-        setActiveOverlay(overlayParam)
-        if (overlayParam === 'blinds') {
+      if (overlayParam) {
+        const ids = overlayParam.split(',').filter(id => overlayOptions.some(o => o.id === id))
+        setActiveOverlays(new Set(ids))
+        if (ids.includes('blinds')) {
           setBlindsOpen(openParam === 'true')
         }
         setVideoKey(prev => prev + 1)
@@ -76,53 +76,57 @@ const PyonPixVisualizerOverlay = ({ onBack, simple = false }) => {
     }
   }, [])
 
-  useEffect(() => {
-    if (activeOverlay && activeOverlay !== 'blinds' && overlayVideoRef.current) {
-      overlayVideoRef.current.play().catch(err => console.error('Erreur lecture overlay:', err))
-    }
-  }, [activeOverlay, videoKey])
-
-  const updateHashOverlay = (overlayId, open = null) => {
+  const updateHashOverlay = (overlays, open = null) => {
     const baseHash = window.location.hash.split('?')[0]
-    if (overlayId) {
-      const openParam = overlayId === 'blinds' && open !== null ? `&open=${open}` : ''
-      window.location.hash = `${baseHash}?overlay=${overlayId}${openParam}`
+    const ids = Array.from(overlays)
+    if (ids.length > 0) {
+      const openParam = ids.includes('blinds') && open !== null ? `&open=${open}` : ''
+      window.location.hash = `${baseHash}?overlay=${ids.join(',')}${openParam}`
     } else {
       window.location.hash = baseHash
     }
   }
 
   const handleToggleOverlay = (optionId) => {
-    if (activeOverlay === optionId) {
-      setActiveOverlay(null)
-      setBlindsOpen(false)
-      updateHashOverlay(null)
-    } else {
-      setActiveOverlay(optionId)
-      setBlindsOpen(false)
-      setVideoKey(prev => prev + 1)
-      updateHashOverlay(optionId, false)
-    }
+    setActiveOverlays(prev => {
+      const next = new Set(prev)
+      if (next.has(optionId)) {
+        next.delete(optionId)
+        if (optionId === 'blinds') {
+          setBlindsOpen(false)
+        }
+      } else {
+        next.add(optionId)
+        if (optionId === 'blinds') {
+          setBlindsOpen(false)
+        }
+      }
+      updateHashOverlay(next, optionId === 'blinds' ? false : blindsOpen)
+      return next
+    })
+    setVideoKey(prev => prev + 1)
   }
 
   const handleToggleBlinds = () => {
-    const next = !blindsOpen
-    setBlindsOpen(next)
-    updateHashOverlay('blinds', next)
+    setBlindsOpen(prev => {
+      const next = !prev
+      updateHashOverlay(activeOverlays, next)
+      return next
+    })
   }
+
 
   return (
     <>
-      {/* Overlay vidéo : pluie ou pluie vitre */}
-      {activeOverlay && activeOverlay !== 'blinds' && (
-        <SeamlessVideoOverlay
-          key={videoKey}
-          src={overlayOptions.find(o => o.id === activeOverlay).src}
-        />
-      )}
+      {/* Overlays vidéo : pluie et/ou pluie vitre */}
+      {overlayOptions
+        .filter(o => o.id !== 'blinds' && activeOverlays.has(o.id))
+        .map(o => (
+          <SeamlessVideoOverlay key={`${o.id}-${videoKey}`} src={o.src} />
+        ))}
 
       {/* Overlay store Three.js */}
-      {activeOverlay === 'blinds' && <BlindsThreeOverlay open={blindsOpen} />}
+      {activeOverlays.has('blinds') && <BlindsThreeOverlay open={blindsOpen} />}
 
       {/* Menu auto-hide */}
       <div
@@ -134,7 +138,7 @@ const PyonPixVisualizerOverlay = ({ onBack, simple = false }) => {
       >
         {!simple && overlayOptions.map(option => {
           const Icon = option.icon
-          const isActive = activeOverlay === option.id
+          const isActive = activeOverlays.has(option.id)
           return (
             <button
               key={option.id}
@@ -152,7 +156,7 @@ const PyonPixVisualizerOverlay = ({ onBack, simple = false }) => {
           )
         })}
 
-        {!simple && activeOverlay === 'blinds' && (
+        {!simple && activeOverlays.has('blinds') && (
           <button
             onClick={handleToggleBlinds}
             className="ml-2 px-3 py-2 rounded text-xs font-semibold tracking-wider text-cyan-400 border border-cyan-500/30 hover:bg-cyan-500/10 transition-all duration-200"
