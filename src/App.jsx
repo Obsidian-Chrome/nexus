@@ -194,7 +194,11 @@ function App() {
 
   useEffect(() => {
     const handleHashChange = () => {
-      const hash = window.location.hash.substring(1)
+      const fullHash = window.location.hash.substring(1)
+      const queryIndex = fullHash.indexOf('?')
+      const hash = queryIndex > -1 ? fullHash.substring(0, queryIndex) : fullHash
+      const hashParams = queryIndex > -1 ? new URLSearchParams(fullHash.substring(queryIndex + 1)) : new URLSearchParams()
+
       if (hash) {
         if (hash === 'radio') {
           setShowRadio(true)

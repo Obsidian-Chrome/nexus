@@ -1,16 +1,11 @@
 import { useEffect, useRef, useState } from 'react'
-import { ArrowLeft } from 'lucide-react'
+import PyonPixVisualizerOverlay from './PyonPixVisualizerOverlay'
 
 const PyonPixNightcity = ({ onBack }) => {
   const videoRef = useRef(null)
   const [isLoading, setIsLoading] = useState(true)
   const [showVideo, setShowVideo] = useState(false)
-  const [showControls, setShowControls] = useState(true)
-  const [currentTime, setCurrentTime] = useState(new Date())
-  const [videoTime, setVideoTime] = useState('00:00')
-  const hideControlsTimeout = useRef(null)
   const hasInitialized = useRef(false)
-  const lastUpdateTime = useRef(0)
 
   useEffect(() => {
     const video = videoRef.current
@@ -73,19 +68,7 @@ const PyonPixNightcity = ({ onBack }) => {
       }
     }
 
-    const handleTimeUpdate = () => {
-      const now = Date.now()
-      // Limiter à une mise à jour toutes les 2 secondes pour éviter les saccades
-      if (now - lastUpdateTime.current < 2000) return
-      
-      lastUpdateTime.current = now
-      const hours = Math.floor(video.currentTime / 3600)
-      const minutes = Math.floor((video.currentTime % 3600) / 60)
-      setVideoTime(`${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}`)
-    }
-
     video.addEventListener('canplaythrough', handleCanPlayThrough, { once: true })
-    video.addEventListener('timeupdate', handleTimeUpdate)
 
     // Si la vidéo est déjà prête
     if (video.readyState >= 4 && !hasInitialized.current) {
@@ -95,45 +78,11 @@ const PyonPixNightcity = ({ onBack }) => {
 
     return () => {
       video.removeEventListener('canplaythrough', handleCanPlayThrough)
-      video.removeEventListener('timeupdate', handleTimeUpdate)
       // Cleanup complet de la vidéo
       if (video) {
         video.pause()
         video.src = ''
         video.load()
-      }
-    }
-  }, [])
-
-  // Mettre à jour l'heure locale chaque seconde
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setCurrentTime(new Date())
-    }, 1000)
-
-    return () => clearInterval(timer)
-  }, [])
-
-  // Gérer l'auto-hide des contrôles
-  useEffect(() => {
-    const handleMouseMove = () => {
-      setShowControls(true)
-      
-      if (hideControlsTimeout.current) {
-        clearTimeout(hideControlsTimeout.current)
-      }
-      
-      hideControlsTimeout.current = setTimeout(() => {
-        setShowControls(false)
-      }, 3000)
-    }
-
-    window.addEventListener('mousemove', handleMouseMove)
-    
-    return () => {
-      window.removeEventListener('mousemove', handleMouseMove)
-      if (hideControlsTimeout.current) {
-        clearTimeout(hideControlsTimeout.current)
       }
     }
   }, [])
@@ -167,6 +116,8 @@ const PyonPixNightcity = ({ onBack }) => {
         Votre navigateur ne supporte pas la lecture de vidéos.
       </video>
 
+      {/* Overlay visualizer */}
+      <PyonPixVisualizerOverlay onBack={onBack} />
     </div>
   )
 }

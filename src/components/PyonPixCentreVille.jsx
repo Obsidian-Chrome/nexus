@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
+import PyonPixVisualizerOverlay from './PyonPixVisualizerOverlay'
 
 const PyonPixCentreVille = ({ onBack }) => {
   const videoRef = useRef(null)
@@ -52,6 +53,8 @@ const PyonPixCentreVille = ({ onBack }) => {
         Votre navigateur ne supporte pas la lecture de vidéos.
       </video>
 
+      {/* Overlay visualizer */}
+      <PyonPixVisualizerOverlay onBack={onBack} />
     </div>
   )
 }
