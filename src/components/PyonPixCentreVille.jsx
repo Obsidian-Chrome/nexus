@@ -46,7 +46,6 @@ const PyonPixCentreVille = ({ onBack }) => {
         muted
         playsInline
         preload="metadata"
-        onClick={onBack}
         onCanPlayThrough={handleCanPlayThrough}
       >
         <source src="https://github.com/Obsidian-Chrome/nexus/releases/download/1.1.0/PyonPix.-.Centre.Ville.webm" type="video/webm" />

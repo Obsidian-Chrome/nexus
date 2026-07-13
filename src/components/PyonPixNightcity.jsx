@@ -110,7 +110,6 @@ const PyonPixNightcity = ({ onBack }) => {
         muted
         playsInline
         preload="metadata"
-        onClick={onBack}
       >
         <source src="https://github.com/Obsidian-Chrome/nexus/releases/download/1.0.0/nightcity_24h.webm" type="video/webm" />
         Votre navigateur ne supporte pas la lecture de vidéos.

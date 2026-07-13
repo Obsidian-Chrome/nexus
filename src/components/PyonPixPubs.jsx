@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
+import PyonPixVisualizerOverlay from './PyonPixVisualizerOverlay'
 
 const PyonPixPubs = ({ onBack }) => {
   const videoRef = useRef(null)
@@ -86,11 +87,12 @@ const PyonPixPubs = ({ onBack }) => {
         muted
         playsInline
         preload="metadata"
-        onClick={onBack}
       >
         <source src="https://github.com/Obsidian-Chrome/nexus/releases/download/1.2.0/Cyberpunk.Assets.-.Pubs.webm" type="video/webm" />
         Votre navigateur ne supporte pas la lecture de vidéos.
       </video>
+
+      <PyonPixVisualizerOverlay onBack={onBack} simple />
     </div>
   )
 }

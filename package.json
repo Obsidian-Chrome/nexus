@@ -7,16 +7,18 @@
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
-    "deploy": "vite build && gh-pages -d dist"
+    "deploy": "vite build && node -e \"require('fs').rmSync('dist/media/intra', { recursive: true, force: true })\" && gh-pages -d dist"
   },
   "dependencies": {
+    "@types/three": "^0.185.1",
     "gifshot": "^0.4.5",
     "html-to-image": "^1.11.13",
     "html2canvas": "^1.4.1",
     "lucide-react": "^0.344.0",
     "music-metadata": "^11.13.0",
     "react": "^18.3.1",
-    "react-dom": "^18.3.1"
+    "react-dom": "^18.3.1",
+    "three": "^0.185.1"
   },
   "devDependencies": {
     "@types/react": "^18.3.3",
