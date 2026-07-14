@@ -97,7 +97,11 @@ const SeamlessVideoOverlay = ({ src }) => {
   }, [ready])
 
   return (
-    <div ref={containerRef} className="absolute inset-0 w-full h-full pointer-events-none z-20">
+    <div
+      ref={containerRef}
+      className="absolute inset-0 w-full h-full pointer-events-none z-20"
+      style={{ mixBlendMode: 'screen' }}
+    >
       <video
         ref={videoA}
         className="absolute inset-0 w-full h-full object-cover"
@@ -106,7 +110,7 @@ const SeamlessVideoOverlay = ({ src }) => {
         muted
         playsInline
         preload="auto"
-        style={{ opacity: 1, filter: 'grayscale(0.55) brightness(0.75) contrast(0.95) saturate(0.5)' }}
+        style={{ opacity: 1, filter: 'grayscale(0.35) brightness(0.85) contrast(0.95) saturate(0.7)' }}
       />
       <video
         ref={videoB}
@@ -116,11 +120,7 @@ const SeamlessVideoOverlay = ({ src }) => {
         muted
         playsInline
         preload="auto"
-        style={{ opacity: 0, filter: 'grayscale(0.55) brightness(0.75) contrast(0.95) saturate(0.5)' }}
-      />
-      <div
-        className="absolute inset-0 pointer-events-none"
-        style={{ background: 'rgba(100, 110, 120, 0.25)', mixBlendMode: 'multiply' }}
+        style={{ opacity: 0, filter: 'grayscale(0.35) brightness(0.85) contrast(0.95) saturate(0.7)' }}
       />
     </div>
   )

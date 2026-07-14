@@ -62,8 +62,9 @@ const BlindsThreeOverlay = ({ open }) => {
     const visibleHeight = 2 * Math.tan(vFOV / 2) * distance
     const visibleWidth = visibleHeight * (width / height)
 
-    // Store remplit toute la page
+    // Store pleine largeur avec fils légèrement en retrait des bords
     const slatWidth = visibleWidth * 1.02
+    const cordX = visibleWidth * 0.48
     const railHeight = visibleHeight * 0.035
     const slatHeight = visibleHeight * 0.028
     const slatDepth = visibleHeight * 0.006
@@ -92,27 +93,31 @@ const BlindsThreeOverlay = ({ open }) => {
     }
     slatsRef.current = slats
 
-    // Cordes de maintien verticales aux extrémités gauche/droite
+    // Cordes de maintien verticales des rails jusqu'en bas
     const cordRadius = visibleHeight * 0.005
-    const cordGeometry = new THREE.CylinderGeometry(cordRadius, cordRadius, usableHeight, 8)
+    const cordTopY = railTopY - railHeight / 2
+    const cordBottomY = -visibleHeight / 2
+    const cordHeight = cordTopY - cordBottomY
+    const cordCenterY = (cordTopY + cordBottomY) / 2
+    const cordGeometry = new THREE.CylinderGeometry(cordRadius, cordRadius, cordHeight, 8)
     const cordMaterial = new THREE.MeshStandardMaterial({ color: 0xf0f0f0, roughness: 0.9 })
     const cordZ = slatDepth + 0.02
     const leftCord = new THREE.Mesh(cordGeometry, cordMaterial)
-    leftCord.position.set(-visibleWidth / 2, firstSlatY - usableHeight / 2, cordZ)
+    leftCord.position.set(-cordX, cordCenterY, cordZ)
     scene.add(leftCord)
     const rightCord = new THREE.Mesh(cordGeometry, cordMaterial)
-    rightCord.position.set(visibleWidth / 2, firstSlatY - usableHeight / 2, cordZ)
+    rightCord.position.set(cordX, cordCenterY, cordZ)
     scene.add(rightCord)
 
-    // Petits nœuds de cordes visibles
+    // Petits nœuds de cordes visibles en retrait des bords
     const knotGeometry = new THREE.SphereGeometry(cordRadius * 1.4, 8, 8)
     for (let i = 0; i < slatCount; i++) {
       const y = firstSlatY - i * (slatHeight + gap)
       const leftKnot = new THREE.Mesh(knotGeometry, cordMaterial)
-      leftKnot.position.set(-visibleWidth / 2, y, cordZ)
+      leftKnot.position.set(-cordX, y, cordZ)
       scene.add(leftKnot)
       const rightKnot = new THREE.Mesh(knotGeometry, cordMaterial)
-      rightKnot.position.set(visibleWidth / 2, y, cordZ)
+      rightKnot.position.set(cordX, y, cordZ)
       scene.add(rightKnot)
     }
 
