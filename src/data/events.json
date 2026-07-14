@@ -14,21 +14,5 @@
       "username": "jago_is_real",
       "avatar": "https://cdn.discordapp.com/avatars/159360181476524032/97968ed36034f3d8b5e5316d9d645600.png"
     }
-  },
-  {
-    "id": "1524875086153252937",
-    "name": "Ouverture du Deadwire (Avec WarCøre-9)",
-    "description": "Thème vestimentaire : Rave party",
-    "scheduledStartTime": "2026-07-13T19:00:00+00:00",
-    "scheduledEndTime": "2026-07-13T21:45:00+00:00",
-    "location": "La Coupe 2 - 6 | Ragnarok",
-    "status": 1,
-    "userCount": null,
-    "image": "https://cdn.discordapp.com/guild-events/1524875086153252937/bdcca1784d9ecad3a9272d281cbdcffd.png?size=1024",
-    "creator": {
-      "id": "159360181476524032",
-      "username": "jago_is_real",
-      "avatar": "https://cdn.discordapp.com/avatars/159360181476524032/97968ed36034f3d8b5e5316d9d645600.png"
-    }
   }
 ]
