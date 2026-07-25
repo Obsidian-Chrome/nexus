@@ -9,20 +9,20 @@ const MP3_BASE_URL = import.meta.env.PROD
 const RADIOS = [
   { id: 1, freq: '69.9', name: 'Funk Radio', slug: 'funk-radio', logo: '/media/radio/logos/69.9_Funk_Radio.webp', color: '#2596be', playlistFile: '/media/radio/playlists/69.9_Funk_Radio.json' },
   { id: 2, freq: '87.7', name: 'Magenta Station', slug: 'magenta-station', logo: '/media/radio/logos/87.7_Magenta_Station.webp', color: '#2596be', playlistFile: '/media/radio/playlists/87.7_Magenta_Station.json' },
-  { id: 3, freq: '88.9', name: 'Pacific Dreams', slug: 'pacific-dreams', logo: '/media/radio/logos/88.9_Pacific_Dreams.webp', color: '#2596be', playlistFile: '/media/radio/playlists/88.9_Pacific_Dreams.json' },
-  { id: 4, freq: '89.3', name: 'Radio Vexelstrom', slug: 'radio-vexelstrom', logo: '/media/radio/logos/89.3_Radio_Vexelstrom.webp', color: '#2596be', playlistFile: '/media/radio/playlists/89.3_Radio_Vexelstrom.json' },
-  { id: 5, freq: '89.7', name: 'Growl FM', slug: 'growl-fm', logo: '/media/radio/logos/89.7_Growl_FM.webp', color: '#2596be', playlistFile: '/media/radio/playlists/89.7_Growl_FM.json' },
-  { id: 6, freq: '91.9', name: 'Royal Blue Radio', slug: 'royal-blue-radio', logo: '/media/radio/logos/91.9_Royal_Blue_Radio.webp', color: '#2596be', playlistFile: '/media/radio/playlists/91.9_Royal_Blue_Radio.json' },
-  { id: 7, freq: '92.9', name: 'Night FM', slug: 'night-fm', logo: '/media/radio/logos/92.9_Night_FM.webp', color: '#2596be', playlistFile: '/media/radio/playlists/92.9_Night_FM.json' },
-  { id: 8, freq: '95.2', name: 'Samizdat Radio', slug: 'samizdat-radio', logo: '/media/radio/logos/95.2_Samizdat_Radio.webp', color: '#2596be', playlistFile: '/media/radio/playlists/95.2_Samizdat_Radio.json' },
-  { id: 9, freq: '96.1', name: 'Ritual FM', slug: 'ritual-fm', logo: '/media/radio/logos/96.1_Ritual_FM.webp', color: '#2596be', playlistFile: '/media/radio/playlists/96.1_Ritual_FM.json' },
-  { id: 10, freq: '98.7', name: 'Body Heat Radio', slug: 'body-heat-radio', logo: '/media/radio/logos/98.7_Body_Heat_Radio.webp', color: '#2596be', playlistFile: '/media/radio/playlists/98.7_Body_Heat_Radio.json' },
-  { id: 11, freq: '99.9', name: 'Impulse', slug: 'impulse', logo: '/media/radio/logos/99.9_Impulse.webp', color: '#2596be', playlistFile: '/media/radio/playlists/99.9_Impulse.json' },
-  { id: 12, freq: '101.9', name: 'The Dirge', slug: 'the-dirge', logo: '/media/radio/logos/101.9_The_Dirge.webp', color: '#2596be', playlistFile: '/media/radio/playlists/101.9_The_Dirge.json' },
-  { id: 13, freq: '103.5', name: 'Radio PEBKAC', slug: 'radio-pebkac', logo: '/media/radio/logos/103.5_Radio_PEBKAC.webp', color: '#2596be', playlistFile: '/media/radio/playlists/103.5_Radio_PEBKAC.json' },
-  { id: 14, freq: '106.9', name: '30 PRINCIPALES', slug: '30-principales', logo: '/media/radio/logos/106.9_30_PRINCIPALES.webp', color: '#2596be', playlistFile: '/media/radio/playlists/106.9_30_PRINCIPALES.json' },
-  { id: 15, freq: '107.3', name: 'Morro Rock Radio', slug: 'morro-rock-radio', logo: '/media/radio/logos/107.3_Morro_Rock_Radio.webp', color: '#2596be', playlistFile: '/media/radio/playlists/107.3_Morro_Rock_Radio.json' },
-  { id: 16, freq: '107.5', name: 'Dark Star', slug: 'dark-star', logo: '/media/radio/logos/107.5_Dark_Star.webp', color: '#2596be', playlistFile: '/media/radio/playlists/107.5_Dark_Star.json' },
+  { id: 3, freq: '88.9', name: 'Pacific Dreams', slug: 'pacific-dreams', logo: '/media/radio/logos/88.9_Pacific_Dreams.webp', color: '#2596be', playlistFile: '/media/radio/playlists/88.9_Pacific_Dreams.json', streamUrl: 'http://82.65.103.36:8000/pacific-dreams' },
+  { id: 4, freq: '89.3', name: 'Radio Vexelstrom', slug: 'radio-vexelstrom', logo: '/media/radio/logos/89.3_Radio_Vexelstrom.webp', color: '#2596be', playlistFile: '/media/radio/playlists/89.3_Radio_Vexelstrom.json', streamUrl: 'http://82.65.103.36:8000/radio-vexelstrom' },
+  { id: 5, freq: '89.7', name: 'Growl FM', slug: 'growl-fm', logo: '/media/radio/logos/89.7_Growl_FM.webp', color: '#2596be', playlistFile: '/media/radio/playlists/89.7_Growl_FM.json', streamUrl: 'http://82.65.103.36:8000/growl-fm' },
+  { id: 6, freq: '91.9', name: 'Royal Blue Radio', slug: 'royal-blue-radio', logo: '/media/radio/logos/91.9_Royal_Blue_Radio.webp', color: '#2596be', playlistFile: '/media/radio/playlists/91.9_Royal_Blue_Radio.json', streamUrl: 'http://82.65.103.36:8000/royal-blue' },
+  { id: 7, freq: '92.9', name: 'Night FM', slug: 'night-fm', logo: '/media/radio/logos/92.9_Night_FM.webp', color: '#2596be', playlistFile: '/media/radio/playlists/92.9_Night_FM.json', streamUrl: 'http://82.65.103.36:8000/night-fm' },
+  { id: 8, freq: '95.2', name: 'Samizdat Radio', slug: 'samizdat-radio', logo: '/media/radio/logos/95.2_Samizdat_Radio.webp', color: '#2596be', playlistFile: '/media/radio/playlists/95.2_Samizdat_Radio.json', streamUrl: 'http://82.65.103.36:8000/samizdat' },
+  { id: 9, freq: '96.1', name: 'Ritual FM', slug: 'ritual-fm', logo: '/media/radio/logos/96.1_Ritual_FM.webp', color: '#2596be', playlistFile: '/media/radio/playlists/96.1_Ritual_FM.json', streamUrl: 'http://82.65.103.36:8000/ritual-fm' },
+  { id: 10, freq: '98.7', name: 'Body Heat Radio', slug: 'body-heat-radio', logo: '/media/radio/logos/98.7_Body_Heat_Radio.webp', color: '#2596be', playlistFile: '/media/radio/playlists/98.7_Body_Heat_Radio.json', streamUrl: 'http://82.65.103.36:8000/body-heat' },
+  { id: 11, freq: '99.9', name: 'Impulse', slug: 'impulse', logo: '/media/radio/logos/99.9_Impulse.webp', color: '#2596be', playlistFile: '/media/radio/playlists/99.9_Impulse.json', streamUrl: 'http://82.65.103.36:8000/impulse' },
+  { id: 12, freq: '101.9', name: 'The Dirge', slug: 'the-dirge', logo: '/media/radio/logos/101.9_The_Dirge.webp', color: '#2596be', playlistFile: '/media/radio/playlists/101.9_The_Dirge.json', streamUrl: 'http://82.65.103.36:8000/the-dirge' },
+  { id: 13, freq: '103.5', name: 'Radio PEBKAC', slug: 'radio-pebkac', logo: '/media/radio/logos/103.5_Radio_PEBKAC.webp', color: '#2596be', playlistFile: '/media/radio/playlists/103.5_Radio_PEBKAC.json', streamUrl: 'http://82.65.103.36:8000/radio-pebkac' },
+  { id: 14, freq: '106.9', name: '30 PRINCIPALES', slug: '30-principales', logo: '/media/radio/logos/106.9_30_PRINCIPALES.webp', color: '#2596be', playlistFile: '/media/radio/playlists/106.9_30_PRINCIPALES.json', streamUrl: 'http://82.65.103.36:8000/30-principales' },
+  { id: 15, freq: '107.3', name: 'Morro Rock Radio', slug: 'morro-rock-radio', logo: '/media/radio/logos/107.3_Morro_Rock_Radio.webp', color: '#2596be', playlistFile: '/media/radio/playlists/107.3_Morro_Rock_Radio.json', streamUrl: 'http://82.65.103.36:8000/morro-rock' },
+  { id: 16, freq: '107.5', name: 'Dark Star', slug: 'dark-star', logo: '/media/radio/logos/107.5_Dark_Star.webp', color: '#2596be', playlistFile: '/media/radio/playlists/107.5_Dark_Star.json', streamUrl: 'http://82.65.103.36:8000/dark-star' },
 ]
 
 const ScanBar = ({ active, color }) => (
@@ -65,9 +65,11 @@ const Radio = ({ onBack }) => {
   const [duration, setDuration] = useState(0)
   const [currentTrackIndex, setCurrentTrackIndex] = useState(0)
   const [playlistReady, setPlaylistReady] = useState(false)
+  const [directFailed, setDirectFailed] = useState(false)
   const lastRadioIdRef = useRef(null)
   const shouldAutoPlayRef = useRef(false)
   const isFirstLoadRef = useRef(true)
+  const directTimeoutRef = useRef(null)
   const [linkCopied, setLinkCopied] = useState(null)
   const [standaloneMode, setStandaloneMode] = useState(false)
 
@@ -104,10 +106,13 @@ const Radio = ({ onBack }) => {
     return () => clearInterval(glitchInterval)
   }, [])
 
-  // Charger la playlist quand on change de radio
+  // Charger la playlist quand on change de radio ou quand le stream direct échoue
   useEffect(() => {
     // Si aucune radio sélectionnée, ne rien faire
     if (!selectedRadio) return
+
+    // Si un stream direct existe et n'a pas encore échoué, on ne charge pas la playlist
+    if (selectedRadio.streamUrl && !directFailed) return
     
     setPlaylistReady(false)
     setShuffledPlaylist([])
@@ -165,6 +170,67 @@ const Radio = ({ onBack }) => {
       }
     }
     loadPlaylist()
+  }, [selectedRadio, directFailed])
+
+  // Essayer le stream Icecast direct en priorité, fallback playlist si échec
+  useEffect(() => {
+    if (!selectedRadio || !shouldAutoPlayRef.current) return
+    if (!selectedRadio.streamUrl) return
+
+    const audio = audioRef.current
+    if (!audio) return
+
+    setIsLoading(true)
+    setIsPlaying(false)
+    setCurrentTrack(null)
+
+    let cancelled = false
+
+    const failToFallback = () => {
+      if (cancelled) return
+      setDirectFailed(true)
+      setIsLoading(false)
+      setIsPlaying(false)
+      audio.pause()
+      audio.src = ''
+    }
+
+    audio.onerror = () => {
+      console.error('Erreur stream direct, fallback playlist:', selectedRadio.streamUrl)
+      failToFallback()
+    }
+
+    audio.oncanplay = () => {
+      if (cancelled) return
+      if (directTimeoutRef.current) {
+        clearTimeout(directTimeoutRef.current)
+        directTimeoutRef.current = null
+      }
+      setIsPlaying(true)
+      setIsLoading(false)
+    }
+
+    audio.src = selectedRadio.streamUrl
+    audio.volume = volume
+    audio.play().catch(e => {
+      console.error('Erreur lecture stream direct:', e)
+      failToFallback()
+    })
+
+    // Timeout de sécurité : si pas de canplay sous 5s, fallback
+    directTimeoutRef.current = setTimeout(() => {
+      if (cancelled) return
+      console.warn('Timeout stream direct, fallback playlist:', selectedRadio.streamUrl)
+      failToFallback()
+    }, 5000)
+
+    return () => {
+      cancelled = true
+      if (directTimeoutRef.current) {
+        clearTimeout(directTimeoutRef.current)
+        directTimeoutRef.current = null
+      }
+    }
   }, [selectedRadio])
 
   // Démarrer la lecture quand la playlist est prête ET qu'on doit jouer
@@ -293,6 +359,14 @@ const Radio = ({ onBack }) => {
     if (audioRef.current) {
       audioRef.current.pause()
       audioRef.current.currentTime = 0
+      audioRef.current.onerror = null
+      audioRef.current.oncanplay = null
+    }
+    
+    // Nettoyer le timeout de fallback éventuel
+    if (directTimeoutRef.current) {
+      clearTimeout(directTimeoutRef.current)
+      directTimeoutRef.current = null
     }
     
     // Reset complet et activer le chargement
@@ -300,70 +374,147 @@ const Radio = ({ onBack }) => {
     setIsLoading(true) // Débuter le chargement
     setCurrentTrack(null)
     setPlaylistReady(false)
+    setDirectFailed(false)
     
-    // Changer de radio (déclenche le chargement de playlist)
+    // Changer de radio (déclenche le chargement direct ou playlist)
     setSelectedRadio(radio)
     lastRadioIdRef.current = radio.id
     
-    // Indiquer qu'on veut auto-play quand la playlist sera prête
+    // Indiquer qu'on veut auto-play quand le média sera prêt
     shouldAutoPlayRef.current = true
   }
 
-  const handlePlayPause = () => {
+  const playDirectStream = async (url) => {
+    const audio = audioRef.current
+    if (!audio || !url) return false
+
+    // Si la source est déjà ce stream et qu'on peut reprendre
+    if (audio.src === url && !audio.error) {
+      try {
+        audio.volume = volume
+        await audio.play()
+        setIsPlaying(true)
+        setIsLoading(false)
+        return true
+      } catch (e) {
+        console.error('Erreur relecture stream:', e)
+      }
+    }
+
+    // Chargement / rechargement du stream
+    setIsLoading(true)
+    setIsPlaying(false)
+    setCurrentTrack(null)
+
+    return new Promise((resolve) => {
+      let timeout = null
+      let resolved = false
+
+      const cleanup = () => {
+        if (timeout) clearTimeout(timeout)
+        audio.onerror = null
+      }
+      const resolveOnce = (value) => {
+        if (resolved) return
+        resolved = true
+        cleanup()
+        resolve(value)
+      }
+
+      const onError = (e) => {
+        console.error('Erreur stream:', e)
+        setDirectFailed(true)
+        setIsLoading(false)
+        setIsPlaying(false)
+        resolveOnce(false)
+      }
+
+      audio.onerror = onError
+
+      audio.src = url
+      audio.volume = volume
+      audio.play()
+        .then(() => {
+          setIsPlaying(true)
+          setIsLoading(false)
+          resolveOnce(true)
+        })
+        .catch((e) => {
+          console.error('Erreur lecture stream:', e)
+          onError(e)
+        })
+
+      // Timeout de sécurité : si play ne démarre pas sous 5s, fallback
+      timeout = setTimeout(() => {
+        console.warn('Timeout stream, fallback playlist:', url)
+        setDirectFailed(true)
+        setIsLoading(false)
+        setIsPlaying(false)
+        try { audio.pause() } catch {}
+        resolveOnce(false)
+      }, 5000)
+    })
+  }
+
+  const playPlaylistTrack = () => {
+    if (!shuffledPlaylist.length) return
+    const totalDuration = shuffledPlaylist.reduce((acc, track) => acc + track.duration, 0)
+    const now = Date.now() / 1000
+    const positionInCycle = now % totalDuration
+
+    let elapsed = 0
+    let trackIndex = 0
+    let trackPosition = 0
+
+    for (let i = 0; i < shuffledPlaylist.length; i++) {
+      if (elapsed + shuffledPlaylist[i].duration > positionInCycle) {
+        trackIndex = i
+        trackPosition = positionInCycle - elapsed
+        break
+      }
+      elapsed += shuffledPlaylist[i].duration
+    }
+
+    const track = shuffledPlaylist[trackIndex]
+    setCurrentTrack(track)
+    setCurrentTrackIndex(trackIndex)
+
+    if (audioRef.current) {
+      const audioSrc = track.file.startsWith('http')
+        ? track.file
+        : `${MP3_BASE_URL}${track.file}`
+
+      audioRef.current.src = audioSrc
+      audioRef.current.currentTime = trackPosition
+      audioRef.current.volume = volume
+      audioRef.current.play().catch(e => console.error('Erreur lecture playlist:', e))
+      setIsPlaying(true)
+      setIsLoading(false)
+    }
+  }
+
+  const handlePlayPause = async () => {
     if (isPlaying) {
       audioRef.current?.pause()
       setIsPlaying(false)
+      return
+    }
+
+    if (!selectedRadio) return
+
+    // Stream direct : priorité, sauf si déjà en échec
+    if (selectedRadio.streamUrl && !directFailed) {
+      const ok = await playDirectStream(selectedRadio.streamUrl)
+      if (ok) return
+      // Sinon, directFailed a été mis à true et on continue vers le fallback
+    }
+
+    // Fallback playlist
+    if (playlistReady && shuffledPlaylist.length > 0) {
+      playPlaylistTrack()
     } else {
-      // Si pas de currentTrack, déclencher le chargement/lecture
-      if (!currentTrack && selectedRadio) {
-        if (playlistReady && shuffledPlaylist.length > 0) {
-          // La playlist est déjà chargée, calculer et jouer la piste
-          const totalDuration = shuffledPlaylist.reduce((acc, track) => acc + track.duration, 0)
-          const now = Date.now() / 1000
-          const positionInCycle = now % totalDuration
-          
-          let elapsed = 0
-          let trackIndex = 0
-          let trackPosition = 0
-          
-          for (let i = 0; i < shuffledPlaylist.length; i++) {
-            if (elapsed + shuffledPlaylist[i].duration > positionInCycle) {
-              trackIndex = i
-              trackPosition = positionInCycle - elapsed
-              break
-            }
-            elapsed += shuffledPlaylist[i].duration
-          }
-          
-          const track = shuffledPlaylist[trackIndex]
-          setCurrentTrack(track)
-          setCurrentTrackIndex(trackIndex)
-          
-          if (audioRef.current) {
-            const audioSrc = track.file.startsWith('http') 
-              ? track.file 
-              : `${MP3_BASE_URL}${track.file}`
-            
-            audioRef.current.src = audioSrc
-            audioRef.current.currentTime = trackPosition
-            audioRef.current.volume = volume
-            audioRef.current.play().catch(e => console.error('Erreur lecture:', e))
-            setIsPlaying(true)
-          }
-        } else {
-          // La playlist n'est pas encore chargée, attendre
-          setIsLoading(true)
-          shouldAutoPlayRef.current = true
-        }
-        return
-      }
-      
-      if (audioRef.current && currentTrack) {
-        audioRef.current.volume = volume
-        audioRef.current.play().catch(e => console.error('Erreur lecture:', e))
-      }
-      setIsPlaying(true)
-      setIsLoading(false)
+      setIsLoading(true)
+      shouldAutoPlayRef.current = true
     }
   }
 
@@ -719,13 +870,13 @@ const Radio = ({ onBack }) => {
                     </span>
                   </div>
                 </div>
-              ) : (
+              ) : !isPlaying ? (
                 <div className="text-center py-4 flex-shrink-0">
                   <div className="text-sm tracking-widest" style={{ color: '#555555' }}>
-                    {isPlaying ? 'CHARGEMENT...' : 'APPUYEZ SUR PLAY'}
+                    APPUYEZ SUR PLAY
                   </div>
                 </div>
-              )}
+              ) : null}
 
               {/* Contrôles - Volume uniquement - Caché sur mobile */}
               <div className="hidden lg:flex flex-col items-center gap-6 w-full max-w-sm flex-shrink-0">
@@ -787,6 +938,7 @@ const Radio = ({ onBack }) => {
       <audio
         ref={audioRef}
         onEnded={handleTrackEnded}
+        preload="auto"
       />
 
       <style>{`
