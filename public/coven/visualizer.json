@@ -47,6 +47,14 @@
       "heureFin": "23:59",
       "fichier": "visualizer_hex.webm",
       "hexadecimal": ""
+    },
+    {
+      "concert": "Nogta",
+      "date": "15/09/2026",
+      "heureDebut": "21:00",
+      "heureFin": "23:59",
+      "fichier": "visualizer_nogta.webm",
+      "hexadecimal": ""
     }
   ],
   "default": {
