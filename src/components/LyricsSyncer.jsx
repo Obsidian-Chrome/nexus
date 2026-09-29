@@ -13,7 +13,10 @@ const LyricsSyncer = () => {
   const [currentTime, setCurrentTime] = useState(0)
   const [duration, setDuration] = useState(0)
   const [addMusicNote, setAddMusicNote] = useState(true)
-  const [exportByStanza, setExportByStanza] = useState(true)
+  const [exportMode, setExportMode] = useState('stanza') // 'line', 'stanza', 'dynamic', 'custom'
+  const [customSeparators, setCustomSeparators] = useState([]) // Indices des séparateurs
+  const [selectedSeparators, setSelectedSeparators] = useState([]) // Séparateurs sélectionnés
+  const [showCustomModal, setShowCustomModal] = useState(false)
   const [songTitle, setSongTitle] = useState('')
   const [customCommand, setCustomCommand] = useState('')
   const [editingLineIndex, setEditingLineIndex] = useState(null)
@@ -192,12 +195,22 @@ const LyricsSyncer = () => {
             if (projectData.customCommand) setCustomCommand(projectData.customCommand)
             if (projectData.lyrics) setLyrics(projectData.lyrics)
             if (projectData.timestamps) setTimestamps(projectData.timestamps)
+            if (typeof projectData.currentLineIndex !== 'undefined') {
+              setCurrentLineIndex(projectData.currentLineIndex)
+            }
             if (projectData.options) {
               if (typeof projectData.options.addMusicNote !== 'undefined') {
                 setAddMusicNote(projectData.options.addMusicNote)
               }
-              if (typeof projectData.options.exportByStanza !== 'undefined') {
-                setExportByStanza(projectData.options.exportByStanza)
+              if (typeof projectData.options.exportMode !== 'undefined') {
+                setExportMode(projectData.options.exportMode)
+              }
+              // Rétrocompatibilité avec les anciens fichiers
+              else if (typeof projectData.options.exportByStanza !== 'undefined') {
+                setExportMode(projectData.options.exportByStanza ? 'stanza' : 'line')
+              }
+              if (typeof projectData.options.customSeparators !== 'undefined') {
+                setCustomSeparators(projectData.options.customSeparators)
               }
             }
 
@@ -324,7 +337,7 @@ const LyricsSyncer = () => {
       output.push(customCommand.trim())
     }
 
-    if (exportByStanza) {
+    if (exportMode === 'stanza' || exportMode === 'dynamic' || exportMode === 'custom') {
       // Export par strophe
       let currentStanza = []
       let stanzaStartTime = null
@@ -350,7 +363,10 @@ const LyricsSyncer = () => {
         const line = parsedLines[i]
         const timestamp = timestamps[i]
         
-        if (isEchoLine(line)) {
+        // Mode personnalisé : vérifier si on doit couper ici
+        const shouldSplitCustom = exportMode === 'custom' && customSeparators.includes(i - 1)
+        
+        if (isEchoLine(line) || shouldSplitCustom) {
           // Si on a une strophe en cours, on l'exporte
           if (currentStanza.length > 0) {
             const stanzaText = joinStanzaLines(currentStanza)
@@ -377,10 +393,12 @@ const LyricsSyncer = () => {
             stanzaStartTime = null
           }
           
-          // Ajouter la ligne echo SEULEMENT si elle n'est pas vide
-          const cleanedLine = cleanLine(line)
-          if (cleanedLine !== '') {
-            output.push(`/echo ${cleanedLine}`)
+          // Ajouter la ligne echo SEULEMENT si elle n'est pas vide ET si ce n'est pas juste un séparateur custom
+          if (!shouldSplitCustom) {
+            const cleanedLine = cleanLine(line)
+            if (cleanedLine !== '') {
+              output.push(`/echo ${cleanedLine}`)
+            }
           }
         } else {
           // Ajouter la ligne à la strophe actuelle
@@ -388,6 +406,34 @@ const LyricsSyncer = () => {
             stanzaStartTime = timestamp
           }
           currentStanza.push(cleanLine(line))
+          
+          // Mode dynamique : découper à la moitié de la strophe
+          const shouldSplitDynamic = exportMode === 'dynamic' && currentStanza.length >= 2
+          
+          if (shouldSplitDynamic) {
+            const stanzaText = joinStanzaLines(currentStanza)
+            let stanzaLine = `/y ${stanzaText}`
+            if (addMusicNote) stanzaLine += ' ♪'
+            
+            // Calculer le wait jusqu'à la prochaine ligne non-echo
+            if (stanzaStartTime !== null) {
+              let nextStanzaTime = null
+              for (let j = i + 1; j < parsedLines.length; j++) {
+                if (!isEchoLine(parsedLines[j]) && timestamps[j] !== null) {
+                  nextStanzaTime = timestamps[j]
+                  break
+                }
+              }
+              if (nextStanzaTime !== null) {
+                const waitTime = Math.round(nextStanzaTime - stanzaStartTime)
+                stanzaLine += ` <wait.${waitTime}>`
+              }
+            }
+            
+            output.push(stanzaLine)
+            currentStanza = []
+            stanzaStartTime = null
+          }
         }
       }
       
@@ -440,9 +486,10 @@ const LyricsSyncer = () => {
     const a = document.createElement('a')
     a.href = url
     // Nettoyer le nom de fichier : remplacer espaces par tirets et retirer caractères invalides
+    const modeSuffix = exportMode === 'line' ? '_ligne' : exportMode === 'stanza' ? '_strophe' : exportMode === 'dynamic' ? '_dynamique' : '_personnalise'
     const cleanFileName = songTitle.trim() 
-      ? `${songTitle.trim().replace(/\s+/g, '-').replace(/[<>:"/\\|?*]/g, '_')}.txt` 
-      : 'lyrics_macro.txt'
+      ? `${songTitle.trim().replace(/\s+/g, '-').replace(/[<>:"/\\|?*]/g, '_')}${modeSuffix}.txt` 
+      : `lyrics_macro${modeSuffix}.txt`
     a.download = cleanFileName
     document.body.appendChild(a)
     a.click()
@@ -497,9 +544,11 @@ const LyricsSyncer = () => {
       customCommand,
       lyrics,
       timestamps,
+      currentLineIndex,
       options: {
         addMusicNote,
-        exportByStanza
+        exportMode,
+        customSeparators
       },
       metadata: {
         savedAt: new Date().toISOString(),
@@ -536,12 +585,22 @@ const LyricsSyncer = () => {
           if (projectData.customCommand) setCustomCommand(projectData.customCommand)
           if (projectData.lyrics) setLyrics(projectData.lyrics)
           if (projectData.timestamps) setTimestamps(projectData.timestamps)
+          if (typeof projectData.currentLineIndex !== 'undefined') {
+            setCurrentLineIndex(projectData.currentLineIndex)
+          }
           if (projectData.options) {
             if (typeof projectData.options.addMusicNote !== 'undefined') {
               setAddMusicNote(projectData.options.addMusicNote)
             }
-            if (typeof projectData.options.exportByStanza !== 'undefined') {
-              setExportByStanza(projectData.options.exportByStanza)
+            if (typeof projectData.options.exportMode !== 'undefined') {
+              setExportMode(projectData.options.exportMode)
+            }
+            // Rétrocompatibilité avec les anciens fichiers
+            else if (typeof projectData.options.exportByStanza !== 'undefined') {
+              setExportMode(projectData.options.exportByStanza ? 'stanza' : 'line')
+            }
+            if (typeof projectData.options.customSeparators !== 'undefined') {
+              setCustomSeparators(projectData.options.customSeparators)
             }
           }
 
@@ -884,22 +943,36 @@ const LyricsSyncer = () => {
                     </span>
                   </label>
 
-                  <label className="flex items-center gap-3 cursor-pointer group">
-                    <input
-                      type="checkbox"
-                      checked={exportByStanza}
-                      onChange={(e) => setExportByStanza(e.target.checked)}
-                      className="w-4 h-4 accent-cyan-500"
-                    />
-                    <div className="flex-1">
-                      <span className="text-gray-300 text-sm group-hover:text-white transition-colors block">
-                        Exporter par strophe
-                      </span>
-                      <span className="text-gray-500 text-xs">
-                        Regroupe les strophes séparées par un saut de ligne
-                      </span>
-                    </div>
-                  </label>
+                  <div>
+                    <label className="block text-gray-300 text-sm mb-2">
+                      Mode d'export
+                    </label>
+                    <select
+                      value={exportMode}
+                      onChange={(e) => setExportMode(e.target.value)}
+                      className="w-full bg-zinc-800 border border-zinc-700 text-white px-3 py-2 text-sm focus:outline-none focus:border-cyan-500/50 transition-colors"
+                    >
+                      <option value="line">Ligne par ligne</option>
+                      <option value="stanza">Strophe par strophe</option>
+                      <option value="dynamic">Dynamique (demi-strophe)</option>
+                      <option value="custom">Personnalisé</option>
+                    </select>
+                    <p className="text-gray-500 text-xs mt-1">
+                      {exportMode === 'line' && 'Chaque ligne = une macro'}
+                      {exportMode === 'stanza' && 'Regroupe les strophes complètes'}
+                      {exportMode === 'dynamic' && 'Découpe les strophes en 2 lignes'}
+                      {exportMode === 'custom' && 'Définissez vos propres groupes'}
+                    </p>
+                    {exportMode === 'custom' && (
+                      <button
+                        onClick={() => setShowCustomModal(true)}
+                        className="w-full mt-2 bg-purple-500/20 border border-purple-500/40 text-purple-300 px-3 py-2 hover:bg-purple-500/30 transition-colors text-sm flex items-center justify-center gap-2"
+                      >
+                        <Settings className="w-4 h-4" />
+                        Configurer les groupes
+                      </button>
+                    )}
+                  </div>
                 </div>
               </div>
 
@@ -914,6 +987,11 @@ const LyricsSyncer = () => {
                     const timestamp = timestamps[index]
                     const isEcho = isEchoLine(line)
                     const cleaned = cleanLine(line)
+                    
+                    // Ne pas afficher les lignes vides dans l'aperçu
+                    if (isEmptyLine(line)) {
+                      return null
+                    }
                     
                     // Calculer le wait pour les lignes non-echo
                     let waitDisplay = null
@@ -1049,6 +1127,156 @@ const LyricsSyncer = () => {
           </div>
         </div>
       </div>
+
+      {/* Modal de configuration des groupes personnalisés */}
+      {showCustomModal && (
+        <div className="fixed inset-0 bg-black/80 z-[100] flex items-center justify-center p-8">
+          <div className="bg-zinc-900 border border-zinc-700 rounded-lg max-w-3xl w-full max-h-[80vh] flex flex-col">
+            {/* Header */}
+            <div className="flex items-center justify-between p-6 border-b border-zinc-700">
+              <h2 className="text-white text-xl font-semibold">Groupes personnalisés</h2>
+              <button
+                onClick={() => {
+                  setShowCustomModal(false)
+                  setSelectedSeparators([])
+                }}
+                className="text-gray-400 hover:text-white transition-colors"
+              >
+                ✕
+              </button>
+            </div>
+
+            {/* Content */}
+            <div className="flex-1 overflow-y-auto p-6">
+              <p className="text-gray-400 text-sm mb-4">
+                Cliquez entre les lignes pour ajouter/retirer un séparateur • Ctrl/Shift pour sélection multiple
+              </p>
+              
+              <div className="space-y-0 font-mono text-sm">
+                {parsedLines.map((line, index) => {
+                  const isEcho = isEchoLine(line)
+                  const isEmpty = isEmptyLine(line)
+                  const timestamp = timestamps[index]
+                  const hasSeparatorAfter = customSeparators.includes(index)
+                  
+                  if (isEmpty) return null
+
+                  return (
+                    <div key={index}>
+                      {/* Ligne */}
+                      <div className={`px-3 py-2 ${
+                        isEcho ? 'text-yellow-400' : timestamp !== null ? 'text-green-400' : 'text-gray-500'
+                      }`}>
+                        <div className="flex items-center justify-between">
+                          <span className="flex-1">{cleanLine(line)}</span>
+                          {!isEcho && timestamp !== null && (
+                            <span className="text-gray-600 text-xs ml-2">[{formatTime(timestamp)}]</span>
+                          )}
+                          {isEcho && <span className="text-xs text-yellow-600 ml-2">/echo</span>}
+                        </div>
+                      </div>
+
+                      {/* Zone cliquable pour ajouter/retirer séparateur */}
+                      {index < parsedLines.length - 1 && !isEmptyLine(parsedLines[index + 1]) && (
+                        <div
+                          onClick={(e) => {
+                            if (hasSeparatorAfter) {
+                              // Retirer le séparateur
+                              setCustomSeparators(prev => prev.filter(i => i !== index))
+                              setSelectedSeparators(prev => prev.filter(i => i !== index))
+                            } else {
+                              // Ajouter le séparateur
+                              setCustomSeparators(prev => [...prev, index].sort((a, b) => a - b))
+                            }
+                          }}
+                          className={`h-6 flex items-center justify-center cursor-pointer transition-all ${
+                            hasSeparatorAfter
+                              ? selectedSeparators.includes(index)
+                                ? 'bg-blue-500/20'
+                                : 'bg-zinc-800/50 hover:bg-zinc-700/50'
+                              : 'hover:bg-cyan-500/10'
+                          }`}
+                        >
+                          {hasSeparatorAfter ? (
+                            <div
+                              onClick={(e) => {
+                                e.stopPropagation()
+                                if (e.ctrlKey || e.metaKey) {
+                                  // Ctrl: toggle sélection
+                                  setSelectedSeparators(prev =>
+                                    prev.includes(index)
+                                      ? prev.filter(i => i !== index)
+                                      : [...prev, index]
+                                  )
+                                } else if (e.shiftKey && selectedSeparators.length > 0) {
+                                  // Shift: sélection en plage
+                                  const lastSelected = selectedSeparators[selectedSeparators.length - 1]
+                                  const start = Math.min(lastSelected, index)
+                                  const end = Math.max(lastSelected, index)
+                                  const range = customSeparators.filter(i => i >= start && i <= end)
+                                  setSelectedSeparators(range)
+                                } else {
+                                  // Clic simple: sélection unique
+                                  setSelectedSeparators([index])
+                                }
+                              }}
+                              className={`w-full border-t-2 transition-colors ${
+                                selectedSeparators.includes(index)
+                                  ? 'border-blue-500'
+                                  : 'border-zinc-600 hover:border-cyan-500'
+                              }`}
+                            />
+                          ) : (
+                            <div className="text-zinc-700 text-xs">+ séparateur</div>
+                          )}
+                        </div>
+                      )}
+                    </div>
+                  )
+                })}
+              </div>
+            </div>
+
+            {/* Footer */}
+            <div className="p-6 border-t border-zinc-700 flex items-center justify-between">
+              <div className="text-sm text-gray-400">
+                {customSeparators.length + 1} groupe{customSeparators.length > 0 ? 's' : ''}
+                {selectedSeparators.length > 0 && (
+                  <button
+                    onClick={() => {
+                      setCustomSeparators(prev => prev.filter(i => !selectedSeparators.includes(i)))
+                      setSelectedSeparators([])
+                    }}
+                    className="ml-4 text-red-400 hover:text-red-300 transition-colors"
+                  >
+                    Supprimer sélection ({selectedSeparators.length})
+                  </button>
+                )}
+              </div>
+              <div className="flex gap-3">
+                <button
+                  onClick={() => {
+                    setCustomSeparators([])
+                    setSelectedSeparators([])
+                  }}
+                  className="px-4 py-2 bg-zinc-700 text-gray-300 hover:bg-zinc-600 transition-colors"
+                >
+                  Réinitialiser
+                </button>
+                <button
+                  onClick={() => {
+                    setShowCustomModal(false)
+                    setSelectedSeparators([])
+                  }}
+                  className="px-4 py-2 bg-cyan-500 text-black hover:bg-cyan-400 transition-colors font-semibold"
+                >
+                  Valider
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   )
 }
