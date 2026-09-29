@@ -20,6 +20,7 @@ import MonthCalendar from './components/MonthCalendar'
 import EventModal from './components/EventModal'
 import EventDetailModal from './components/EventDetailModal'
 import EventFilters from './components/EventFilters'
+import LyricsSyncer from './components/LyricsSyncer'
 
 const Footer = () => (
   <footer className="border-t border-zinc-800 mt-auto relative z-10">
@@ -64,6 +65,7 @@ function App() {
   const [showCovenVisualizer, setShowCovenVisualizer] = useState(false)
   const [showCovenDVD, setShowCovenDVD] = useState(false)
   const [showRadio, setShowRadio] = useState(false)
+  const [showLyricsSyncer, setShowLyricsSyncer] = useState(false)
   const [showCopyNotification, setShowCopyNotification] = useState(false)
   const [selectedDayEvents, setSelectedDayEvents] = useState(null)
   const [selectedEventDate, setSelectedEventDate] = useState(null)
@@ -190,7 +192,7 @@ function App() {
         window.scrollTo(0, 0)
       }
     }, 0)
-  }, [selectedCategory, showPyonPixNightcity, showPyonPixCentreVille, showPyonPixPubs, showCoven, showCovenVisualizer, showCovenDVD, showRadio])
+  }, [selectedCategory, showPyonPixNightcity, showPyonPixCentreVille, showPyonPixPubs, showCoven, showCovenVisualizer, showCovenDVD, showRadio, showLyricsSyncer])
 
   useEffect(() => {
     const handleHashChange = () => {
@@ -200,8 +202,20 @@ function App() {
       const hashParams = queryIndex > -1 ? new URLSearchParams(fullHash.substring(queryIndex + 1)) : new URLSearchParams()
 
       if (hash) {
-        if (hash === 'radio') {
+        if (hash === 'macro-sync') {
+          setShowLyricsSyncer(true)
+          setShowRadio(false)
+          setShowPyonPixNightcity(false)
+          setShowPyonPixCentreVille(false)
+          setShowPyonPixPubs(false)
+          setShowCoven(false)
+          setShowCovenVisualizer(false)
+          setShowCovenDVD(false)
+          setSelectedCategory(null)
+          setSelectedReseau(null)
+        } else if (hash === 'radio') {
           setShowRadio(true)
+          setShowLyricsSyncer(false)
           setShowPyonPixNightcity(false)
           setShowPyonPixCentreVille(false)
           setShowPyonPixPubs(false)
@@ -218,6 +232,7 @@ function App() {
           setShowCovenVisualizer(false)
           setShowCovenDVD(false)
           setShowRadio(false)
+          setShowLyricsSyncer(false)
           setSelectedCategory(null)
           setSelectedReseau(null)
         } else if (hash === 'pyonpix/centreville') {
@@ -228,6 +243,7 @@ function App() {
           setShowCovenVisualizer(false)
           setShowCovenDVD(false)
           setShowRadio(false)
+          setShowLyricsSyncer(false)
           setSelectedCategory(null)
           setSelectedReseau(null)
         } else if (hash === 'pyonpix/pubs') {
@@ -238,6 +254,7 @@ function App() {
           setShowCovenVisualizer(false)
           setShowCovenDVD(false)
           setShowRadio(false)
+          setShowLyricsSyncer(false)
           setSelectedCategory(null)
           setSelectedReseau(null)
         } else if (hash === 'coven' || hash === 'coven/') {
@@ -248,6 +265,7 @@ function App() {
           setShowCovenVisualizer(false)
           setShowCovenDVD(false)
           setShowRadio(false)
+          setShowLyricsSyncer(false)
           setSelectedCategory(null)
           setSelectedReseau(null)
         } else if (hash === 'coven/visualizer') {
@@ -255,6 +273,7 @@ function App() {
           setShowCoven(false)
           setShowCovenDVD(false)
           setShowRadio(false)
+          setShowLyricsSyncer(false)
           setShowPyonPixNightcity(false)
           setShowPyonPixCentreVille(false)
           setShowPyonPixPubs(false)
@@ -265,6 +284,7 @@ function App() {
           setShowCoven(false)
           setShowCovenVisualizer(false)
           setShowRadio(false)
+          setShowLyricsSyncer(false)
           setShowPyonPixNightcity(false)
           setShowPyonPixCentreVille(false)
           setShowPyonPixPubs(false)
@@ -317,6 +337,7 @@ function App() {
             setShowCoven(false)
             setShowCovenVisualizer(false)
             setShowCovenDVD(false)
+            setShowLyricsSyncer(false)
           }
         }
       } else {
@@ -329,6 +350,7 @@ function App() {
         setShowCovenVisualizer(false)
         setShowCovenDVD(false)
         setShowRadio(false)
+        setShowLyricsSyncer(false)
       }
     }
 
@@ -1065,6 +1087,13 @@ function App() {
                     requiresPyonPix: true
                   },
                   {
+                    title: 'Macro Sync',
+                    description: 'Outil pour synchroniser des paroles avec une musique et exporter en macro FFXIV',
+                    url: '#macro-sync',
+                    tags: ['Utilitaire'],
+                    isInternal: true
+                  },
+                  {
                     title: 'Cyberpunk - Paysages magiques',
                     description: 'Mod modifiant les paysages magiques du jeu au profit de paysages du jeu Cyberpunk 2077',
                     url: 'https://heliosphere.app/mod/wnpyxb0ht96rfd85xzd3gqpgs0',
@@ -1458,6 +1487,10 @@ function App() {
           />
         )}
 
+        {showLyricsSyncer && (
+          <LyricsSyncer />
+        )}
+
         </div>
       </div>
 
@@ -1483,7 +1516,7 @@ function App() {
         </div>
       )}
 
-      {!selectedReseau && !showPyonPixNightcity && !showPyonPixCentreVille && !showPyonPixPubs && !showCoven && !showCovenVisualizer && !showCovenDVD && !showRadio && <Footer />}
+      {!selectedReseau && !showPyonPixNightcity && !showPyonPixCentreVille && !showPyonPixPubs && !showCoven && !showCovenVisualizer && !showCovenDVD && !showRadio && !showLyricsSyncer && <Footer />}
     </div>
   )
 }
