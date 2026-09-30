@@ -17,6 +17,7 @@ const LyricsSyncer = () => {
   const [customSeparators, setCustomSeparators] = useState([]) // Indices des séparateurs
   const [selectedSeparators, setSelectedSeparators] = useState([]) // Séparateurs sélectionnés
   const [showCustomModal, setShowCustomModal] = useState(false)
+  const isLoadingProjectRef = useRef(false)
   const [songTitle, setSongTitle] = useState('')
   const [customCommand, setCustomCommand] = useState('')
   const [editingLineIndex, setEditingLineIndex] = useState(null)
@@ -32,14 +33,14 @@ const LyricsSyncer = () => {
 
   // Parse les lyrics en lignes (garde les lignes vides pour détecter les strophes)
   useEffect(() => {
-    if (lyrics) {
+    if (lyrics && !isLoadingProjectRef.current) {
       const lines = lyrics.split('\n')
       setParsedLines(lines)
       setTimestamps(new Array(lines.length).fill(null))
       // Trouver la première ligne qui n'est pas un /echo et qui n'est pas vide
       const firstNonEchoIndex = lines.findIndex(line => line.trim() !== '' && !isEchoLine(line))
       setCurrentLineIndex(firstNonEchoIndex >= 0 ? firstNonEchoIndex : 0)
-    } else {
+    } else if (!lyrics && !isLoadingProjectRef.current) {
       setParsedLines([])
       setTimestamps([])
       setCurrentLineIndex(0)
@@ -190,40 +191,61 @@ const LyricsSyncer = () => {
           try {
             const projectData = JSON.parse(event.target.result)
             
-            // Restaurer toutes les données
-            if (projectData.songTitle) setSongTitle(projectData.songTitle)
-            if (projectData.customCommand) setCustomCommand(projectData.customCommand)
-            if (projectData.lyrics) setLyrics(projectData.lyrics)
-            if (projectData.timestamps) setTimestamps(projectData.timestamps)
-            if (typeof projectData.currentLineIndex !== 'undefined') {
-              setCurrentLineIndex(projectData.currentLineIndex)
-            }
-            if (projectData.options) {
-              if (typeof projectData.options.addMusicNote !== 'undefined') {
-                setAddMusicNote(projectData.options.addMusicNote)
+            // Activer le flag de chargement pour empêcher le useEffect de réinitialiser
+            isLoadingProjectRef.current = true
+            
+            // Parser les lyrics d'abord
+            const lines = projectData.lyrics ? projectData.lyrics.split('\n') : []
+            
+            // Restaurer toutes les données en une seule fois avec un batch
+            setTimeout(() => {
+              if (projectData.songTitle) setSongTitle(projectData.songTitle)
+              if (projectData.customCommand) setCustomCommand(projectData.customCommand)
+              if (projectData.lyrics) setLyrics(projectData.lyrics)
+              
+              // Restaurer parsedLines et timestamps APRÈS lyrics
+              setParsedLines(lines)
+              if (projectData.timestamps) {
+                setTimestamps(projectData.timestamps)
+                console.log('Timestamps chargés (drag&drop):', projectData.timestamps.filter(t => t !== null).length, 'sur', projectData.timestamps.length)
+                console.log('Exemple timestamps:', projectData.timestamps.slice(0, 10))
+                console.log('parsedLines length:', lines.length)
               }
-              if (typeof projectData.options.exportMode !== 'undefined') {
-                setExportMode(projectData.options.exportMode)
+              
+              if (typeof projectData.currentLineIndex !== 'undefined') {
+                setCurrentLineIndex(projectData.currentLineIndex)
               }
-              // Rétrocompatibilité avec les anciens fichiers
-              else if (typeof projectData.options.exportByStanza !== 'undefined') {
-                setExportMode(projectData.options.exportByStanza ? 'stanza' : 'line')
+              if (projectData.options) {
+                if (typeof projectData.options.addMusicNote !== 'undefined') {
+                  setAddMusicNote(projectData.options.addMusicNote)
+                }
+                if (typeof projectData.options.exportMode !== 'undefined') {
+                  setExportMode(projectData.options.exportMode)
+                }
+                // Rétrocompatibilité avec les anciens fichiers
+                else if (typeof projectData.options.exportByStanza !== 'undefined') {
+                  setExportMode(projectData.options.exportByStanza ? 'stanza' : 'line')
+                }
+                if (typeof projectData.options.customSeparators !== 'undefined') {
+                  setCustomSeparators(projectData.options.customSeparators)
+                }
               }
-              if (typeof projectData.options.customSeparators !== 'undefined') {
-                setCustomSeparators(projectData.options.customSeparators)
-              }
-            }
 
-            // Réinitialiser l'état
-            setEditingLineIndex(null)
-            setShowPreview(false)
-            setIsPlaying(false)
-            if (audioRef.current) {
-              audioRef.current.pause()
-              audioRef.current.currentTime = 0
-            }
+              // Réinitialiser l'état
+              setEditingLineIndex(null)
+              setShowPreview(false)
+              setIsPlaying(false)
+              if (audioRef.current) {
+                audioRef.current.pause()
+                audioRef.current.currentTime = 0
+              }
+              
+              // Désactiver le flag après que tout soit chargé
+              setTimeout(() => { isLoadingProjectRef.current = false }, 200)
+            }, 50)
           } catch (error) {
             console.error('Erreur lors du chargement du projet:', error)
+            isLoadingProjectRef.current = false
           }
         }
         reader.readAsText(file)
@@ -314,6 +336,84 @@ const LyricsSyncer = () => {
     return null
   }
 
+  // Fonction pour découper intelligemment une ligne trop longue
+  const splitLongLine = (text, maxLength = 512) => {
+    const parts = []
+    let remaining = text
+    
+    while (remaining.length > maxLength) {
+      // Chercher le dernier espace avant la limite
+      let splitIndex = remaining.lastIndexOf(' ', maxLength)
+      
+      // Si pas d'espace trouvé, chercher après une ponctuation
+      if (splitIndex === -1 || splitIndex < maxLength * 0.5) {
+        const punctuation = ['. ', '? ', '! ', ', ', '; ', ': ']
+        for (const punct of punctuation) {
+          const idx = remaining.lastIndexOf(punct, maxLength)
+          if (idx > splitIndex) {
+            splitIndex = idx + punct.length
+          }
+        }
+      }
+      
+      // Si toujours rien, couper brutalement
+      if (splitIndex === -1 || splitIndex < maxLength * 0.5) {
+        splitIndex = maxLength
+      }
+      
+      parts.push(remaining.substring(0, splitIndex).trim())
+      remaining = remaining.substring(splitIndex).trim()
+    }
+    
+    if (remaining.length > 0) {
+      parts.push(remaining)
+    }
+    
+    return parts
+  }
+
+  // Fonction pour exporter une strophe avec découpage si nécessaire
+  const exportStanza = (stanzaLines, startTime, nextTime, output) => {
+    const stanzaText = stanzaLines.map((line, index) => {
+      if (index === 0) return line
+      const prevLine = stanzaLines[index - 1]
+      if (/[.?!,;:]$/.test(prevLine)) return line
+      return line
+    }).join('. ').replace(/\.\./g, '.')
+    
+    let fullLine = `/y ${stanzaText}`
+    if (addMusicNote) fullLine += ' ♪'
+    
+    const waitTime = nextTime !== null && startTime !== null ? Math.round(nextTime - startTime) : 0
+    const waitSuffix = waitTime > 0 ? ` <wait.${waitTime}>` : ''
+    
+    // Vérifier si la ligne dépasse 512 caractères
+    if ((fullLine + waitSuffix).length > 512) {
+      // Découper le texte
+      const maxLength = 512 - (addMusicNote ? ' ♪'.length : 0) - ' <wait.X>'.length - 4 // marge
+      const parts = splitLongLine(stanzaText, maxLength)
+      
+      // Ajouter chaque partie avec un wait minimum de 1 seconde entre elles (anti-spam)
+      parts.forEach((part, index) => {
+        let line = `/y ${part}`
+        if (addMusicNote) line += ' ♪'
+        
+        if (index === parts.length - 1) {
+          // Dernière partie : ajouter le wait complet
+          if (waitTime > 0) line += ` <wait.${waitTime}>`
+        } else {
+          // Parties intermédiaires : wait minimum 1 seconde (anti-spam)
+          line += ' <wait.1>'
+        }
+        
+        output.push(line)
+      })
+    } else {
+      // Ligne normale
+      output.push(fullLine + waitSuffix)
+    }
+  }
+
   const exportMacro = () => {
     if (parsedLines.length === 0) return
 
@@ -322,19 +422,22 @@ const LyricsSyncer = () => {
     // Trouver le timestamp de la première ligne calée
     const firstTimestamp = timestamps.find(t => t !== null)
     
-    // Titre avec wait jusqu'à la première phrase
+    // Titre (sans wait si commande personnalisée)
     if (songTitle.trim()) {
-      let titleLine = `/echo ${songTitle.trim()}`
-      if (firstTimestamp !== null && firstTimestamp > 0) {
-        const waitTime = Math.round(firstTimestamp)
-        titleLine += ` <wait.${waitTime}>`
-      }
-      output.push(titleLine)
+      output.push(`/echo ${songTitle.trim()}`)
     }
 
-    // Commande personnalisée (ex: /hum motion)
+    // Commande personnalisée avec wait jusqu'à la première phrase
     if (customCommand.trim()) {
-      output.push(customCommand.trim())
+      let commandLine = customCommand.trim()
+      if (firstTimestamp !== null && firstTimestamp > 0) {
+        const waitTime = Math.round(firstTimestamp)
+        commandLine += ` <wait.${waitTime}>`
+      }
+      output.push(commandLine)
+    } else if (songTitle.trim() && firstTimestamp !== null && firstTimestamp > 0) {
+      // Si pas de commande personnalisée, ajouter le wait au titre
+      output[output.length - 1] += ` <wait.${Math.round(firstTimestamp)}>`
     }
 
     if (exportMode === 'stanza' || exportMode === 'dynamic' || exportMode === 'custom') {
@@ -363,42 +466,29 @@ const LyricsSyncer = () => {
         const line = parsedLines[i]
         const timestamp = timestamps[i]
         
-        // Mode personnalisé : vérifier si on doit couper ici
-        const shouldSplitCustom = exportMode === 'custom' && customSeparators.includes(i - 1)
-        
-        if (isEchoLine(line) || shouldSplitCustom) {
+        if (isEchoLine(line)) {
           // Si on a une strophe en cours, on l'exporte
           if (currentStanza.length > 0) {
-            const stanzaText = joinStanzaLines(currentStanza)
-            let stanzaLine = `/y ${stanzaText}`
-            if (addMusicNote) stanzaLine += ' ♪'
-            
             // Calculer le wait jusqu'à la prochaine strophe
+            let nextStanzaTime = null
             if (stanzaStartTime !== null) {
-              let nextStanzaTime = null
               for (let j = i + 1; j < parsedLines.length; j++) {
                 if (!isEchoLine(parsedLines[j]) && timestamps[j] !== null) {
                   nextStanzaTime = timestamps[j]
                   break
                 }
               }
-              if (nextStanzaTime !== null) {
-                const waitTime = Math.round(nextStanzaTime - stanzaStartTime)
-                stanzaLine += ` <wait.${waitTime}>`
-              }
             }
             
-            output.push(stanzaLine)
+            exportStanza(currentStanza, stanzaStartTime, nextStanzaTime, output)
             currentStanza = []
             stanzaStartTime = null
           }
           
-          // Ajouter la ligne echo SEULEMENT si elle n'est pas vide ET si ce n'est pas juste un séparateur custom
-          if (!shouldSplitCustom) {
-            const cleanedLine = cleanLine(line)
-            if (cleanedLine !== '') {
-              output.push(`/echo ${cleanedLine}`)
-            }
+          // Ajouter la ligne echo
+          const cleanedLine = cleanLine(line)
+          if (cleanedLine !== '') {
+            output.push(`/echo ${cleanedLine}`)
           }
         } else {
           // Ajouter la ligne à la strophe actuelle
@@ -407,30 +497,42 @@ const LyricsSyncer = () => {
           }
           currentStanza.push(cleanLine(line))
           
-          // Mode dynamique : découper à la moitié de la strophe
-          const shouldSplitDynamic = exportMode === 'dynamic' && currentStanza.length >= 2
+          // Mode personnalisé : vérifier si on doit couper APRÈS cette ligne
+          const shouldSplitAfter = exportMode === 'custom' && customSeparators.includes(i)
           
-          if (shouldSplitDynamic) {
-            const stanzaText = joinStanzaLines(currentStanza)
-            let stanzaLine = `/y ${stanzaText}`
-            if (addMusicNote) stanzaLine += ' ♪'
-            
+          if (shouldSplitAfter && currentStanza.length > 0) {
             // Calculer le wait jusqu'à la prochaine ligne non-echo
+            let nextStanzaTime = null
             if (stanzaStartTime !== null) {
-              let nextStanzaTime = null
               for (let j = i + 1; j < parsedLines.length; j++) {
                 if (!isEchoLine(parsedLines[j]) && timestamps[j] !== null) {
                   nextStanzaTime = timestamps[j]
                   break
                 }
               }
-              if (nextStanzaTime !== null) {
-                const waitTime = Math.round(nextStanzaTime - stanzaStartTime)
-                stanzaLine += ` <wait.${waitTime}>`
+            }
+            
+            exportStanza(currentStanza, stanzaStartTime, nextStanzaTime, output)
+            currentStanza = []
+            stanzaStartTime = null
+          }
+          
+          // Mode dynamique : découper à la moitié de la strophe
+          const shouldSplitDynamic = exportMode === 'dynamic' && currentStanza.length >= 2
+          
+          if (shouldSplitDynamic) {
+            // Calculer le wait jusqu'à la prochaine ligne non-echo
+            let nextStanzaTime = null
+            if (stanzaStartTime !== null) {
+              for (let j = i + 1; j < parsedLines.length; j++) {
+                if (!isEchoLine(parsedLines[j]) && timestamps[j] !== null) {
+                  nextStanzaTime = timestamps[j]
+                  break
+                }
               }
             }
             
-            output.push(stanzaLine)
+            exportStanza(currentStanza, stanzaStartTime, nextStanzaTime, output)
             currentStanza = []
             stanzaStartTime = null
           }
@@ -439,10 +541,7 @@ const LyricsSyncer = () => {
       
       // Exporter la dernière strophe si elle existe
       if (currentStanza.length > 0) {
-        const stanzaText = joinStanzaLines(currentStanza)
-        let stanzaLine = `/y ${stanzaText}`
-        if (addMusicNote) stanzaLine += ' ♪'
-        output.push(stanzaLine)
+        exportStanza(currentStanza, stanzaStartTime, null, output)
       }
     } else {
       // Export par phrase (comportement original)
@@ -580,44 +679,63 @@ const LyricsSyncer = () => {
         try {
           const projectData = JSON.parse(event.target.result)
           
-          // Restaurer toutes les données
-          if (projectData.songTitle) setSongTitle(projectData.songTitle)
-          if (projectData.customCommand) setCustomCommand(projectData.customCommand)
-          if (projectData.lyrics) setLyrics(projectData.lyrics)
-          if (projectData.timestamps) setTimestamps(projectData.timestamps)
-          if (typeof projectData.currentLineIndex !== 'undefined') {
-            setCurrentLineIndex(projectData.currentLineIndex)
-          }
-          if (projectData.options) {
-            if (typeof projectData.options.addMusicNote !== 'undefined') {
-              setAddMusicNote(projectData.options.addMusicNote)
+          // Activer le flag de chargement pour empêcher le useEffect de réinitialiser
+          isLoadingProjectRef.current = true
+          
+          // Parser les lyrics d'abord
+          const lines = projectData.lyrics ? projectData.lyrics.split('\n') : []
+          
+          // Restaurer toutes les données en une seule fois avec un batch
+          setTimeout(() => {
+            if (projectData.songTitle) setSongTitle(projectData.songTitle)
+            if (projectData.customCommand) setCustomCommand(projectData.customCommand)
+            if (projectData.lyrics) setLyrics(projectData.lyrics)
+            
+            // Restaurer parsedLines et timestamps APRÈS lyrics
+            setParsedLines(lines)
+            if (projectData.timestamps) {
+              setTimestamps(projectData.timestamps)
+              console.log('Timestamps chargés:', projectData.timestamps.filter(t => t !== null).length, 'sur', projectData.timestamps.length)
             }
-            if (typeof projectData.options.exportMode !== 'undefined') {
-              setExportMode(projectData.options.exportMode)
+            
+            if (typeof projectData.currentLineIndex !== 'undefined') {
+              setCurrentLineIndex(projectData.currentLineIndex)
             }
-            // Rétrocompatibilité avec les anciens fichiers
-            else if (typeof projectData.options.exportByStanza !== 'undefined') {
-              setExportMode(projectData.options.exportByStanza ? 'stanza' : 'line')
+            if (projectData.options) {
+              if (typeof projectData.options.addMusicNote !== 'undefined') {
+                setAddMusicNote(projectData.options.addMusicNote)
+              }
+              if (typeof projectData.options.exportMode !== 'undefined') {
+                setExportMode(projectData.options.exportMode)
+              }
+              // Rétrocompatibilité avec les anciens fichiers
+              else if (typeof projectData.options.exportByStanza !== 'undefined') {
+                setExportMode(projectData.options.exportByStanza ? 'stanza' : 'line')
+              }
+              if (typeof projectData.options.customSeparators !== 'undefined') {
+                setCustomSeparators(projectData.options.customSeparators)
+              }
             }
-            if (typeof projectData.options.customSeparators !== 'undefined') {
-              setCustomSeparators(projectData.options.customSeparators)
-            }
-          }
 
-          // Réinitialiser l'état
-          setEditingLineIndex(null)
-          setShowPreview(false)
-          setIsPlaying(false)
-          if (audioRef.current) {
-            audioRef.current.pause()
-            audioRef.current.currentTime = 0
-          }
+            // Réinitialiser l'état
+            setEditingLineIndex(null)
+            setShowPreview(false)
+            setIsPlaying(false)
+            if (audioRef.current) {
+              audioRef.current.pause()
+              audioRef.current.currentTime = 0
+            }
 
-          // Message de succès (optionnel)
-          console.log('Projet chargé avec succès:', projectData.metadata)
+            // Message de succès (optionnel)
+            console.log('Projet chargé avec succès:', projectData.metadata)
+            
+            // Désactiver le flag après que tout soit chargé
+            setTimeout(() => { isLoadingProjectRef.current = false }, 200)
+          }, 50)
         } catch (error) {
           console.error('Erreur lors du chargement du projet:', error)
           alert('Erreur lors du chargement du fichier JSON')
+          isLoadingProjectRef.current = false
         }
       }
       reader.readAsText(file)
@@ -772,7 +890,7 @@ const LyricsSyncer = () => {
                       <div className="absolute w-full text-center transition-all duration-500">
                         <div className="text-gray-500 text-sm mb-3">
                           {showPreview ? (
-                            <span className="text-purple-400">🎵 MODE PRÉVISUALISATION</span>
+                            <span className="text-purple-400">MODE PRÉVISUALISATION</span>
                           ) : (
                             <>
                               Ligne {currentLineIndex + 1} / {parsedLines.length}
@@ -790,7 +908,7 @@ const LyricsSyncer = () => {
                             <div className="mt-4 text-cyan-400 text-sm">
                               {editingLineIndex !== null ? (
                                 <>
-                                  <span className="text-orange-400">🔄 Recalage</span> - Appuyez sur ESPACE au bon moment
+                                  <span className="text-orange-400">Recalage</span> - Appuyez sur ESPACE au bon moment
                                 </>
                               ) : (
                                 '/y - Appuyez sur ESPACE pour caler'
@@ -823,7 +941,7 @@ const LyricsSyncer = () => {
                     </div>
                   ) : currentLineIndex >= parsedLines.length && parsedLines.length > 0 ? (
                     <div className="text-green-400 text-2xl">
-                      ✓ Toutes les lignes sont calées !
+                      Toutes les lignes sont calées !
                     </div>
                   ) : (
                     <div className="text-gray-500 text-xl">
@@ -898,7 +1016,7 @@ const LyricsSyncer = () => {
                             : 'bg-cyan-500/20 border-cyan-500/40 text-cyan-300 hover:bg-cyan-500/30'
                         }`}
                       >
-                        {editingLineIndex !== null ? '🔄 RECALER LA LIGNE (ESPACE)' : 'CALER LA LIGNE (ESPACE)'}
+                        {editingLineIndex !== null ? 'RECALER LA LIGNE (ESPACE)' : 'CALER LA LIGNE (ESPACE)'}
                       </button>
                     )}
                     
@@ -983,53 +1101,103 @@ const LyricsSyncer = () => {
                   <p className="text-gray-500 text-[10px] mb-3">Cliquez sur une ligne pour la recaler • Survolez pour effacer</p>
                 </div>
                 <div className="space-y-1 text-xs font-mono flex-1 overflow-y-auto">
-                  {parsedLines.map((line, index) => {
-                    const timestamp = timestamps[index]
-                    const isEcho = isEchoLine(line)
-                    const cleaned = cleanLine(line)
+                  {(() => {
+                    // Calculer les groupes pour détecter les dépassements
+                    const groups = []
+                    let currentGroup = []
+                    let groupStartIndex = 0
                     
-                    // Ne pas afficher les lignes vides dans l'aperçu
-                    if (isEmptyLine(line)) {
-                      return null
-                    }
-                    
-                    // Calculer le wait pour les lignes non-echo
-                    let waitDisplay = null
-                    if (!isEcho && timestamp !== null) {
-                      let nextTimestampIndex = index + 1
-                      while (nextTimestampIndex < parsedLines.length) {
-                        if (!isEchoLine(parsedLines[nextTimestampIndex]) && timestamps[nextTimestampIndex] !== null) {
-                          const waitTime = Math.round(timestamps[nextTimestampIndex] - timestamp)
-                          waitDisplay = waitTime
-                          break
-                        }
-                        nextTimestampIndex++
+                    parsedLines.forEach((line, index) => {
+                      if (isEmptyLine(line)) return
+                      
+                      const isEcho = isEchoLine(line)
+                      const shouldSplit = 
+                        (exportMode === 'line') ||
+                        (exportMode === 'stanza' && isEcho) ||
+                        (exportMode === 'dynamic' && (isEcho || currentGroup.length >= 2)) ||
+                        (exportMode === 'custom' && (isEcho || customSeparators.includes(index)))
+                      
+                      if (shouldSplit && currentGroup.length > 0) {
+                        groups.push({ lines: currentGroup, startIndex: groupStartIndex })
+                        currentGroup = []
                       }
+                      
+                      if (!isEcho) {
+                        if (currentGroup.length === 0) groupStartIndex = index
+                        currentGroup.push(cleanLine(line))
+                      }
+                      
+                      if (isEcho && currentGroup.length === 0) {
+                        groupStartIndex = index
+                      }
+                    })
+                    
+                    if (currentGroup.length > 0) {
+                      groups.push({ lines: currentGroup, startIndex: groupStartIndex })
                     }
                     
-                    return (
-                      <div
-                        key={index}
-                        className={`group flex items-center justify-between gap-2 ${
-                          index === currentLineIndex
-                            ? 'text-cyan-400 bg-cyan-500/10 border-l-2 border-cyan-500 pl-2'
-                            : editingLineIndex === index
-                            ? 'text-orange-400 bg-orange-500/10 border-l-2 border-orange-500 pl-2'
-                            : isEcho
-                            ? 'text-yellow-400'
-                            : timestamp !== null
-                            ? 'text-green-400'
-                            : 'text-gray-500'
-                        } py-1 ${!isEcho ? 'cursor-pointer hover:bg-zinc-800/50' : ''}`}
-                        onClick={() => !isEcho && handleLineClick(index)}
-                        title={!isEcho ? 'Cliquer pour recaler cette ligne' : 'Ligne /echo (non calable)'}
-                      >
-                        <div className="flex-1 min-w-0">
-                          {isEcho ? `/echo ${cleaned}` : `/y ${cleaned}${addMusicNote ? ' ♪' : ''}`}
-                          {waitDisplay !== null && (
-                            <span className="text-gray-600 ml-2">
-                              &lt;wait.{waitDisplay}&gt;
-                            </span>
+                    // Calculer les longueurs des groupes
+                    const groupLengths = new Map()
+                    groups.forEach(group => {
+                      const text = group.lines.join('. ').replace(/\.\./g, '.')
+                      const length = `/y ${text}${addMusicNote ? ' ♪' : ''} <wait.10>`.length
+                      group.lines.forEach((_, i) => {
+                        groupLengths.set(group.startIndex + i, length)
+                      })
+                    })
+                    
+                    return parsedLines.map((line, index) => {
+                      const timestamp = timestamps[index]
+                      const isEcho = isEchoLine(line)
+                      const cleaned = cleanLine(line)
+                      
+                      // Ne pas afficher les lignes vides dans l'aperçu
+                      if (isEmptyLine(line)) {
+                        return null
+                      }
+                      
+                      // Calculer le wait pour les lignes non-echo
+                      let waitDisplay = null
+                      if (!isEcho && timestamp !== null) {
+                        let nextTimestampIndex = index + 1
+                        while (nextTimestampIndex < parsedLines.length) {
+                          if (!isEchoLine(parsedLines[nextTimestampIndex]) && timestamps[nextTimestampIndex] !== null) {
+                            const waitTime = Math.round(timestamps[nextTimestampIndex] - timestamp)
+                            waitDisplay = waitTime
+                            break
+                          }
+                          nextTimestampIndex++
+                        }
+                      }
+                      
+                      const groupLength = groupLengths.get(index) || 0
+                      const isOverLimit = groupLength > 512
+                      
+                      return (
+                        <div
+                          key={index}
+                          className={`group flex items-center justify-between gap-2 ${
+                            index === currentLineIndex
+                              ? 'text-cyan-400 bg-cyan-500/10 border-l-2 border-cyan-500 pl-2'
+                              : editingLineIndex === index
+                              ? 'text-orange-400 bg-orange-500/10 border-l-2 border-orange-500 pl-2'
+                              : isOverLimit
+                              ? 'text-red-400 bg-red-500/10'
+                              : isEcho
+                              ? 'text-yellow-400'
+                              : timestamp !== null
+                              ? 'text-green-400'
+                              : 'text-gray-500'
+                          } py-1 ${!isEcho ? 'cursor-pointer hover:bg-zinc-800/50' : ''}`}
+                          onClick={() => !isEcho && handleLineClick(index)}
+                          title={!isEcho ? 'Cliquer pour recaler cette ligne' : 'Ligne /echo (non calable)'}
+                        >
+                          <div className="flex-1 min-w-0">
+                            {isEcho ? `/echo ${cleaned}` : `/y ${cleaned}${addMusicNote ? ' ♪' : ''}`}
+                            {waitDisplay !== null && (
+                              <span className="text-gray-600 ml-2">
+                                &lt;wait.{waitDisplay}&gt;
+                              </span>
                           )}
                           {!isEcho && timestamp !== null && (
                             <span className="text-gray-600 ml-2 text-[10px]">
@@ -1037,21 +1205,29 @@ const LyricsSyncer = () => {
                             </span>
                           )}
                         </div>
-                        {!isEcho && timestamp !== null && (
-                          <button
-                            onClick={(e) => {
-                              e.stopPropagation()
-                              clearLineTimestamp(index)
-                            }}
-                            className="opacity-0 group-hover:opacity-100 text-red-400 hover:text-red-300 px-2 py-0.5 text-[10px] transition-opacity"
-                            title="Effacer le calage"
-                          >
-                            ✕
-                          </button>
-                        )}
+                        <div className="flex items-center gap-2">
+                          {isOverLimit && (
+                            <span className="text-red-400 text-[10px] font-semibold" title={`${groupLength} caractères (max 512)`}>
+                              !512
+                            </span>
+                          )}
+                          {!isEcho && timestamp !== null && (
+                            <button
+                              onClick={(e) => {
+                                e.stopPropagation()
+                                clearLineTimestamp(index)
+                              }}
+                              className="opacity-0 group-hover:opacity-100 text-red-400 hover:text-red-300 px-2 py-0.5 text-[10px] transition-opacity"
+                              title="Effacer le calage"
+                            >
+                              ✕
+                            </button>
+                          )}
+                        </div>
                       </div>
                     )
-                  })}
+                  })
+                  })()}
                 </div>
               </div>
 
@@ -1084,28 +1260,33 @@ const LyricsSyncer = () => {
                   />
                 </div>
 
-                <button
-                  onClick={() => {
-                    const newPreviewState = !showPreview
-                    setShowPreview(newPreviewState)
-                    
-                    // Si on active la prévisualisation, lancer la musique
-                    if (newPreviewState && audioRef.current) {
-                      audioRef.current.currentTime = 0
-                      audioRef.current.play()
-                      setIsPlaying(true)
-                    } else if (!newPreviewState && audioRef.current) {
-                      // Si on désactive, arrêter la musique
-                      audioRef.current.pause()
-                      setIsPlaying(false)
-                    }
-                  }}
-                  disabled={timestamps.filter(t => t !== null).length === 0 || !audioUrl}
-                  className="w-full bg-purple-500/20 border border-purple-500/40 text-purple-300 px-4 py-3 hover:bg-purple-500/30 transition-colors disabled:opacity-30 disabled:cursor-not-allowed flex items-center justify-center gap-2 font-semibold"
-                >
-                  <Play className="w-4 h-4" />
-                  {showPreview ? 'Masquer' : 'Prévisualiser'} le résultat
-                </button>
+                <div>
+                  <button
+                    onClick={() => {
+                      const newPreviewState = !showPreview
+                      setShowPreview(newPreviewState)
+                      
+                      // Si on active la prévisualisation, lancer la musique
+                      if (newPreviewState && audioRef.current) {
+                        audioRef.current.currentTime = 0
+                        audioRef.current.play()
+                        setIsPlaying(true)
+                      } else if (!newPreviewState && audioRef.current) {
+                        // Si on désactive, arrêter la musique
+                        audioRef.current.pause()
+                        setIsPlaying(false)
+                      }
+                    }}
+                    disabled={timestamps.filter(t => t !== null).length === 0 || !audioUrl}
+                    className="w-full bg-purple-500/20 border border-purple-500/40 text-purple-300 px-4 py-3 hover:bg-purple-500/30 transition-colors disabled:opacity-30 disabled:cursor-not-allowed flex items-center justify-center gap-2 font-semibold"
+                  >
+                    <Play className="w-4 h-4" />
+                    {showPreview ? 'Masquer' : 'Prévisualiser'} le résultat
+                  </button>
+                  {timestamps.filter(t => t !== null).length > 0 && !audioUrl && (
+                    <p className="text-xs text-orange-400 mt-1 text-center">MP3 manquant</p>
+                  )}
+                </div>
 
                 <button
                   onClick={exportMacro}
@@ -1153,31 +1334,64 @@ const LyricsSyncer = () => {
               </p>
               
               <div className="space-y-0 font-mono text-sm">
-                {parsedLines.map((line, index) => {
-                  const isEcho = isEchoLine(line)
-                  const isEmpty = isEmptyLine(line)
-                  const timestamp = timestamps[index]
-                  const hasSeparatorAfter = customSeparators.includes(index)
+                {(() => {
+                  // Calculer les groupes et leur longueur
+                  let currentGroupStart = 0
+                  let currentGroupLines = []
                   
-                  if (isEmpty) return null
+                  return parsedLines.map((line, index) => {
+                    const isEcho = isEchoLine(line)
+                    const isEmpty = isEmptyLine(line)
+                    const timestamp = timestamps[index]
+                    const hasSeparatorAfter = customSeparators.includes(index)
+                    
+                    if (isEmpty) return null
+                    
+                    // Ajouter la ligne au groupe actuel
+                    if (!isEcho) {
+                      currentGroupLines.push(cleanLine(line))
+                    }
+                    
+                    // Calculer la longueur du groupe si c'est la fin
+                    let groupLength = 0
+                    let isGroupEnd = false
+                    if (hasSeparatorAfter || isEcho || index === parsedLines.length - 1) {
+                      if (currentGroupLines.length > 0) {
+                        const groupText = currentGroupLines.join('. ').replace(/\.\./g, '.')
+                        groupLength = `/y ${groupText}${addMusicNote ? ' ♪' : ''} <wait.X>`.length
+                        isGroupEnd = true
+                      }
+                      currentGroupLines = []
+                    }
 
-                  return (
-                    <div key={index}>
-                      {/* Ligne */}
-                      <div className={`px-3 py-2 ${
-                        isEcho ? 'text-yellow-400' : timestamp !== null ? 'text-green-400' : 'text-gray-500'
-                      }`}>
-                        <div className="flex items-center justify-between">
-                          <span className="flex-1">{cleanLine(line)}</span>
-                          {!isEcho && timestamp !== null && (
-                            <span className="text-gray-600 text-xs ml-2">[{formatTime(timestamp)}]</span>
-                          )}
-                          {isEcho && <span className="text-xs text-yellow-600 ml-2">/echo</span>}
+                    return (
+                      <div key={index}>
+                        {/* Ligne */}
+                        <div className={`px-3 py-2 ${
+                          isEcho ? 'text-yellow-400' : timestamp !== null ? 'text-green-400' : 'text-gray-500'
+                        }`}>
+                          <div className="flex items-center justify-between">
+                            <span className="flex-1">{cleanLine(line)}</span>
+                            {!isEcho && timestamp !== null && (
+                              <span className="text-gray-600 text-xs ml-2">[{formatTime(timestamp)}]</span>
+                            )}
+                            {isEcho && <span className="text-xs text-yellow-600 ml-2">/echo</span>}
+                          </div>
                         </div>
-                      </div>
+                        
+                        {/* Compteur de caractères si fin de groupe */}
+                        {isGroupEnd && groupLength > 0 && (
+                          <div className="px-3 py-1 text-right">
+                            <span className={`text-xs font-semibold ${
+                              groupLength > 512 ? 'text-red-400' : groupLength > 450 ? 'text-orange-400' : 'text-gray-500'
+                            }`}>
+                              {groupLength}/512 caractères
+                            </span>
+                          </div>
+                        )}
 
-                      {/* Zone cliquable pour ajouter/retirer séparateur */}
-                      {index < parsedLines.length - 1 && !isEmptyLine(parsedLines[index + 1]) && (
+                        {/* Zone cliquable pour ajouter/retirer séparateur */}
+                        {index < parsedLines.length - 1 && !isEmptyLine(parsedLines[index + 1]) && (
                         <div
                           onClick={(e) => {
                             if (hasSeparatorAfter) {
@@ -1233,7 +1447,8 @@ const LyricsSyncer = () => {
                       )}
                     </div>
                   )
-                })}
+                })
+                })()}
               </div>
             </div>
 
