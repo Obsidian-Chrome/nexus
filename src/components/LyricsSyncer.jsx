@@ -372,14 +372,40 @@ const LyricsSyncer = () => {
     return parts
   }
 
+  // Joint les lignes d'un groupe en ajoutant un point seulement si pas de ponctuation
+  const joinLines = (lines) => lines
+    .map((line, i) => (i < lines.length - 1 && !/[.?!,;:]$/.test(line) ? `${line}.` : line))
+    .join(' ')
+
+  // Calcule les groupes /y tels qu'ils seront exportés (une ligne vide ou un /echo coupe toujours)
+  const getExportGroups = (mode = exportMode) => {
+    const groups = []
+    let current = null
+    const flush = () => {
+      if (current) groups.push(current)
+      current = null
+    }
+    parsedLines.forEach((line, index) => {
+      if (isEchoLine(line)) return flush()
+      if (!current) current = { start: index, end: index, lines: [] }
+      current.lines.push(cleanLine(line))
+      current.end = index
+      if (
+        mode === 'line' ||
+        (mode === 'dynamic' && current.lines.length >= 2) ||
+        (mode === 'custom' && customSeparators.includes(index))
+      ) flush()
+    })
+    flush()
+    return groups.map(g => ({
+      ...g,
+      length: `/y ${joinLines(g.lines)}${addMusicNote ? ' ♪' : ''} <wait.99>`.length
+    }))
+  }
+
   // Fonction pour exporter une strophe avec découpage si nécessaire
   const exportStanza = (stanzaLines, startTime, nextTime, output) => {
-    const stanzaText = stanzaLines.map((line, index) => {
-      if (index === 0) return line
-      const prevLine = stanzaLines[index - 1]
-      if (/[.?!,;:]$/.test(prevLine)) return line
-      return line
-    }).join('. ').replace(/\.\./g, '.')
+    const stanzaText = joinLines(stanzaLines)
     
     let fullLine = `/y ${stanzaText}`
     if (addMusicNote) fullLine += ' ♪'
@@ -399,8 +425,8 @@ const LyricsSyncer = () => {
         if (addMusicNote) line += ' ♪'
         
         if (index === parts.length - 1) {
-          // Dernière partie : ajouter le wait complet
-          if (waitTime > 0) line += ` <wait.${waitTime}>`
+          // Dernière partie : wait restant (on retire les secondes déjà attendues)
+          if (waitTime > 0) line += ` <wait.${Math.max(1, waitTime - (parts.length - 1))}>`
         } else {
           // Parties intermédiaires : wait minimum 1 seconde (anti-spam)
           line += ' <wait.1>'
@@ -1103,47 +1129,9 @@ const LyricsSyncer = () => {
                 <div className="space-y-1 text-xs font-mono flex-1 overflow-y-auto">
                   {(() => {
                     // Calculer les groupes pour détecter les dépassements
-                    const groups = []
-                    let currentGroup = []
-                    let groupStartIndex = 0
-                    
-                    parsedLines.forEach((line, index) => {
-                      if (isEmptyLine(line)) return
-                      
-                      const isEcho = isEchoLine(line)
-                      const shouldSplit = 
-                        (exportMode === 'line') ||
-                        (exportMode === 'stanza' && isEcho) ||
-                        (exportMode === 'dynamic' && (isEcho || currentGroup.length >= 2)) ||
-                        (exportMode === 'custom' && (isEcho || customSeparators.includes(index)))
-                      
-                      if (shouldSplit && currentGroup.length > 0) {
-                        groups.push({ lines: currentGroup, startIndex: groupStartIndex })
-                        currentGroup = []
-                      }
-                      
-                      if (!isEcho) {
-                        if (currentGroup.length === 0) groupStartIndex = index
-                        currentGroup.push(cleanLine(line))
-                      }
-                      
-                      if (isEcho && currentGroup.length === 0) {
-                        groupStartIndex = index
-                      }
-                    })
-                    
-                    if (currentGroup.length > 0) {
-                      groups.push({ lines: currentGroup, startIndex: groupStartIndex })
-                    }
-                    
-                    // Calculer les longueurs des groupes
                     const groupLengths = new Map()
-                    groups.forEach(group => {
-                      const text = group.lines.join('. ').replace(/\.\./g, '.')
-                      const length = `/y ${text}${addMusicNote ? ' ♪' : ''} <wait.10>`.length
-                      group.lines.forEach((_, i) => {
-                        groupLengths.set(group.startIndex + i, length)
-                      })
+                    getExportGroups().forEach(group => {
+                      for (let i = group.start; i <= group.end; i++) groupLengths.set(i, group.length)
                     })
                     
                     return parsedLines.map((line, index) => {
@@ -1335,9 +1323,9 @@ const LyricsSyncer = () => {
               
               <div className="space-y-0 font-mono text-sm">
                 {(() => {
-                  // Calculer les groupes et leur longueur
-                  let currentGroupStart = 0
-                  let currentGroupLines = []
+                  // Longueur de chaque groupe, affichée sur sa dernière ligne
+                  const groupEndLengths = new Map()
+                  getExportGroups('custom').forEach(group => groupEndLengths.set(group.end, group.length))
                   
                   return parsedLines.map((line, index) => {
                     const isEcho = isEchoLine(line)
@@ -1347,22 +1335,8 @@ const LyricsSyncer = () => {
                     
                     if (isEmpty) return null
                     
-                    // Ajouter la ligne au groupe actuel
-                    if (!isEcho) {
-                      currentGroupLines.push(cleanLine(line))
-                    }
-                    
-                    // Calculer la longueur du groupe si c'est la fin
-                    let groupLength = 0
-                    let isGroupEnd = false
-                    if (hasSeparatorAfter || isEcho || index === parsedLines.length - 1) {
-                      if (currentGroupLines.length > 0) {
-                        const groupText = currentGroupLines.join('. ').replace(/\.\./g, '.')
-                        groupLength = `/y ${groupText}${addMusicNote ? ' ♪' : ''} <wait.X>`.length
-                        isGroupEnd = true
-                      }
-                      currentGroupLines = []
-                    }
+                    const groupLength = groupEndLengths.get(index) || 0
+                    const isGroupEnd = groupEndLengths.has(index)
 
                     return (
                       <div key={index}>
