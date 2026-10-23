@@ -55,6 +55,22 @@
       "heureFin": "23:59",
       "fichier": "visualizer_nogta.webm",
       "hexadecimal": ""
+    },
+    {
+      "concert": "Soir?e The Ritual",
+      "date": "27/10/2026",
+      "heureDebut": "20:00",
+      "heureFin": "23:59",
+      "fichier": "visualizer_hex.webm",
+      "hexadecimal": ""
+    },
+    {
+      "concert": "Soir?e The Ritual",
+      "date": "28/10/2026",
+      "heureDebut": "00:00",
+      "heureFin": "04:00",
+      "fichier": "visualizer_hex.webm",
+      "hexadecimal": ""
     }
   ],
   "default": {
